@@ -5,29 +5,13 @@
  * index.vue
 -->
 <template>
-  <el-config-provider :z-index="zIndex">
+  <el-config-provider>
     <div>
-      home
-      <el-button type="success">Primary</el-button>
+      <el-button type="success">Home 首页</el-button>
     </div>
   </el-config-provider>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { ElConfigProvider } from 'element-plus'
+<script setup lang="ts"></script>
 
-export default defineComponent({
-  components: {
-    ElConfigProvider,
-  },
-  setup() {
-    return {
-      zIndex: 3000,
-    }
-  },
-})
-</script>
-
-<style scoped lang="less">
-</style>
+<style scoped lang="less"></style>
