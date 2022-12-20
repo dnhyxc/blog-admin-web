@@ -1,9 +1,3 @@
-<!--
- * new page
- * @author: dnhyxc
- * @since: 2022-12-18
- * index.vue
--->
 <template>
   <el-config-provider>
     <div>

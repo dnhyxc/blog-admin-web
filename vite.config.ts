@@ -10,12 +10,6 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import * as path from 'path';
 
 export default defineConfig({
-  resolve: {
-    //设置别名
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
-  },
   plugins: [
     vue(),
     // createStyleImportPlugin({
@@ -41,6 +35,12 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  resolve: {
+    //设置别名
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
   server: {
     port: 8088, //启动端口
     hmr: {

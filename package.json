@@ -14,6 +14,7 @@
     "commit": "git-cz"
   },
   "dependencies": {
+    "@kangc/v-md-editor": "^2.3.15",
     "@types/node": "^18.11.17",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
+    "@types/prismjs": "^1.26.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "commitizen": "^4.2.6",
     "commitlint-config-cz": "^0.13.3",
