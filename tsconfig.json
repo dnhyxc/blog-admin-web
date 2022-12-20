@@ -3,7 +3,7 @@
     "typeRoots": [
       "node_modules/@types", // 默认值
       "src/types"
-   ],
+    ],
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
@@ -15,9 +15,9 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "baseUrl": "./",
-    "paths":{
+    "paths": {
       "@": ["src"],
-      "@/*": ["src/*"],
+      "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]

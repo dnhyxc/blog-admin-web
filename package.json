@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "eslint:comment": "使用 ESLint 检查并自动修复 src 目录下所有扩展名为 .js 和 .vue 的文件",
     "eslint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "prettier:comment": "自动格式化当前目录下的所有文件",
     "prettier": "prettier --write",
     "commit:comment": "引导设置规范化的提交信息",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@kangc/v-md-editor": "^2.3.15",
@@ -39,7 +40,9 @@
     "consola": "^2.15.3",
     "cz-conventional-changelog": "^3.3.0",
     "cz-customizable": "^7.0.0",
+    "husky": "^8.0.0",
     "less": "^4.1.3",
+    "lint-staged": "^13.1.0",
     "typescript": "^4.9.3",
     "unplugin-auto-import": "^0.12.1",
     "unplugin-vue-components": "^0.22.12",
@@ -50,5 +53,26 @@
     "commitizen": {
       "path": "node_modules/cz-customizable"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.vue": [
+      "prettier --write",
+      "eslint --fix",
+      "stylelint --fix"
+    ],
+    "*.{html,vue,vss,sass,less}": [
+      "prettier --write",
+      "stylelint --fix"
+    ],
+    "package.json": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
   }
 }
