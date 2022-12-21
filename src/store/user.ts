@@ -1,15 +1,27 @@
 import { defineStore } from 'pinia';
+import { LoginParams } from '@/typings/comment';
+import { login } from '@/server/index';
 
-export const useUserStore = defineStore({
-  id: 'user', // id必填，且需要唯一
-  state: () => {
-    return {
-      name: 'dnhyxc',
-    };
-  },
+export const useUserStore = defineStore('user', {
+  state: () => ({
+    token: localStorage.getItem('token'),
+    userInfo: null,
+    menuList: [], // 左侧菜单
+  }),
   actions: {
-    updateName(name: string) {
-      this.name = name;
+    async login(data: LoginParams) {
+      try {
+        const token = await login(data);
+        this.token = token;
+        localStorage.setItem('token', token);
+      } catch (error) {
+        throw error;
+      }
+    },
+    logout() {
+      this.token = '';
+      this.userInfo = null;
+      localStorage.removeItem('token');
     },
   },
 });

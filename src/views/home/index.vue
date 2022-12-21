@@ -1,9 +1,7 @@
 <template>
-  <el-config-provider>
-    <div>
-      <el-button type="success">Home 首页</el-button>
-    </div>
-  </el-config-provider>
+  <div>
+    <el-button type="success">Home 首页</el-button>
+  </div>
 </template>
 
 <script setup lang="ts"></script>
