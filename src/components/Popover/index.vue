@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-popover placement="bottom" :title="title" :width="width" trigger="click">
+    <el-popover placement="bottom" :title="title" :width="width" trigger="click" popper-class="popover">
       <template #reference>
         <slot name="click"></slot>
       </template>
@@ -23,17 +23,8 @@ interface IProps {
 
 // defineProps 用于接收父组件传递过来的 props
 // withDefaults 用于给接收的 props 设置默认值
-const props = withDefaults(defineProps<IProps>(), {
+withDefaults(defineProps<IProps>(), {
   width: 200,
+  className: 'el-popover',
 });
 </script>
-
-<style lang="less" scoped>
-.container {
-  border: 1px solid red;
-
-  .content {
-    border: 1px solid skyblue;
-  }
-}
-</style>

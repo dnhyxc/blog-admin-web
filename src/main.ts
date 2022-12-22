@@ -9,7 +9,7 @@ import Prism from 'prismjs';
 import router from '@/router';
 import App from './App.vue';
 import store from './store';
-import './style.css';
+import './style.less';
 
 VueMarkdownEditor.use(vuepressTheme, {
   Prism,

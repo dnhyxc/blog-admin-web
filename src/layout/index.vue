@@ -5,9 +5,7 @@
         <LeftMenu />
       </el-aside>
       <el-main class="el-main">
-        <Header>
-          <div>看我插入了这个插槽</div>
-        </Header>
+        <Header />
         <div class="content">
           <RouterView />
         </div>
@@ -22,5 +20,23 @@ import Header from '@/components/Header/index.vue';
 </script>
 
 <style lang="less" scoped>
-@import url('./index.less');
+@import '@/styles/color.less';
+
+.wrap {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  height: 100vh;
+
+  .el-main {
+    background-color: @bg-color-page;
+    padding-top: 70px;
+  }
+
+  .content {
+    box-sizing: border-box;
+    flex: 1;
+    height: 100%;
+  }
+}
 </style>
