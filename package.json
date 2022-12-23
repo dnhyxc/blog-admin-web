@@ -4,13 +4,10 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "rimraf dist dist.zip && vite build",
     "preview": "vite preview",
-    "eslint:comment": "使用 ESLint 检查并自动修复 src 目录下所有扩展名为 .js 和 .vue 的文件",
     "eslint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
-    "prettier:comment": "自动格式化当前目录下的所有文件",
     "prettier": "prettier --write",
-    "commit:comment": "引导设置规范化的提交信息",
     "commit": "git-cz",
     "prepare": "husky install",
     "test": "npx eslint ./src  --ext ts,vue,js --fix"
@@ -26,8 +23,10 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.8.0",
+    "isomorphic-fetch": "^3.0.0",
     "pinia": "^2.0.28",
     "prettier": "^2.8.1",
+    "query-string": "7.1.1",
     "vite-plugin-style-import": "^2.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
@@ -37,6 +36,7 @@
     "@babel/eslint-parser": "^7.19.1",
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
+    "@types/isomorphic-fetch": "^0.0.36",
     "@types/prismjs": "^1.26.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "commitizen": "^4.2.6",

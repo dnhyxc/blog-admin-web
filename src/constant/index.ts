@@ -55,3 +55,5 @@ export const MENULIST: MenuListParams[] = [
     icon: 'setting',
   },
 ];
+
+export const GATEWAY_HOST = '';

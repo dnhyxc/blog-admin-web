@@ -4,7 +4,7 @@
     :style="width ? { width: `${width}px`, height: `${height}px`, flex: 'none' } : { height: `${height}px` }"
   >
     <div class="title">
-      <slot name="title"> title </slot>
+      <slot name="title">title</slot>
     </div>
     <div class="content">
       <slot name="content">content</slot>
@@ -41,9 +41,6 @@ defineProps<IProps>();
 
   &:last-child {
     margin-right: 0;
-  }
-
-  .title {
   }
 }
 </style>
