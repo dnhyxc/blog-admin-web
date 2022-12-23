@@ -24,6 +24,7 @@ interface IProps {
 // defineProps 用于接收父组件传递过来的 props
 // withDefaults 用于给接收的 props 设置默认值
 withDefaults(defineProps<IProps>(), {
+  title: '',
   width: 200,
   className: 'el-popover',
 });
