@@ -2,7 +2,7 @@
   <div class="menu-wrap">
     <div class="title">后台管理</div>
     <el-menu default-active="home" class="el-menu">
-      <el-menu-item v-for="menu in MENULIST" :index="menu.key" class="menuList" @click="onClick(menu)">
+      <el-menu-item v-for="menu in MENULIST" :key="menu.key" :index="menu.key" class="menuList" @click="onClick(menu)">
         <el-icon v-if="menu.icon === 'icon-menu'">
           <icon-menu />
         </el-icon>

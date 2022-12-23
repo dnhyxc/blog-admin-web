@@ -1,7 +1,9 @@
 <template>
-  <div class="container">account</div>
+  <div class="account">account</div>
 </template>
 
 <script setup lang="ts"></script>
 
-<style lang="less" module></style>
+<style lang="less" scoped>
+@import '@/styles/color.less';
+</style>

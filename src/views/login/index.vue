@@ -1,18 +1,9 @@
-<!--
- * login
- * @author: dnhyxc
- * @since: 2022-12-18
- * index.vue
--->
 <template>
-  <div class="container">
-    login
-  </div>
+  <div class="login">login</div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped lang="less">
+<style lang="less" scoped>
+@import '@/styles/color.less';
 </style>

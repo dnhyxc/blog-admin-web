@@ -1,7 +1,9 @@
 <template>
-  <div class="container">comment</div>
+  <div class="account">comment</div>
 </template>
 
 <script setup lang="ts"></script>
 
-<style lang="less" module></style>
+<style lang="less" scoped>
+@import '@/styles/color.less';
+</style>

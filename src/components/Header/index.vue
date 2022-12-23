@@ -47,6 +47,7 @@ const onSetting = () => {
 // 退出登录
 const onLogout = () => {
   console.log('退出登录');
+  router.replace('/login');
 };
 </script>
 

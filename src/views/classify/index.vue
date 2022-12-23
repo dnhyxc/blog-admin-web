@@ -1,9 +1,9 @@
 <template>
-  <div class="container">classify</div>
+  <div class="account">classify</div>
 </template>
 
-<script setup lang="ts">
-import {} from 'vue';
-</script>
+<script setup lang="ts"></script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+@import '@/styles/color.less';
+</style>

@@ -8,4 +8,6 @@
 import Editor from '@/components/Editor/index.vue';
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+@import '@/styles/color.less';
+</style>
