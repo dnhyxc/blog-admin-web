@@ -9,5 +9,5 @@ import Editor from '@/components/Editor/index.vue';
 </script>
 
 <style lang="less" scoped>
-@import '@/styles/color.less';
+@import '@/styles/index.less';
 </style>

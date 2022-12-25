@@ -52,7 +52,7 @@ const onLogout = () => {
 </script>
 
 <style scoped lang="less">
-@import '@/styles/color.less';
+@import '@/styles/index.less';
 
 .page-header {
   display: flex;
@@ -68,8 +68,8 @@ const onLogout = () => {
   height: 50px;
   font-weight: 700;
   font-size: 16px;
-  color: @black;
-  background-color: @white;
+  color: @000;
+  background-color: #fff;
   box-shadow: 10px 0 10px @border-color;
 
   .left {

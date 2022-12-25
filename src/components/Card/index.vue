@@ -28,11 +28,14 @@ defineProps<IProps>();
 </script>
 
 <style lang="less" scoped>
-@import '@/styles/color.less';
+@import '@/styles/index.less';
 
 .card-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex: 1;
-  height: 160px;
+  height: 150px;
   padding: 10px;
   margin-right: 10px;
   border-radius: 5px;

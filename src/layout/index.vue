@@ -20,7 +20,7 @@ import Header from '@/components/Header/index.vue';
 </script>
 
 <style lang="less" scoped>
-@import '@/styles/color.less';
+@import '@/styles/index.less';
 
 .wrap {
   display: flex;
@@ -30,7 +30,7 @@ import Header from '@/components/Header/index.vue';
 
   .el-main {
     background-color: @bg-color-page;
-    padding-top: 70px;
+    padding: 60px 0 10px 10px;
   }
 
   .content {
