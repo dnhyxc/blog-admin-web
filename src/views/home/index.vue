@@ -50,11 +50,12 @@
     </div>
     <div class="echarts-list">
       <ClassifyChart class="left" />
-      <Content class="center">
+      <!-- <Content class="center">
         <template #title>
           <div class="title">文章统计</div>
         </template>
-      </Content>
+      </Content> -->
+      <ArticleChart class="center" />
       <Content class="right">
         <template #title>
           <div class="title">标签统计</div>
@@ -76,6 +77,7 @@
 import Card from '@/components/Card/index.vue';
 import Content from '@/components/Content/index.vue';
 import ClassifyChart from './ClassifyChart/index.vue';
+import ArticleChart from './ArticleChart/index.vue';
 import AuthorList from './AuthorList/index.vue';
 import Timeline from './Timeline/index.vue';
 import Blogger from './Blogger/index.vue';
@@ -126,7 +128,6 @@ import Blogger from './Blogger/index.vue';
       flex: 1;
       margin: 0 10px;
       text-align: center;
-      padding-top: 10px;
     }
   }
 

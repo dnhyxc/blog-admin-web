@@ -100,9 +100,5 @@ const getClassifyChart = () => {
 .classify-chart {
   width: 100%;
   height: 100%;
-
-  .title {
-    padding-top: 10px;
-  }
 }
 </style>
