@@ -202,6 +202,7 @@ const getArticleChart = () => {
 .article-chart-wrap {
   .title {
     padding-bottom: 10px;
+    padding-top: 10px;
   }
 }
 </style>

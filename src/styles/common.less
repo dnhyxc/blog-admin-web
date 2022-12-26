@@ -1,5 +1,15 @@
 @import '@/styles/color.less';
 
+// 页面公共布局
+.layoutStyles() {
+  box-sizing: border-box;
+  height: calc(100vh - 70px);
+  padding-right: 12px;
+  color: @text-color-primary;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 // 双击不选中文字
 .clickNoSelectText {
   -moz-user-select: none;

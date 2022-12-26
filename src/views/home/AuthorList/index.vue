@@ -8,7 +8,14 @@
   <div class="wrap">
     <div class="header">作者列表</div>
     <div class="infinite-list-wrapper" style="overflow: auto">
-      <div v-infinite-scroll="load" class="list" :infinite-scroll-disabled="disabled">
+      <!-- infinite-scroll-distance="1" 表示触发加载的距离阈值，单位为px。可解决只加载一次或几次后，滚动加载失效的问题 -->
+      <div
+        v-infinite-scroll="load"
+        class="list"
+        :infinite-scroll-disabled="disabled"
+        infinite-scroll-immediate
+        infinite-scroll-distance="1"
+      >
         <List v-for="i in count" :key="i" class="list-item">
           <template #left>
             <el-avatar class="avatar" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
@@ -41,7 +48,7 @@ type loadType = boolean;
 
 const count = ref<countType>(10);
 const loading = ref<loadType>(false);
-const noMore = computed(() => count.value >= 20);
+const noMore = computed(() => count.value >= 30);
 const disabled = computed(() => loading.value || noMore.value);
 
 const load = () => {

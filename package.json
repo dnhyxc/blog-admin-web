@@ -56,6 +56,7 @@
     "lint-staged": "^13.1.0",
     "typescript": "*",
     "unplugin-auto-import": "^0.12.1",
+    "unplugin-element-plus": "^0.4.1",
     "unplugin-vue-components": "^0.22.12",
     "vite": "^4.0.0",
     "vite-plugin-eslint": "^1.8.1",

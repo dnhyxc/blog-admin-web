@@ -3,15 +3,10 @@
     :class="classname(className, 'card-wrap')"
     :style="width ? { width: `${width}px`, height: `${height}px`, flex: 'none' } : { height: `${height}px` }"
   >
-    <div class="title">
-      <slot name="title">title</slot>
-    </div>
-    <div class="content">
-      <slot name="content">content</slot>
-    </div>
-    <div class="footer">
-      <slot name="footer">footer</slot>
-    </div>
+    <slot name="img"></slot>
+    <slot name="title">title</slot>
+    <slot name="content">content</slot>
+    <slot name="footer">footer</slot>
   </div>
 </template>
 
@@ -35,7 +30,7 @@ defineProps<IProps>();
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
-  height: 150px;
+  height: 138px;
   padding: 10px;
   margin-right: 10px;
   border-radius: 5px;

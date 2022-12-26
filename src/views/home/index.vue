@@ -50,20 +50,8 @@
     </div>
     <div class="echarts-list">
       <ClassifyChart class="left" />
-      <!-- <Content class="center">
-        <template #title>
-          <div class="title">文章统计</div>
-        </template>
-      </Content> -->
       <ArticleChart class="center" />
-      <Content class="right">
-        <template #title>
-          <div class="title">标签统计</div>
-        </template>
-        <template #content>
-          <div id="tag_chart" style="width: 100%; height: 400px"></div>
-        </template>
-      </Content>
+      <TagChart class="right" />
     </div>
     <div class="list-container">
       <AuthorList class="list-content"></AuthorList>
@@ -75,9 +63,9 @@
 
 <script setup lang="ts">
 import Card from '@/components/Card/index.vue';
-import Content from '@/components/Content/index.vue';
 import ClassifyChart from './ClassifyChart/index.vue';
 import ArticleChart from './ArticleChart/index.vue';
+import TagChart from './TagChart/index.vue';
 import AuthorList from './AuthorList/index.vue';
 import Timeline from './Timeline/index.vue';
 import Blogger from './Blogger/index.vue';
@@ -87,11 +75,7 @@ import Blogger from './Blogger/index.vue';
 @import '@/styles/index.less';
 
 .home {
-  box-sizing: border-box;
-  height: calc(100vh - 70px);
-  padding-right: 12px;
-  color: @text-color-primary;
-  overflow: auto;
+  .layoutStyles();
 
   .card-list {
     display: flex;
@@ -115,7 +99,7 @@ import Blogger from './Blogger/index.vue';
   }
 
   .echarts-list {
-    height: 380px;
+    height: 400px;
     display: flex;
     justify-content: space-between;
 

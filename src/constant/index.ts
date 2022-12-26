@@ -5,51 +5,60 @@ export interface MenuListParams {
   icon: string;
 }
 
+// 左侧菜单配置
 export const MENULIST: MenuListParams[] = [
   {
-    name: '数据管理',
+    name: 'SJGL',
+    // name: '数据管理',
     key: 'home',
     path: '/home',
     icon: 'icon-menu',
   },
   {
-    name: '文章管理',
+    name: 'WJGL',
+    // name: '文章管理',
     key: 'article',
     path: '/article',
     icon: 'document',
   },
   {
-    name: '分类管理',
+    name: 'FLGL',
+    // name: '分类管理',
     key: 'classify',
     path: '/classify',
     icon: 'setting',
   },
   {
-    name: '标签管理',
+    name: 'BQGL',
+    // name: '标签管理',
     key: 'tag',
     path: '/tag',
     icon: 'setting',
   },
   {
-    name: '账号管理',
+    name: 'ZHGL',
+    // name: '账号管理',
     key: 'account',
     path: '/account',
     icon: 'setting',
   },
   {
-    name: '留言管理',
+    name: 'LYGL',
+    // name: '留言管理',
     key: 'comment',
     path: '/comment',
     icon: 'setting',
   },
   {
-    name: '主题设置',
+    name: 'ZTSZ',
+    // name: '主题设置',
     key: 'setting',
     path: '/setting',
     icon: 'setting',
   },
   {
-    name: '发布文章',
+    name: 'FBWZ',
+    // name: '发布文章',
     key: 'create',
     path: '/create',
     icon: 'setting',
@@ -57,3 +66,6 @@ export const MENULIST: MenuListParams[] = [
 ];
 
 export const GATEWAY_HOST = '';
+
+// 每页加载数量
+export const PAGESIZE = 50;
