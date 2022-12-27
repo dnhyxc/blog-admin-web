@@ -38,8 +38,8 @@
                   <div class="userInfo">
                     <span class="name">
                       <span>username-dnhyxc</span>
-                      <span class="isAuthor" v-if="true">(作者)</span>
-                      <span class="replyInfo" v-if="true">
+                      <span v-if="true" class="isAuthor">(作者)</span>
+                      <span v-if="true" class="replyInfo">
                         <!-- <span class="isAuthor" v-if="j.userId === authorId">(作者)</span>
                       <span class="replyInfo" v-if="j.fromUsername"> -->
                         回复
@@ -48,8 +48,8 @@
                     </span>
                     <span class="date">2022-09-02 12:09</span>
                   </div>
-                  <div class="desc" v-if="true">我是 content</div>
-                  <div class="formContent" v-if="true">“ 我是 formContent ”</div>
+                  <div v-if="true" class="desc">我是 content</div>
+                  <div v-if="true" class="formContent">“ 我是 formContent ”</div>
                 </div>
               </div>
             </div>
@@ -93,8 +93,10 @@
                   <div class="userInfo">
                     <span class="name">
                       <span>username-dnhyxc</span>
-                      <span class="isAuthor" v-if="true">(作者)</span>
-                      <span class="replyInfo" v-if="true">
+                      <span class="isAuthor">(作者)</span>
+                      <span class="replyInfo">
+                        <!-- <span v-if="true" class="isAuthor">(作者)</span>
+                      <span v-if="true" class="replyInfo"> -->
                         <!-- <span class="isAuthor" v-if="j.userId === authorId">(作者)</span>
                       <span class="replyInfo" v-if="j.fromUsername"> -->
                         回复
@@ -103,8 +105,10 @@
                     </span>
                     <span class="date">2022-09-02 12:09</span>
                   </div>
-                  <div class="desc" v-if="true">我是 content</div>
-                  <div class="formContent" v-if="true">“ 我是 formContent ”</div>
+                  <div class="desc">我是 content</div>
+                  <div class="formContent">“ 我是 formContent ”</div>
+                  <!-- <div v-if="true" class="desc">我是 content</div>
+                  <div v-if="true" class="formContent">“ 我是 formContent ”</div> -->
                 </div>
               </div>
             </div>
