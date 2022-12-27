@@ -6,7 +6,7 @@
     <slot name="img"></slot>
     <slot name="title">title</slot>
     <slot name="content">content</slot>
-    <slot name="footer">footer</slot>
+    <slot name="footer"></slot>
   </div>
 </template>
 
@@ -35,7 +35,7 @@ defineProps<IProps>();
   margin-right: 10px;
   border-radius: 5px;
   background-image: linear-gradient(-45deg, #a1c4fd 0%, #c2e9fb 100%);
-  box-shadow: 0 0 10px @info-light-5 !important;
+  box-shadow: 0 0 10px @info-light-5;
 
   &:last-child {
     margin-right: 0;

@@ -58,6 +58,9 @@
       <Timeline class="list-content"></Timeline>
       <Blogger class="list-content"></Blogger>
     </div>
+    <div class="hot-article-list">
+      <HotArticle></HotArticle>
+    </div>
   </div>
 </template>
 
@@ -69,6 +72,7 @@ import TagChart from './TagChart/index.vue';
 import AuthorList from './AuthorList/index.vue';
 import Timeline from './Timeline/index.vue';
 import Blogger from './Blogger/index.vue';
+import HotArticle from './HotArticle/index.vue';
 </script>
 
 <style scoped lang="less">
@@ -131,6 +135,10 @@ import Blogger from './Blogger/index.vue';
         margin-right: 0;
       }
     }
+  }
+
+  .hot-article-list {
+    margin-top: 10px;
   }
 }
 </style>
