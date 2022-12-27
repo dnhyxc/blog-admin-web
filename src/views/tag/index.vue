@@ -9,24 +9,28 @@
               class="list"
               :infinite-scroll-disabled="disabled"
               infinite-scroll-immediate
-              infinite-scroll-distance="1"
+              infinite-scroll-distance="2"
             >
-              <List v-for="(item, index) in data.dataSoure" :key="index" class="list-item">
-                <template #left>
-                  <el-avatar class="avatar" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-                </template>
-                <template #title>
-                  <div class="title">
-                    <div>{{ item }}</div>
-                    <div>right</div>
-                  </div>
-                </template>
-                <template #content>
-                  <div class="content">
-                    <div class="desc">desc</div>
-                  </div>
-                </template>
-              </List>
+              <div v-for="(item, index) in data.dataSoure" :key="index" class="card-wrap">
+                <Card class="card">
+                  <template #img>
+                    <div class="img">
+                      <el-avatar class="avatar" :size="50" fit="fill" :src="TAG_IMAGES.qd" />
+                    </div>
+                  </template>
+                  <template #title>
+                    <div class="title">React{{ item }}</div>
+                  </template>
+                  <template #content>
+                    <div class="desc">29 添加 &nbsp; 200 文章</div>
+                  </template>
+                  <template #footer>
+                    <div class="action">
+                      <el-button type="primary" class="add-btn">添加标签</el-button>
+                    </div>
+                  </template>
+                </Card>
+              </div>
             </div>
             <p v-if="loading" class="loading">Loading...</p>
             <p v-if="noMore" class="no-more">没有更多了～～～</p>
@@ -34,14 +38,13 @@
         </div>
       </el-tab-pane>
     </el-tabs>
-    <Card class="card" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
-import List from '@/components/List/index.vue';
 import Card from '@/components/Card/index.vue';
+import { TAG_IMAGES } from '@/constant';
 
 type countType = number;
 type loadType = boolean;
@@ -71,7 +74,7 @@ onMounted(() => {
 const load = () => {
   loading.value = true;
   setTimeout(() => {
-    count.value += 2;
+    count.value += 6;
     loading.value = false;
   }, 2000);
 };
@@ -84,7 +87,7 @@ const load = () => {
   .layoutStyles();
 
   :deep(.el-tabs__content) {
-    padding: 15px 0 15px 15px;
+    padding: 10px 0 15px 15px;
   }
 
   .tag-list {
@@ -93,27 +96,56 @@ const load = () => {
 
     .infinite-list-wrapper {
       height: 100%;
+      padding: 10px 20px 0 20px;
 
       .list {
-        margin-right: 7px;
-        list-style: none;
+        margin: auto;
+        width: auto;
+        max-width: 960px;
 
-        .list-item {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+        .card-wrap {
+          width: 25%;
+          display: inline-block;
+          box-sizing: border-box;
 
-        .avatar {
-          margin-right: 10px;
-        }
-        .title {
-          display: flex;
-          justify-content: space-between;
-        }
+          .card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: none;
+            width: calc(100% - 15px);
+            height: 218px;
+            margin-bottom: 15px;
 
-        .content {
-          text-align: left;
+            .img {
+              width: 50px;
+              height: 50px;
+              line-height: 50px;
+              border-radius: 50px;
+              text-align: center;
+              margin-bottom: 18px;
+            }
+
+            .title {
+              margin-bottom: 5px;
+              font-size: 18px;
+              font-weight: 700;
+            }
+
+            .desc {
+              font-size: 13px;
+            }
+
+            .action {
+              padding: 12px 25% 0;
+              text-align: center;
+
+              .add-btn {
+                font-size: 13px;
+              }
+            }
+          }
         }
       }
     }
@@ -123,12 +155,27 @@ const load = () => {
       text-align: center;
     }
   }
+}
 
-  .card {
-    width: 225px;
-    height: 225px;
-    box-sizing: border-box;
-    background-image: none;
+@media screen and (max-width: 800px) {
+  .tag-list-wrap {
+    .tag-list {
+      .infinite-list-wrapper {
+        .list {
+          max-width: 960px;
+          margin: auto;
+
+          .card-wrap {
+            width: 50%;
+          }
+        }
+      }
+
+      .loading,
+      .no-more {
+        text-align: center;
+      }
+    }
   }
 }
 </style>

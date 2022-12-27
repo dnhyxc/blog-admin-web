@@ -20,13 +20,15 @@
 }
 
 .ellipsisMore(@count) {
-  text-overflow: -o-ellipsis-lastline;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  /* autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
   -webkit-line-clamp: @count;
   line-clamp: @count;
-  -webkit-box-orient: vertical;
+  vertical-align: middle;
 }
 
 .ellipsis() {

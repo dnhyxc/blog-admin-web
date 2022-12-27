@@ -9,12 +9,12 @@
       <el-table-column property="tag" label="标签" show-overflow-tooltip />
       <el-table-column property="createTime" label="发表时间" show-overflow-tooltip />
       <el-table-column property="status" label="发布状态" />
-      <el-table-column fixed="right" label="Operations" width="138">
+      <el-table-column fixed="right" label="操作" width="145">
         <template #default="scope">
           <div class="actions">
-            <el-button link type="primary" size="small" @click="toDetail(scope.$index, scope.row.id)">详情</el-button>
-            <el-button link type="primary" size="small" @click="onEdit(scope.$index, scope.row.id)">编辑</el-button>
-            <el-button link type="primary" size="small" @click="onDelete(scope.$index, scope.row.id)">删除</el-button>
+            <el-button link type="primary" @click="toDetail(scope.$index, scope.row.id)">详情</el-button>
+            <el-button link type="primary" @click="onEdit(scope.$index, scope.row.id)">编辑</el-button>
+            <el-button link type="primary" @click="onDelete(scope.$index, scope.row.id)">删除</el-button>
           </div>
         </template>
       </el-table-column>
