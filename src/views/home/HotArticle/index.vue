@@ -6,7 +6,7 @@
         <template #img>
           <div class="img">
             <el-image
-              style="width: 100%; height: 100%; border-radius: 5px"
+              class="el-image"
               src="https://pic1.zhimg.com/80/v2-7f05d7f37056b61086790a2ffbb5b335_720w.webp?source=1940ef5c"
               fit="cover"
             />
@@ -33,7 +33,7 @@ import Card from '@/components/Card/index.vue';
 @import '@/styles/index.less';
 
 .hot-article-wrap {
-  padding: 10px;
+  padding: 10px 0 0;
   border-radius: 5px;
   background-color: @fff;
 
@@ -51,23 +51,35 @@ import Card from '@/components/Card/index.vue';
       flex: 1;
       height: auto;
       background-image: none;
-      box-shadow: 0 0 3px @info-light-5 !important;
+      box-shadow: none;
+      margin-right: 0;
 
       .img {
         width: 100%;
         height: 260px;
-        border-radius: 5px;
+
+        .el-image {
+          width: 100%;
+          height: 100%;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+        }
       }
 
       .title {
         font-size: 16px;
         font-weight: 700;
-        margin: 10px 0;
+        padding: 5px 10px 10px 10px;
+        background-color: @info-light-9;
       }
 
       .content {
         .ellipsisMore(2);
+        padding: 5px 10px 10px 10px;
         font-size: 13px;
+        background-color: @info-light-9;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
       }
     }
   }

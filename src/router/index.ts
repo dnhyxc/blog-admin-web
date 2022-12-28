@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '/home',
-        name: 'Home',
+        name: 'home',
         meta: {
           title: '数据管理',
           keepAlive: true,

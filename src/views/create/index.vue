@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="edit-wrap">
     <Editor />
   </div>
 </template>
@@ -10,4 +10,8 @@ import Editor from '@/components/Editor/index.vue';
 
 <style lang="less" scoped>
 @import '@/styles/index.less';
+
+.edit-wrap {
+  .layoutStyles();
+}
 </style>

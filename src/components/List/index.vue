@@ -32,16 +32,6 @@
   padding: 10px;
   border-bottom: 1px solid @info-light-9;
 
-  // &:first-child {
-  //   border-top-left-radius: 5px;
-  //   border-top-right-radius: 5px;
-  // }
-
-  // &:last-child {
-  //   border-bottom-left-radius: 5px;
-  //   border-bottom-right-radius: 5px;
-  // }
-
   .left {
     width: auto;
   }
