@@ -71,6 +71,7 @@ const onLogout = () => {
   color: @000;
   background-color: #fff;
   box-shadow: 10px 0 10px @border-color;
+  z-index: 999;
 
   .left {
     display: flex;

@@ -6,7 +6,7 @@
         <template #default="scope">
           <div class="username">
             <div class="img">
-              <el-avatar class="avatar" :size="50" fit="fill" :src="TAG_IMAGES.qd" />
+              <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.qd" />
             </div>
             <div class="name">{{ scope.row.username }}</div>
           </div>
@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { ElTable } from 'element-plus';
-import { PAGESIZE, TAG_IMAGES } from '@/constant';
+import { PAGESIZE, IMAGES } from '@/constant';
 
 interface UserType {
   userId: string;

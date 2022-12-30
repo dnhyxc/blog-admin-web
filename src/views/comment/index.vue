@@ -17,12 +17,7 @@
               <div class="commentWrap">
                 <div class="avatar">
                   <div class="img">
-                    <el-avatar
-                      class="avatar"
-                      :size="50"
-                      fit="fill"
-                      src="https://picx.zhimg.com/80/v2-629539b263f448b62ef1e671f8ea06a4_720w.webp?source=1940ef5c"
-                    />
+                    <el-avatar class="avatar-img" :size="50" fit="cover" :src="IMAGES.sea" />
                   </div>
                 </div>
                 <div class="commentContent">
@@ -36,12 +31,7 @@
                   <div class="commentChild">
                     <div class="commentChildItem">
                       <div class="avatar">
-                        <el-avatar
-                          class="avatar"
-                          :size="50"
-                          fit="fill"
-                          src="https://picx.zhimg.com/80/v2-629539b263f448b62ef1e671f8ea06a4_720w.webp?source=1940ef5c"
-                        />
+                        <el-avatar class="avatar-img" :size="50" fit="fill" :src="IMAGES.sea" />
                       </div>
                       <div class="commentChildItemContent">
                         <div class="userInfo">
@@ -76,6 +66,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
+import { IMAGES } from '@/constant';
 
 // 默认打开选项
 const activeNames = ref();
@@ -110,11 +101,13 @@ const load = () => {
 
 .comment {
   .layoutStyles();
+  padding-right: 0;
   overflow: hidden;
 
   :deep(.el-collapse) {
-    padding: 0 0 0 20px;
-    background-color: @fff;
+    padding: 0;
+    border-top: none;
+    background-color: @bg-color-page;
   }
 
   .tag-list {
@@ -125,21 +118,23 @@ const load = () => {
       height: 100%;
 
       .list {
-        margin-right: 12px;
+        margin-right: 2px;
 
         .title {
           font-size: 18px;
+          padding-left: 10px;
         }
 
         .commentWrap {
           display: flex;
           justify-content: space-between;
           padding-top: 30px;
+          padding-left: 10px;
 
           .avatar {
             margin-right: 10px;
 
-            .image {
+            .avatar-img {
               width: 50px;
               height: 50px;
               border-radius: 50px;
@@ -212,12 +207,12 @@ const load = () => {
                 }
 
                 .avatar {
-                  width: 35px;
-                  height: 35px;
+                  width: 45px;
+                  height: 45px;
 
-                  .image {
-                    width: 35px;
-                    height: 35px;
+                  .avatar-img {
+                    width: 45px;
+                    height: 45px;
                   }
                 }
 
@@ -234,6 +229,7 @@ const load = () => {
     .loading,
     .no-more {
       text-align: center;
+      margin: 15px 0 5px 0;
     }
   }
 }

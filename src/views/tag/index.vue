@@ -15,7 +15,7 @@
                 <Card class="card">
                   <template #img>
                     <div class="img">
-                      <el-avatar class="avatar" :size="50" fit="fill" :src="TAG_IMAGES.qd" />
+                      <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.qd" />
                     </div>
                   </template>
                   <template #title>
@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
 import Card from '@/components/Card/index.vue';
-import { TAG_IMAGES } from '@/constant';
+import { IMAGES } from '@/constant';
 
 type countType = number;
 type loadType = boolean;
@@ -88,6 +88,9 @@ const load = () => {
 
   :deep(.el-tabs__content) {
     padding: 10px 0 15px 15px;
+  }
+  :deep(.el-tabs) {
+    height: calc(100% - 2px);
   }
 
   .tag-list {
@@ -153,6 +156,7 @@ const load = () => {
     .loading,
     .no-more {
       text-align: center;
+      margin: 10px;
     }
   }
 }

@@ -39,7 +39,7 @@ import Card from '@/components/Card/index.vue';
 
   .header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 18px;
   }
 
@@ -74,7 +74,6 @@ import Card from '@/components/Card/index.vue';
       }
 
       .content {
-        .ellipsisMore(2);
         padding: 5px 10px 10px 10px;
         font-size: 13px;
         background-color: @info-light-9;

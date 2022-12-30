@@ -1,4 +1,6 @@
 import QD from '@/assets/img/qd.jpg';
+import SEA from '@/assets/img/sea.jpg';
+import SSM from '@/assets/img/ssm.jpg';
 
 export interface MenuListParams {
   name: string;
@@ -65,6 +67,8 @@ export const GATEWAY_HOST = '';
 export const PAGESIZE = 50;
 
 // 标签图片
-export const TAG_IMAGES = {
+export const IMAGES = {
   qd: QD,
+  sea: SEA,
+  ssm: SSM,
 };
