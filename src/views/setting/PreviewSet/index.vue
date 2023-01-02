@@ -1,6 +1,9 @@
 <template>
   <div class="page-layout">
-    <div class="title">页面布局控制</div>
+    <div class="title">
+      <div class="title-left">页面布局控制</div>
+      <el-button type="primary">保存设置</el-button>
+    </div>
     <div class="action-wrap">
       <span class="info">默认布局选择：</span>
       <el-radio-group v-model="layoutType" @change="onChangeLayoutType">
@@ -133,6 +136,8 @@ const onToggle = () => {
   width: 100%;
 
   .title {
+    display: flex;
+    justify-content: space-between;
     font-size: 18px;
   }
 

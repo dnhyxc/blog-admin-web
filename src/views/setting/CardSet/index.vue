@@ -6,7 +6,10 @@
 -->
 <template>
   <div class="card-set">
-    <div class="title">文章卡片展示控制</div>
+    <div class="title">
+      <div class="title-left">文章卡片展示控制</div>
+      <el-button type="primary">保存设置</el-button>
+    </div>
     <div class="action-wrap">
       <span>布局模式：</span>
       <el-radio-group v-model="layoutType" @change="onChangeLayoutType">
@@ -82,6 +85,8 @@ const onChangeLayoutType = (value: string) => {
   background-color: @fff;
 
   .title {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 10px;
     font-size: 18px;
   }
