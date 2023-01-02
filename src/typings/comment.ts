@@ -15,3 +15,19 @@ export interface UserInfoParams {
 export interface AuthParams {
   redirectUrl: string;
 }
+
+// 用户注册返回参数
+export interface registerRes {
+  username: string;
+  userId: string;
+  token?: string;
+  job?: string;
+  motto?: string;
+  introduce?: string;
+  headUrl?: string;
+  github?: string;
+  juejin?: string;
+  zhihu?: string;
+  blog?: string;
+  mainCover?: string;
+}

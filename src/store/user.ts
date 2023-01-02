@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { LoginParams, UserInfoParams } from '@/typings/comment';
-import { login } from '@/server/index';
+import { login, register } from '@/server/index';
 import { normalizeResult, encrypt } from '@/utils';
 import { ElMessage } from 'element-plus';
 
@@ -12,6 +12,29 @@ export const useUserStore = defineStore('user', {
   }),
 
   actions: {
+    // 账号注册
+    async onRegister(data: LoginParams) {
+      try {
+        // 密码加密传到后端
+        const password = encrypt(data.password);
+        const res = normalizeResult<UserInfoParams>(
+          await register({
+            username: data.username,
+            password,
+          }),
+        );
+        if (res.success) {
+          ElMessage.success(res.message);
+        } else {
+          ElMessage.error(res.message);
+        }
+        return res;
+      } catch (error) {
+        throw error;
+      }
+    },
+
+    // 登录
     async onLogin(data: LoginParams) {
       try {
         // 密码加密传到后端
@@ -37,6 +60,7 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    // 退出登录
     onLogout() {
       this.token = '';
       this.userId = '';

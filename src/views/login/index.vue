@@ -79,9 +79,9 @@ const onLogin = (formEl: FormInstance | undefined) => {
 // 注册
 const onRegister = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  formEl.validate((valid) => {
+  formEl.validate(async (valid) => {
     if (valid) {
-      console.log(dynamicValidateForm, 'submit!');
+      userStore.onRegister(dynamicValidateForm);
     } else {
       console.log('error submit!');
       return false;
