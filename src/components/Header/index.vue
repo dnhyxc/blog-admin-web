@@ -31,8 +31,11 @@
 import { useRoute, useRouter } from 'vue-router';
 import { ArrowLeft, Setting, SwitchButton } from '@element-plus/icons-vue';
 import Popover from '@/components/Popover/index.vue';
+import { useUserStore } from '@/store/user';
+
 const route = useRoute();
 const router = useRouter();
+const userStore = useUserStore();
 
 // 点击返回
 const onClick = () => {
@@ -48,6 +51,8 @@ const onSetting = () => {
 const onLogout = () => {
   console.log('退出登录');
   router.replace('/login');
+  // 清除store中的登录信息
+  userStore.onLogout();
 };
 </script>
 

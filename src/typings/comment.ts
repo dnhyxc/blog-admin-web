@@ -7,11 +7,8 @@ export interface LoginParams {
 // 用户信息属性声明
 export interface UserInfoParams {
   token: string | null;
-  userInfo: {
-    username: string;
-    password?: string;
-    avatar?: string;
-  };
+  username: string;
+  userId: string;
 }
 
 // auth store 属性声明

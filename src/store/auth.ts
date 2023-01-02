@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { AuthParams } from '@/typings/comment';
 
-export const useAuthStore = defineStore('user', {
+export const useAuthStore = defineStore('auth', {
   state: (): AuthParams => ({
     redirectUrl: '',
   }),

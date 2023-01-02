@@ -1,19 +1,37 @@
 import { defineStore } from 'pinia';
 import { LoginParams, UserInfoParams } from '@/typings/comment';
 import { login } from '@/server/index';
+import { normalizeResult, encrypt } from '@/utils';
+import { ElMessage } from 'element-plus';
 
 export const useUserStore = defineStore('user', {
   state: (): UserInfoParams => ({
     token: localStorage.getItem('token'),
-    userInfo: { username: '', password: '' },
+    userId: '',
+    username: '',
   }),
 
   actions: {
     async onLogin(data: LoginParams) {
       try {
-        const res = await login(data);
-        this.token = res.data.token;
-        localStorage.setItem('token', res.data.token);
+        // 密码加密传到后端
+        const password = encrypt(data.password);
+        const res = normalizeResult<UserInfoParams>(
+          await login({
+            username: data.username,
+            password,
+          }),
+        );
+        if (res.success) {
+          const { token, userId, username } = res.data;
+          this.token = token;
+          this.userId = userId;
+          this.username = username;
+          localStorage.setItem('token', res.data.token!);
+        } else {
+          ElMessage.error(res.message);
+        }
+        return res;
       } catch (error) {
         throw error;
       }
@@ -21,7 +39,8 @@ export const useUserStore = defineStore('user', {
 
     onLogout() {
       this.token = '';
-      this.userInfo = { username: '' };
+      this.userId = '';
+      this.username = '';
       localStorage.removeItem('token');
     },
   },
