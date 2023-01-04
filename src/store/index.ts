@@ -1,5 +1,9 @@
-import { createPinia } from 'pinia';
+import { useUserStore } from './user';
+import { useAuthStore } from './auth';
+import { useAccountStore } from './account';
 
-const store = createPinia();
+const userStore = useUserStore();
+const authStore = useAuthStore();
+const accountStore = useAccountStore();
 
-export default store;
+export { userStore, authStore, accountStore };

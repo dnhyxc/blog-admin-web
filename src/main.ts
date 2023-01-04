@@ -8,7 +8,7 @@ import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
 import Prism from 'prismjs';
 import router from '@/router';
 import App from './App.vue';
-import store from './store';
+import store from './store/initStore';
 import './style.less';
 
 VueMarkdownEditor.use(vuepressTheme, {

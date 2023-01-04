@@ -65,7 +65,7 @@ export const MENULIST: MenuListParams[] = [
 export const GATEWAY_HOST = '';
 
 // 每页加载数量
-export const PAGESIZE = 50;
+export const PAGESIZE = 20;
 
 // 标签图片
 export const IMAGES = {

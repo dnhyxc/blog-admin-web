@@ -5,7 +5,7 @@ export interface LoginParams {
 }
 
 // 用户信息属性声明
-export interface UserInfoParams {
+export interface UserLoginParams {
   token: string | null;
   username: string;
   userId: string;
@@ -30,4 +30,35 @@ export interface registerRes {
   zhihu?: string;
   blog?: string;
   mainCover?: string;
+}
+
+// 用户信息
+export interface UserInfoParams {
+  id: string;
+  username: string;
+  token?: string;
+  job?: string;
+  motto?: string;
+  introduce?: string;
+  headUrl?: string;
+  github?: string;
+  juejin?: string;
+  zhihu?: string;
+  blog?: string;
+  mainCover?: string;
+  articleTotal?: string;
+  registerTime?: number;
+}
+
+// 用户列表相应参数
+export interface UserListRes {
+  list: UserInfoParams[];
+  total: number;
+}
+
+// 获取用户列表参数
+export interface Params {
+  pageNo: number;
+  pageSize: number;
+  userId: string;
 }

@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import { LoginParams, UserInfoParams } from '@/typings/comment';
+import { LoginParams, UserLoginParams } from '@/typings/comment';
 import { login, register } from '@/server/index';
 import { normalizeResult, encrypt } from '@/utils';
 import { ElMessage } from 'element-plus';
 
 export const useUserStore = defineStore('user', {
-  state: (): UserInfoParams => ({
+  state: (): UserLoginParams => ({
     token: localStorage.getItem('token'),
     userId: '',
     username: '',
@@ -17,7 +17,7 @@ export const useUserStore = defineStore('user', {
       try {
         // 密码加密传到后端
         const password = encrypt(data.password);
-        const res = normalizeResult<UserInfoParams>(
+        const res = normalizeResult<UserLoginParams>(
           await register({
             username: data.username,
             password,
@@ -39,7 +39,7 @@ export const useUserStore = defineStore('user', {
       try {
         // 密码加密传到后端
         const password = encrypt(data.password);
-        const res = normalizeResult<UserInfoParams>(
+        const res = normalizeResult<UserLoginParams>(
           await login({
             username: data.username,
             password,
