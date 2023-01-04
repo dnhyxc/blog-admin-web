@@ -10,5 +10,11 @@ export const GET_USER_INFO = '/user/userInfo';
 // 获取用户列表
 export const GET_USER_LIST = '/admin/getUserList';
 
+// 批量移除用户
+export const UPDATE_USERS = '/admin/updateUsers';
+
 // 批量删除用户
-export const DELETE_USERS = '/admin/deleteUsers';
+export const BATCH_DELETE_USER = '/admin/batchDeleteUser';
+
+// 设置用户权限
+export const SET_AUTH = '/admin/setAuth';

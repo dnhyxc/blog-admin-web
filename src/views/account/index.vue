@@ -1,13 +1,14 @@
 <template>
-  <div class="article-list-wrap">
+  <div v-loading="accountStore.loading" class="article-list-wrap">
     <el-table
       ref="multipleTableRef"
       :data="accountStore.list"
       style="width: 100%"
+      table-layout="fixed"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="35" />
-      <el-table-column label="用户名" show-overflow-tooltip width="300">
+      <el-table-column label="用户名" show-overflow-tooltip width="200">
         <template #default="scope">
           <div class="username">
             <div class="img">
@@ -31,7 +32,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column property="introduce" label="个人介绍" width="450">
+      <el-table-column property="introduce" label="个人介绍">
         <template #default="scope">
           <div class="introduce" :title="scope.row.introduce">
             <div class="desc">
@@ -50,24 +51,29 @@
       <el-table-column property="isDelete" label="账号状态">
         <template #default="scope">
           <div class="status" :title="scope.row.isDelete ? '已移除' : '使用中'">
-            <span v-if="scope.row.isDelete"><span class="status-del" />已移除</span>
+            <span v-if="scope.row.isDelete"><span class="status-del" />已作废</span>
             <span v-else><span class="status-use" />使用中</span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="160">
+      <el-table-column fixed="right" label="操作" width="175">
         <template #default="scope">
           <div class="actions">
-            <el-button link type="primary" @click="onSetAuth(scope.row)">权限管理</el-button>
+            <el-button link type="primary" @click="onSetAuth(scope.row)">权限设置</el-button>
             <el-button link type="primary" @click="onMenageAccount(scope.row)">
-              {{ scope.row.isDelete ? '恢复账号' : '移除账号' }}
+              {{ scope.row.isDelete ? '恢复' : '作废' }}
             </el-button>
+            <el-button link type="primary" @click="onDeleteAccount(scope.row)">删除</el-button>
           </div>
         </template>
       </el-table-column>
     </el-table>
     <div class="footer">
-      <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll()">批量删除</el-button>
+      <div class="action-btn">
+        <el-button type="primary" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
+        <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
+        <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+      </div>
       <el-pagination
         v-model:current-page="currentPage"
         :page-size="PAGESIZE"
@@ -81,11 +87,18 @@
     </div>
     <Modal v-model:visible="visible" :on-submit="onSubmit" title="权限设置">
       <template #default>
-        <el-radio-group v-model="authStatus">
-          <el-radio label="1">设置为博主</el-radio>
+        <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
+          <el-radio :label="1">设置为博主</el-radio>
+          <el-radio :label="2">设置为22222</el-radio>
         </el-radio-group>
       </template>
     </Modal>
+    <Message
+      v-model:visible="messageVisible"
+      title="账号删除"
+      content="确定删除该账号吗？"
+      :on-submit="onSubmitDelete"
+    />
   </div>
 </template>
 
@@ -96,6 +109,7 @@ import { PAGESIZE, IMAGES } from '@/constant';
 import { accountStore, userStore } from '@/store';
 import { formatDate } from '@/utils';
 import Modal from '@/components/Modal/index.vue';
+import Message from '@/components/Message/index.vue';
 
 interface UserType {
   id: string;
@@ -113,8 +127,12 @@ const multipleTableRef = ref<InstanceType<typeof ElTable>>();
 const multipleSelection = ref<UserType[]>([]);
 const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
-const visible = ref<boolean>(false);
-const authStatus = ref<string>('1');
+const visible = ref<boolean>(false); // 权限设置弹窗的状态
+const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
+const authStatus = ref<number>(1); // 选择需要设置的权限类型
+const deleteId = ref<string>(''); // 删除id
+const deleteIds = ref<string[]>([]); // 批量删除ids
+const authUserId = ref<string>(''); // 需要设置权限的userId
 
 onMounted(() => {
   getAccountList();
@@ -122,8 +140,6 @@ onMounted(() => {
 
 // 获取账号列表
 const getAccountList = () => {
-  console.log(currentPage.value);
-
   accountStore.getAccountList({
     pageNo: currentPage.value,
     pageSize: PAGESIZE,
@@ -136,24 +152,21 @@ const handleSelectionChange = (val: UserType[]) => {
   multipleSelection.value = val;
 };
 
-// 多选删除
-const onDeleteAll = () => {
-  console.log(multipleSelection.value, 'multipleSelection');
+// 更改权限类型
+const onChangeAuthStatus = (value: number) => {
+  console.log(value, 'value');
+  authStatus.value = value;
 };
 
 // 设置权限
 const onSetAuth = (scope: UserType) => {
-  console.log(scope.id, '设置权限');
+  authUserId.value = scope.id;
   visible.value = true;
 };
 
 // 权限设置提交
-const onSubmit = () => {
-  console.log(authStatus.value, 'onSubmit');
-
-  return new Promise((resolve, reject) => {
-    resolve('aaa');
-  });
+const onSubmit = async () => {
+  return await accountStore.setAuth({ auth: authStatus.value, userId: authUserId.value });
 };
 
 // 账号操作
@@ -167,13 +180,54 @@ const onMenageAccount = (scope: UserType) => {
 };
 
 // 恢复账号
-const onRecovery = (id: string) => {
-  console.log(id, 'onEdit');
+const onRecovery = async (id: string) => {
+  // type：1 删除，0 恢复
+  await accountStore.removeAccount({ userIds: [id], type: 0 });
+  getAccountList();
 };
 
 // 移除账号
-const onDelete = (id: string) => {
-  console.log(id, 'onDelete');
+const onDelete = async (id: string) => {
+  await accountStore.removeAccount({ userIds: [id], type: 1 });
+  getAccountList();
+};
+
+// 删除账号
+const onDeleteAccount = (scope: UserType) => {
+  const { id } = scope;
+  console.log(id, 'id');
+  deleteId.value = id;
+  messageVisible.value = true;
+};
+
+// 确认删除账号
+const onSubmitDelete = async () => {
+  await accountStore.batchDeleteUser({ userIds: deleteIds.value.length ? deleteIds.value : [deleteId.value] });
+  getAccountList();
+  // 删除完成之后，清除之前选择的账号ids
+  deleteIds.value = [];
+};
+
+// 批量移除
+const onRemoveAll = async () => {
+  const ids = multipleSelection.value.filter((i) => !i.isDelete).map((j) => j.id) || [];
+  await accountStore.removeAccount({ userIds: ids, type: 1 });
+  getAccountList();
+};
+
+// 批量删除
+const onDeleteAll = () => {
+  const ids = multipleSelection.value.map((j) => j.id) || [];
+  deleteIds.value = ids;
+  messageVisible.value = true;
+};
+
+// 批量恢复
+const onRestoreAll = async () => {
+  const ids = multipleSelection.value.filter((i) => i.isDelete).map((j) => j.id) || [];
+  // type：1 删除，0 恢复
+  await accountStore.removeAccount({ userIds: ids, type: 0 });
+  getAccountList();
 };
 
 // 切换分页

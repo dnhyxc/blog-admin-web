@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     AuthDialog: typeof import('./src/components/AuthDialog/index.vue')['default']
     Card: typeof import('./src/components/Card/index.vue')['default']
     Content: typeof import('./src/components/Content/index.vue')['default']
+    copy: typeof import('./src/components/Modal copy/index.vue')['default']
     Editor: typeof import('./src/components/Editor/index.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
     ElAside: typeof import('element-plus/es')['ElAside']
@@ -44,6 +45,7 @@ declare module '@vue/runtime-core' {
     Header: typeof import('./src/components/Header/index.vue')['default']
     LeftMenu: typeof import('./src/components/LeftMenu/index.vue')['default']
     List: typeof import('./src/components/List/index.vue')['default']
+    Message: typeof import('./src/components/Message/index.vue')['default']
     Modal: typeof import('./src/components/Modal/index.vue')['default']
     Popover: typeof import('./src/components/Popover/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -52,5 +54,6 @@ declare module '@vue/runtime-core' {
   }
   export interface ComponentCustomProperties {
     vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

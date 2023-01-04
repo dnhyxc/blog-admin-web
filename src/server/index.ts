@@ -28,8 +28,20 @@ export const getAccountList = async (params: Params) => {
   return res;
 };
 
+// 批量移除账号 type: 0 恢复，1 删除
+export const deleteUsers = async (params: { userIds: string[]; type: number }) => {
+  const res = await post(API.UPDATE_USERS, params);
+  return res;
+};
+
 // 批量删除账号
-export const deleteUsers = async (params: { userIds: string[] }) => {
-  const res = await post(API.DELETE_USERS, params);
+export const batchDeleteUser = async (params: { userIds: string[] }) => {
+  const res = await post(API.BATCH_DELETE_USER, params);
+  return res;
+};
+
+// 设置权限
+export const setAuth = async (params: { auth: number; userId: string }) => {
+  const res = await post(API.SET_AUTH, params);
   return res;
 };

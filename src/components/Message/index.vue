@@ -6,14 +6,14 @@
 -->
 <template>
   <div class="container">
-    <el-dialog v-model="visible" :title="title" width="500">
+    <el-dialog v-model="visible" :title="title" :width="width">
       <div class="content">
-        <slot>请向插槽中插入内容</slot>
+        <el-icon class="warn-icon"><WarningFilled /></el-icon>{{ content }}
       </div>
       <template #footer>
         <span class="footer">
-          <el-button @click="handleCancel">{{ cancelText }}</el-button>
-          <el-button type="primary" @click="onConfirm">{{ onText }}</el-button>
+          <el-button class="btn" @click="handleCancel">{{ cancelText }}</el-button>
+          <el-button class="btn" type="primary" @click="onConfirm">{{ onText }}</el-button>
         </span>
       </template>
     </el-dialog>
@@ -22,13 +22,17 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { WarningFilled } from '@element-plus/icons-vue';
 
 interface IProps {
   visible: boolean;
   title: string;
-  onSubmit: (data?: any) => Promise<any>;
+  onSubmit: (data?: any) => void;
+  onCancel?: (data?: any) => void;
+  content?: string;
   cancelText?: string;
   onText?: string;
+  width?: string;
 }
 
 interface Emits {
@@ -40,6 +44,9 @@ const props = withDefaults(defineProps<IProps>(), {
   title: 'title',
   cancelText: '取消',
   onText: '确定',
+  width: '350',
+  content: '',
+  onCancel: () => {},
 });
 
 const visible = computed({
@@ -59,11 +66,9 @@ const handleCancel = () => {
 };
 
 // 确定
-const onConfirm = async () => {
-  const res = await props.onSubmit();
-  if (res) {
-    emit('update:visible', false);
-  }
+const onConfirm = () => {
+  props.onSubmit();
+  emit('update:visible', false);
 };
 </script>
 
@@ -74,6 +79,28 @@ const onConfirm = async () => {
   :deep {
     .el-dialog__body {
       padding: 20px;
+    }
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+
+    .warn-icon {
+      margin-top: -2px;
+      margin-right: 10px;
+      font-size: 25px;
+      color: @warning;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+
+    .btn {
+      flex: 1;
     }
   }
 }
