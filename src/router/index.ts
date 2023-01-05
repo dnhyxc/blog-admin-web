@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { useUserStore } from '@/store/user';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -104,6 +105,16 @@ const routes: Array<RouteRecordRaw> = [
     redirect: { name: 'home' },
   },
   {
+    path: '/bind',
+    name: 'bind',
+    meta: {
+      title: '账号绑定',
+      keepAlive: true,
+      requireAuth: false,
+    },
+    component: () => import('@/views/bind/index.vue'),
+  },
+  {
     path: '/login',
     name: 'login',
     meta: {
@@ -125,16 +136,27 @@ const router = createRouter({
 });
 
 // 全局守卫：登录拦截 本地没有存token,请重新登录
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+
   // 判断有没有登录
-  if (!localStorage.getItem('token')) {
+  if (!userStore.token) {
     if (to.name === 'login') {
       next();
     } else {
-      router.push('login');
+      router.push('/login');
     }
+    // 如果不是超级管理员，禁止访问后台账户管理
   } else {
-    next();
+    if (userStore.auth === 1) {
+      next();
+    } else {
+      if (to.name === 'users') {
+        router.push('/home');
+      } else {
+        next();
+      }
+    }
   }
 });
 

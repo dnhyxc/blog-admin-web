@@ -1,13 +1,11 @@
-import { useAuthStore } from '@/store/auth';
+// import { useAuthStore } from '@/store/auth';
 import fetch from 'isomorphic-fetch';
 import { ElMessage } from 'element-plus';
 import { stringify } from 'query-string';
 import { AuthParams } from '@/typings/comment';
 import { addGatewayPattern } from './urlTool';
 
-const authStore = useAuthStore();
-
-console.log(authStore, 'authStore');
+// const authStore = useAuthStore();
 
 export interface ICheckStatusProps {
   response: Response;
@@ -20,7 +18,7 @@ interface ErrorWithResponse extends Error {
 
 // 设置用户权限相关
 function setAuth(value: AuthParams) {
-  authStore.setAuth(value);
+  // authStore.setAuth(value);
 }
 
 function checkRedirection(response: Response): boolean {

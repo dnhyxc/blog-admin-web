@@ -2,7 +2,7 @@
   <div class="menu-wrap">
     <div class="title">后台管理</div>
     <el-menu :default-active="route.name" class="el-menu">
-      <el-menu-item v-for="menu in MENULIST" :key="menu.key" :index="menu.key" class="menuList" @click="onClick(menu)">
+      <el-menu-item v-for="menu in menuList" :key="menu.key" :index="menu.key" class="menuList" @click="onClick(menu)">
         <el-icon v-if="menu.icon === 'home'">
           <Grid />
         </el-icon>
@@ -37,6 +37,7 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
 import {
   Document,
   Grid,
@@ -50,9 +51,22 @@ import {
 } from '@element-plus/icons-vue';
 import { useRouter, useRoute } from 'vue-router';
 import { MENULIST, MenuListParams } from '@/constant';
+import { userStore } from '@/store';
 
 const router = useRouter();
 const route = useRoute();
+
+// 判断是否是超级管理员
+const menuList = computed(() => {
+  if (userStore.auth === 1) {
+    return MENULIST;
+  } else {
+    const menus = MENULIST.filter((i) => i.key !== 'users' && i.key !== 'account');
+    return menus;
+  }
+});
+
+console.log(menuList, 'menuList');
 
 // 点击跳转页面
 const onClick = (menu: MenuListParams) => {

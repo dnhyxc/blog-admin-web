@@ -6,7 +6,12 @@
 -->
 <template>
   <div class="users-wrap">
-    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
+    <el-table
+      ref="multipleTableRef"
+      :data="adminAccountStore.list"
+      style="width: 100%"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" />
       <el-table-column label="用户名" show-overflow-tooltip>
         <template #default="scope">
@@ -18,8 +23,9 @@
       <el-table-column property="auth" label="权限">
         <template #default="scope">
           <div v-if="scope.row.auth === 0" class="auth">普通用户</div>
-          <div v-if="scope.row.auth === 1" class="auth">超级管理员</div>
-          <div v-if="scope.row.auth === 2" class="auth">管理员</div>
+          <div v-else-if="scope.row.auth === 1" class="auth">超级管理员</div>
+          <div v-else-if="scope.row.auth === 2" class="auth">管理员</div>
+          <div v-else class="auth">普通用户</div>
         </template>
       </el-table-column>
       <el-table-column property="createTime" label="注册时间" show-overflow-tooltip />
@@ -34,12 +40,12 @@
       <el-table-column fixed="right" label="操作" width="175">
         <template #default="scope">
           <div class="actions">
-            <el-button link type="primary" @click="toDetail(scope.$index, scope.row.id)">权限设置</el-button>
-            <el-button link type="primary" @click="onEdit(scope.$index, scope.row.id)">
+            <el-button link type="primary" @click="onSetAuth(scope.row)">权限设置</el-button>
+            <el-button link type="primary" @click="onManageUser(scope.row)">
               <span v-if="!scope.row.isDelete">作废</span>
               <span v-else>恢复</span>
             </el-button>
-            <el-button link type="primary" @click="onDelete(scope.$index, scope.row.id)">删除</el-button>
+            <el-button link type="primary" @click="onDeleteUser(scope.row)">删除</el-button>
           </div>
         </template>
       </el-table-column>
@@ -61,15 +67,32 @@
         @current-change="onPageChange"
       />
     </div>
+    <Modal v-model:visible="visible" :on-submit="onSetAuthSubmit" title="权限设置">
+      <template #default>
+        <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
+          <el-radio :label="1">超级管理员</el-radio>
+          <el-radio :label="2">管理员</el-radio>
+        </el-radio-group>
+      </template>
+    </Modal>
+    <Message
+      v-model:visible="messageVisible"
+      title="账号删除"
+      content="确定删除该账号吗？"
+      :on-submit="onSubmitDelete"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { ElTable } from 'element-plus';
 import { PAGESIZE } from '@/constant';
+import Modal from '@/components/Modal/index.vue';
+import Message from '@/components/Message/index.vue';
+import { adminAccountStore, userStore } from '@/store';
 
-interface ArticleType {
+interface UserType {
   id: string;
   username: string;
   createTime: string;
@@ -78,51 +101,116 @@ interface ArticleType {
 }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();
-const multipleSelection = ref<ArticleType[]>([]);
+const multipleSelection = ref<UserType[]>([]);
 const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
+const visible = ref<boolean>(false); // 权限设置弹窗的状态
+const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
+const authStatus = ref<number>(1); // 选择需要设置的权限类型
+const deleteId = ref<string>(''); // 删除id
+const deleteIds = ref<string[]>([]); // 批量删除ids
+const authUserId = ref<string>(''); // 需要设置权限的userId
+
+console.log(adminAccountStore.list, 'adminAccountStore', adminAccountStore.total, userStore);
+
+onMounted(() => {
+  getAdminAccountList();
+});
+
+// 获取账号列表
+const getAdminAccountList = () => {
+  adminAccountStore.getAdminUserList({
+    pageNo: currentPage.value,
+    pageSize: PAGESIZE,
+    userId: userStore?.userId!,
+  });
+};
 
 // 多选
-const handleSelectionChange = (val: ArticleType[]) => {
+const handleSelectionChange = (val: UserType[]) => {
   multipleSelection.value = val;
 };
 
 // 批量作废
 const onRemoveAll = () => {
-  console.log(multipleSelection.value, 'onRemoveAll');
+  const ids = multipleSelection.value.filter((i) => !i.isDelete).map((j) => j.id);
+  console.log(ids, 'onRemoveAll');
 };
 
 // 批量恢复
 const onRestoreAll = () => {
-  console.log(multipleSelection.value, 'onRestoreAll');
+  const ids = multipleSelection.value.filter((i) => i.isDelete).map((j) => j.id);
+  console.log(ids, 'onRestoreAll');
+};
+
+// 删除账号
+const onDeleteUser = (scope: UserType) => {
+  const { id } = scope;
+  deleteId.value = id;
+  messageVisible.value = true;
 };
 
 // 批量删除
 const onDeleteAll = () => {
-  console.log(multipleSelection.value, 'onDeleteAll');
+  const ids = multipleSelection.value.map((j) => j.id);
+  deleteIds.value = ids;
+  messageVisible.value = true;
+  console.log(ids, 'onDeleteAll');
 };
 
-// 去详情
-const toDetail = (index: number, id: string) => {
-  console.log(index, id, 'toDetail');
+// 删除二次确认
+const onSubmitDelete = () => {
+  console.log('调用删除接口', deleteId, deleteIds);
+  deleteIds.value = [];
 };
 
-// 编辑
-const onEdit = (index: number, id: string) => {
-  console.log(index, id, 'onEdit');
+// 设置权限
+const onSetAuth = (scope: UserType) => {
+  const { id } = scope;
+  authUserId.value = id;
+  visible.value = true;
 };
 
-// 删除
-const onDelete = (index: number, id: string) => {
-  console.log(index, id, 'onDelete');
+// 切换权限
+const onChangeAuthStatus = (auth: number) => {
+  console.log(auth, 'onChangeAuthStatus');
+  authStatus.value = auth;
+};
+
+// 设置权限确认回调
+const onSetAuthSubmit = () => {
+  console.log(authStatus.value, 'authStatus');
+  console.log(authUserId.value, 'authUserId');
+  return Promise.resolve();
+};
+
+// 账号作废及恢复
+const onManageUser = (scope: UserType) => {
+  const { id, isDelete } = scope;
+  console.log(id, 'onManageUser');
+  if (isDelete) {
+    onRestore(id);
+  } else {
+    onRemove(id);
+  }
+};
+
+// 废除
+const onRemove = (id: string) => {
+  console.log(id, 'onRemove');
+};
+
+// 恢复
+const onRestore = (id: string) => {
+  console.log(id, 'onRestore');
 };
 
 // 切换分页
 const onPageChange = (value: number) => {
-  console.log(`current page: ${value}`);
+  currentPage.value = value;
 };
 
-const tableData: ArticleType[] = [
+const tableData: UserType[] = [
   {
     id: '111',
     username: '我的县长父亲',

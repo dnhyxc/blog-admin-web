@@ -142,7 +142,7 @@ const getAccountList = () => {
   accountStore.getAccountList({
     pageNo: currentPage.value,
     pageSize: PAGESIZE,
-    userId: userStore?.userId,
+    userId: userStore?.userId!,
   });
 };
 

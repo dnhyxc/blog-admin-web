@@ -22,6 +22,16 @@ export const register = async (params: LoginParams) => {
   }
 };
 
+// 获取用户信息
+export const getUserInfo = async (params: { userId: string }) => {
+  try {
+    const res = await post(API.GET_USER_INFO, params);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 获取账号列表
 export const getAccountList = async (params: Params) => {
   const res = await post(API.GET_USER_LIST, params);
@@ -43,5 +53,11 @@ export const batchDeleteUser = async (params: { userIds: string[] }) => {
 // 设置权限
 export const setAuth = async (params: { auth: number; userId: string }) => {
   const res = await post(API.SET_AUTH, params);
+  return res;
+};
+
+// 获取后台账号列表
+export const getAdminUserList = async (params: Params) => {
+  const res = await post(API.GET_ADMIN_USER_LIST, params);
   return res;
 };

@@ -8,7 +8,7 @@ interface IParams extends UserListRes {
   loading: boolean;
 }
 
-export const useAccountStore = defineStore('account', {
+export const useAdminAccountStore = defineStore('adminAccount', {
   state: (): IParams => ({
     list: [],
     total: 0,
@@ -17,10 +17,10 @@ export const useAccountStore = defineStore('account', {
 
   actions: {
     // 获取账号列表
-    async getAccountList(params: Params) {
+    async getAdminUserList(params: Params) {
       try {
         this.loading = true;
-        const res = normalizeResult<UserListRes>(await Service.getAccountList(params));
+        const res = normalizeResult<UserListRes>(await Service.getAdminUserList(params));
         this.loading = false;
         if (res.success) {
           const { list, total } = res.data;

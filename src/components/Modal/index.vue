@@ -76,5 +76,8 @@ const onConfirm = async () => {
       padding: 20px;
     }
   }
+  .content {
+    padding: 0 20px;
+  }
 }
 </style>
