@@ -50,7 +50,7 @@
       </el-table-column>
       <el-table-column property="isDelete" label="账号状态">
         <template #default="scope">
-          <div class="status" :title="scope.row.isDelete ? '已移除' : '使用中'">
+          <div class="status" :title="scope.row.isDelete ? '已作废' : '使用中'">
             <span v-if="scope.row.isDelete"><span class="status-del" />已作废</span>
             <span v-else><span class="status-use" />使用中</span>
           </div>
@@ -89,7 +89,6 @@
       <template #default>
         <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
           <el-radio :label="1">设置为博主</el-radio>
-          <el-radio :label="2">设置为22222</el-radio>
         </el-radio-group>
       </template>
     </Modal>
@@ -111,7 +110,7 @@ import { formatDate } from '@/utils';
 import Modal from '@/components/Modal/index.vue';
 import Message from '@/components/Message/index.vue';
 
-interface UserType {
+interface AccountType {
   id: string;
   userId: string;
   username: string;
@@ -124,7 +123,7 @@ interface UserType {
 }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();
-const multipleSelection = ref<UserType[]>([]);
+const multipleSelection = ref<AccountType[]>([]);
 const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
 const visible = ref<boolean>(false); // 权限设置弹窗的状态
@@ -148,18 +147,17 @@ const getAccountList = () => {
 };
 
 // 多选
-const handleSelectionChange = (val: UserType[]) => {
+const handleSelectionChange = (val: AccountType[]) => {
   multipleSelection.value = val;
 };
 
 // 更改权限类型
 const onChangeAuthStatus = (value: number) => {
-  console.log(value, 'value');
   authStatus.value = value;
 };
 
 // 设置权限
-const onSetAuth = (scope: UserType) => {
+const onSetAuth = (scope: AccountType) => {
   authUserId.value = scope.id;
   visible.value = true;
 };
@@ -170,7 +168,7 @@ const onSubmit = async () => {
 };
 
 // 账号操作
-const onMenageAccount = (scope: UserType) => {
+const onMenageAccount = (scope: AccountType) => {
   const { isDelete, id } = scope;
   if (isDelete) {
     onRecovery(id);
@@ -193,9 +191,8 @@ const onDelete = async (id: string) => {
 };
 
 // 删除账号
-const onDeleteAccount = (scope: UserType) => {
+const onDeleteAccount = (scope: AccountType) => {
   const { id } = scope;
-  console.log(id, 'id');
   deleteId.value = id;
   messageVisible.value = true;
 };
@@ -232,7 +229,6 @@ const onRestoreAll = async () => {
 
 // 切换分页
 const onPageChange = (value: number) => {
-  console.log(`current page: ${value}`);
   currentPage.value = value;
   getAccountList();
 };

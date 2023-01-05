@@ -16,7 +16,7 @@ export const MENULIST: MenuListParams[] = [
     name: '数据管理',
     key: 'home',
     path: '/home',
-    icon: 'icon-menu',
+    icon: 'home',
   },
   {
     name: '文章管理',
@@ -28,25 +28,31 @@ export const MENULIST: MenuListParams[] = [
     name: '分类管理',
     key: 'classify',
     path: '/classify',
-    icon: 'setting',
+    icon: 'classify',
   },
   {
     name: '标签管理',
     key: 'tag',
     path: '/tag',
-    icon: 'setting',
+    icon: 'tag',
   },
   {
     name: '账号管理',
     key: 'account',
     path: '/account',
-    icon: 'setting',
+    icon: 'account',
+  },
+  {
+    name: '后台账户',
+    key: 'users',
+    path: '/users',
+    icon: 'users',
   },
   {
     name: '留言管理',
     key: 'comment',
     path: '/comment',
-    icon: 'setting',
+    icon: 'comment',
   },
   {
     name: '主题设置',
@@ -58,7 +64,7 @@ export const MENULIST: MenuListParams[] = [
     name: '发布文章',
     key: 'create',
     path: '/create',
-    icon: 'setting',
+    icon: 'create',
   },
 ];
 

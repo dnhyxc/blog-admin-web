@@ -61,6 +61,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/account/index.vue'),
       },
       {
+        path: '/users',
+        name: 'users',
+        meta: {
+          title: '后台账号',
+          keepAlive: true,
+          requireAuth: true,
+        },
+        component: () => import('@/views/users/index.vue'),
+      },
+      {
         path: '/comment',
         name: 'comment',
         meta: {
