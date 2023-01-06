@@ -96,3 +96,9 @@ export const COVER_LIST = [
   { name: '选项11', checked: false, img: IMAGES.ssm, id: '11' },
   { name: '选项12', checked: false, img: IMAGES.ssm, id: '12' },
 ];
+
+// 权限配置
+export const AUTH_CONFIG = {
+  SUPER: 1,
+  ADMIN: 2,
+};

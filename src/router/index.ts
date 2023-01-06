@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useUserStore } from '@/store/user';
+import { AUTH_CONFIG } from '@/constant';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -148,13 +149,17 @@ router.beforeEach(async (to, from, next) => {
     }
     // 如果不是超级管理员，禁止访问后台账户管理
   } else {
-    if (userStore.auth === 1) {
+    if (userStore.auth === AUTH_CONFIG.SUPER) {
       next();
     } else {
       if (to.name === 'users') {
         router.push('/home');
       } else {
-        next();
+        if (userStore.bindAccount?.length) {
+          to.name === 'bind' ? router.push('/home') : next();
+        } else {
+          to.name === 'bind' ? next() : router.push('/bind');
+        }
       }
     }
   }

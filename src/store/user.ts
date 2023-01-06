@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus';
 
 interface IProps extends UserLoginParams {
   userInfo: any;
-  bindAccount: string;
+  bindAccount: string[] | null | undefined;
 }
 
 export const useUserStore = defineStore('user', {
@@ -16,7 +16,7 @@ export const useUserStore = defineStore('user', {
     username: locGetItem('username'),
     auth: Number(locGetItem('auth')), // 管理员权限
     registerTime: 0, // 注册时间
-    bindAccount: '',
+    bindAccount: JSON.parse(locGetItem('bindAccount')!),
     userInfo: {},
   }),
 
@@ -55,16 +55,18 @@ export const useUserStore = defineStore('user', {
           }),
         );
         if (res.success) {
-          const { token, userId, username, auth, registerTime } = res.data;
+          const { token, userId, username, auth, registerTime, bindUsernames } = res.data;
           this.token = token;
           this.userId = userId;
           this.username = username;
           this.auth = auth;
           this.registerTime = registerTime;
+          this.bindAccount = bindUsernames;
           locSetItem('token', token!);
           locSetItem('userId', userId!);
           locSetItem('username', username!);
           locSetItem('auth', JSON.stringify(auth!));
+          locSetItem('bindAccount', JSON.stringify(bindUsernames!));
         } else {
           ElMessage.error(res.message);
         }
@@ -102,6 +104,7 @@ export const useUserStore = defineStore('user', {
       locRemoveItem('userId');
       locRemoveItem('username');
       locRemoveItem('auth');
+      locRemoveItem('bindAccount');
     },
   },
 });

@@ -11,6 +11,7 @@ export interface UserLoginParams {
   userId: string | null;
   auth: number | null;
   registerTime: number;
+  bindUsernames?: string[];
 }
 
 // auth store 属性声明

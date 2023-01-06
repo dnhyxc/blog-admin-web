@@ -21,3 +21,6 @@ export const GET_ADMIN_USER_LIST = '/admin/getAdminUserList';
 
 // 获取用户信息
 export const GET_USER_INFO = '/admin/getUserInfo';
+
+// 绑定账户
+export const BIND_ACCOUNT = '/admin/bindAccount';

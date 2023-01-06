@@ -61,3 +61,9 @@ export const getAdminUserList = async (params: Params) => {
   const res = await post(API.GET_ADMIN_USER_LIST, params);
   return res;
 };
+
+// 绑定账户
+export const bindAccount = async (params: { userId: string; usernames: string[] }) => {
+  const res = await post(API.BIND_ACCOUNT, params);
+  return res;
+};
