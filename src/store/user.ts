@@ -55,18 +55,18 @@ export const useUserStore = defineStore('user', {
           }),
         );
         if (res.success) {
-          const { token, userId, username, auth, registerTime, bindUsernames } = res.data;
+          const { token, userId, username, auth, registerTime, bindUserIds } = res.data;
           this.token = token;
           this.userId = userId;
           this.username = username;
           this.auth = auth;
           this.registerTime = registerTime;
-          this.bindAccount = bindUsernames;
+          this.bindAccount = bindUserIds;
           locSetItem('token', token!);
           locSetItem('userId', userId!);
           locSetItem('username', username!);
           locSetItem('auth', JSON.stringify(auth!));
-          locSetItem('bindAccount', JSON.stringify(bindUsernames!));
+          locSetItem('bindAccount', JSON.stringify(bindUserIds!));
         } else {
           ElMessage.error(res.message);
         }

@@ -12,6 +12,7 @@ export interface UserLoginParams {
   auth: number | null;
   registerTime: number;
   bindUsernames?: string[];
+  bindUserIds?: string[];
 }
 
 // auth store 属性声明
@@ -64,4 +65,22 @@ export interface Params {
   pageNo: number;
   pageSize: number;
   userId: string;
+}
+
+// 主题设置参数
+export interface PageConfig {
+  layout: number;
+  layoutSet: number;
+  cardLayout: number;
+  coverImgs: string[];
+}
+
+// 主题设置接口传参
+export interface PageConfigParams {
+  layout: number;
+  layoutSet: number;
+  cardLayout: number;
+  coverImgs: string[];
+  userId: string;
+  bindUserIds: string[];
 }

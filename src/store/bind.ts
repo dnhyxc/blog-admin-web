@@ -23,14 +23,14 @@ export const useBindAccountStore = defineStore('bindAccount', {
 
       try {
         this.loading = true;
-        const res = normalizeResult<{ notFindUsers: string[]; findUsernames: string[] }>(
+        const res = normalizeResult<{ notFindUsers: string[]; findUsernames: string[]; bindUserIds: string[] }>(
           await Service.bindAccount(params),
         );
         this.loading = false;
         if (res.success) {
-          const { notFindUsers, findUsernames } = res.data;
-          userStore.bindAccount = findUsernames;
-          locSetItem('bindAccount', JSON.stringify(findUsernames));
+          const { notFindUsers, bindUserIds } = res.data;
+          userStore.bindAccount = bindUserIds;
+          locSetItem('bindAccount', JSON.stringify(bindUserIds));
           if (notFindUsers.length) {
             const notFindUsernames = notFindUsers.join('，');
             ElMessage({

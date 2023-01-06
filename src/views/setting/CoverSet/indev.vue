@@ -8,7 +8,7 @@
   <div class="cover-set-wrap">
     <div class="title">
       <div class="title-left">封面图设置</div>
-      <el-button type="primary">保存设置</el-button>
+      <el-button type="primary" @click="onSave">保存设置</el-button>
     </div>
     <div class="cover-set">
       <div class="default-list">系统默认封面图列表</div>
@@ -20,7 +20,7 @@
             size="large"
             class="checkbox"
             :disabled="isSelectedTwo && !item.checked"
-            @change="onSelectCard(item)"
+            @change="onSelectCard"
           />
           <el-image class="img" :src="item.img" fit="cover" />
         </div>
@@ -34,7 +34,7 @@
             size="large"
             class="checkbox"
             :disabled="isSelectedTwo && !item.checked"
-            @change="onSelectCard(item)"
+            @change="onSelectCard"
           />
           <el-image class="img" :src="item.url" fit="cover" />
         </div>
@@ -64,21 +64,36 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { COVER_LIST, IMAGES } from '@/constant';
-
-interface CoverCardType {
-  name: string;
-  id: string;
-  img: string;
-  checked: boolean;
-}
+import { pageConfigStore } from '@/store';
 
 const checkList = ref(COVER_LIST);
+const dialogImageUrl = ref('');
+const dialogVisible = ref(false);
 
 const isSelectedTwo = computed(() => checkList.value.filter((i) => i.checked).length > 1);
 
+interface IProps {
+  cardLayout: number;
+  layout: number;
+  layoutSet: number;
+  checkedImgs: string[];
+}
+
+interface Emits {
+  (e: 'update:checkedImgs', checkedImgs: string[]): void;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  checkedImgs: () => [],
+});
+
+const emit = defineEmits<Emits>();
+
 // 选择卡片
-const onSelectCard = (item: CoverCardType) => {
-  console.log(item, 'item');
+const onSelectCard = () => {
+  const checkedImgs = checkList.value.filter((i) => i.checked)?.map((j) => j.img);
+  console.log(checkedImgs, 'checkedImgs');
+  emit('update:checkedImgs', checkedImgs);
 };
 
 const fileList = ref<any[]>([
@@ -114,8 +129,20 @@ const fileList = ref<any[]>([
   },
 ]);
 
-const dialogImageUrl = ref('');
-const dialogVisible = ref(false);
+// 保存设置
+const onSave = () => {
+  console.log(props.layout, 'layout');
+  console.log(props.layoutSet, 'layoutSet');
+  console.log(props.cardLayout, 'cardLayout');
+  console.log(props.checkedImgs, 'checkedImgs');
+  const { layout, layoutSet, cardLayout, checkedImgs } = props;
+  pageConfigStore.setPageConfig({
+    layout,
+    layoutSet,
+    cardLayout,
+    coverImgs: checkedImgs,
+  });
+};
 </script>
 
 <style scoped lang="less">

@@ -2,20 +2,20 @@
   <div class="page-layout">
     <div class="title">
       <div class="title-left">页面布局控制</div>
-      <el-button type="primary">保存设置</el-button>
+      <el-button type="primary" @click="onSave">保存设置</el-button>
     </div>
     <div class="action-wrap">
       <span class="info">默认布局选择：</span>
-      <el-radio-group v-model="layoutType" @change="onChangeLayoutType">
-        <el-radio label="1">上下布局</el-radio>
-        <el-radio label="2">左右布局</el-radio>
+      <el-radio-group v-model="layout" @change="onChangeLayoutType">
+        <el-radio :label="1">上下布局</el-radio>
+        <el-radio :label="2">左右布局</el-radio>
       </el-radio-group>
     </div>
     <div class="action-wrap">
       <span class="info">是否开启页面布局切换：</span>
-      <el-radio-group v-model="isOpen" @change="onChangeIsOpen">
-        <el-radio label="1">是</el-radio>
-        <el-radio label="2">否</el-radio>
+      <el-radio-group v-model="layoutSet" @change="onChangeIsOpen">
+        <el-radio :label="1">是</el-radio>
+        <el-radio :label="2">否</el-radio>
       </el-radio-group>
       <span class="info-text">
         （开启页面布局切换时，页面左侧会出现悬浮控制按钮，点击可以自主切换布局及切换主题等）
@@ -25,7 +25,7 @@
       <span class="preview-info">布局效果预览</span>
     </div>
     <div class="preview-wrap">
-      <div v-if="layoutType === '1'" class="preview-type">
+      <div v-if="layout === 1" class="preview-type">
         <div class="preview-name">上下布局模式</div>
         <div class="content">
           <div class="right">
@@ -45,7 +45,7 @@
               <div class="card-list">content</div>
             </div>
           </div>
-          <div v-if="isOpen === '1'" :class="classname('change-icon', toggle && 'toggle')" @click="onToggle">
+          <div v-if="layoutSet === 1" :class="classname('change-icon', toggle && 'toggle')" @click="onToggle">
             <el-icon v-if="!toggle"><ArrowRight /></el-icon>
             <el-icon v-else><ArrowLeft /></el-icon>
           </div>
@@ -61,7 +61,7 @@
           </div>
         </div>
       </div>
-      <div v-if="layoutType === '2'" class="preview-type">
+      <div v-if="layout === 2" class="preview-type">
         <div class="preview-name">左右布局模式</div>
         <div class="content">
           <div class="left">
@@ -78,7 +78,7 @@
               <div class="list-wrap">content</div>
             </div>
           </div>
-          <div v-if="isOpen === '1'" :class="classname('change-icon', toggle && 'toggle')" @click="onToggle">
+          <div v-if="layoutSet === 1" :class="classname('change-icon', toggle && 'toggle')" @click="onToggle">
             <el-icon v-if="!toggle"><ArrowRight /></el-icon>
             <el-icon v-else><ArrowLeft /></el-icon>
           </div>
@@ -99,15 +99,52 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import classname from 'classname';
 import { ArrowRight, DArrowRight, ArrowLeft, Sunny } from '@element-plus/icons-vue';
 
 const rightContentRef = ref<HTMLDivElement | null>(null);
 const headerRef = ref<HTMLDivElement | null>(null);
-const isOpen = ref('1');
-const layoutType = ref('1');
 const toggle = ref(false);
+
+interface IProps {
+  layout: number;
+  layoutSet: number;
+  cardLayout: number;
+  checkedImgs: string[];
+}
+
+interface Emits {
+  (e: 'update:layout', layout: number): void;
+  (e: 'update:layoutSet', layoutSet: number): void;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  layout: 1,
+  layoutSet: 1,
+});
+
+// 计算layout
+const layout = computed({
+  get() {
+    return props.layout;
+  },
+  set(layout: number) {
+    emit('update:layout', layout);
+  },
+});
+
+// 计算layoutSet
+const layoutSet = computed({
+  get() {
+    return props.layoutSet;
+  },
+  set(layoutSet: number) {
+    emit('update:layoutSet', layoutSet);
+  },
+});
+
+const emit = defineEmits<Emits>();
 
 // 选择页面默认布局
 const onChangeLayoutType = (value: string) => {
@@ -122,6 +159,14 @@ const onChangeIsOpen = (value: string) => {
 // 点击布局控制
 const onToggle = () => {
   toggle.value = !toggle.value;
+};
+
+// 保存设置
+const onSave = () => {
+  console.log(layout.value, 'layout');
+  console.log(layoutSet.value, 'layoutSet');
+  console.log(props.cardLayout, 'cardLayout');
+  console.log(props.checkedImgs, 'cardLayout');
 };
 </script>
 

@@ -8,19 +8,19 @@
   <div class="card-set">
     <div class="title">
       <div class="title-left">文章卡片展示控制</div>
-      <el-button type="primary">保存设置</el-button>
+      <el-button type="primary" @click="onSave">保存设置</el-button>
     </div>
     <div class="action-wrap">
       <span>布局模式：</span>
-      <el-radio-group v-model="layoutType" @change="onChangeLayoutType">
-        <el-radio label="1">左右布局模式</el-radio>
-        <el-radio label="2">上下布局模式</el-radio>
+      <el-radio-group v-model="cardLayout" @change="onChangeCardLayout">
+        <el-radio :label="1">左右布局模式</el-radio>
+        <el-radio :label="2">上下布局模式</el-radio>
       </el-radio-group>
     </div>
     <div class="preview-wrap">
       <div class="prev-title">文章卡片布局效果预览</div>
       <div class="preview-content">
-        <div v-if="layoutType === '1'" class="content">
+        <div v-if="cardLayout === 1" class="content">
           <div class="prev-type-title">左右布局效果</div>
           <div class="type-1">
             <div class="img" />
@@ -60,14 +60,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
 import { IMAGES } from '@/constant';
 
-const layoutType = ref('1');
+interface IProps {
+  cardLayout: number;
+  layout: number;
+  layoutSet: number;
+  checkedImgs: string[];
+}
+
+interface Emits {
+  (e: 'update:cardLayout', cardLayout: number): void;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  cardLayout: 1,
+});
+
+// 计算cardLayout
+const cardLayout = computed({
+  get() {
+    return props.cardLayout;
+  },
+  set(cardLayout: number) {
+    emit('update:cardLayout', cardLayout);
+  },
+});
+
+const emit = defineEmits<Emits>();
 
 // 切换页面布局
-const onChangeLayoutType = (value: string) => {
+const onChangeCardLayout = (value: number) => {
   console.log(value, 'value>>>onChangeIsOpen');
+  emit('update:cardLayout', value);
+};
+
+// 保存设置
+const onSave = () => {
+  console.log(cardLayout.value, 'cardLayout');
+  console.log(props.layout, 'layout');
+  console.log(props.layoutSet, 'layoutSet');
+  console.log(props.checkedImgs, 'checkedImgs');
 };
 </script>
 

@@ -24,3 +24,6 @@ export const GET_USER_INFO = '/admin/getUserInfo';
 
 // 绑定账户
 export const BIND_ACCOUNT = '/admin/bindAccount';
+
+// 绑定账户
+export const PAGE_CONFIG = '/admin/pageConfig';

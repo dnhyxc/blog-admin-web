@@ -1,5 +1,5 @@
 import { post } from '@/utils/request';
-import { LoginParams, Params } from '@/typings/comment';
+import { LoginParams, PageConfigParams, Params } from '@/typings/comment';
 import * as API from './api';
 
 // 登录
@@ -65,5 +65,11 @@ export const getAdminUserList = async (params: Params) => {
 // 绑定账户
 export const bindAccount = async (params: { userId: string; usernames: string[] }) => {
   const res = await post(API.BIND_ACCOUNT, params);
+  return res;
+};
+
+// 主题设置
+export const pageConfig = async (params: PageConfigParams) => {
+  const res = await post(API.PAGE_CONFIG, params);
   return res;
 };
