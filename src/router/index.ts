@@ -116,6 +116,16 @@ const routes: Array<RouteRecordRaw> = [
     redirect: { name: 'home' },
   },
   {
+    path: '/detail',
+    name: 'detail',
+    meta: {
+      title: '文章详情',
+      keepAlive: true,
+      requireAuth: false,
+    },
+    component: () => import('@/views/detail/index.vue'),
+  },
+  {
     path: '/bind',
     name: 'bind',
     meta: {

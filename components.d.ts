@@ -48,6 +48,7 @@ declare module '@vue/runtime-core' {
     Message: typeof import('./src/components/Message/index.vue')['default']
     Modal: typeof import('./src/components/Modal/index.vue')['default']
     Popover: typeof import('./src/components/Popover/index.vue')['default']
+    Preview: typeof import('./src/components/Preview/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TopMenu: typeof import('./src/components/TopMenu/index.vue')['default']
