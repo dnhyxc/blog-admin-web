@@ -22,4 +22,20 @@ type mackdownType = {
 const mackdown = reactive<mackdownType>({ text: 'text' });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+@import '@/styles/index.less';
+
+.container {
+  background-color: @fff;
+
+  :deep {
+    .v-md-textarea-editor pre,
+    .v-md-textarea-editor textarea {
+      background-color: @fff;
+    }
+    .vuepress-markdown-body:not(.custom) {
+      padding: 16px 20px;
+    }
+  }
+}
+</style>

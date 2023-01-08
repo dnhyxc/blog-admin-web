@@ -7,43 +7,27 @@
 <template>
   <div class="bind-wrap">
     <div class="content">
-      <div class="header">账号绑定</div>
       <el-form ref="formRef" :model="bindAccountForm" label-width="110px" class="form-wrap">
-        <el-form-item
-          prop="bindAccount"
-          label="绑定账号名 1"
-          :rules="[
-            {
-              required: true,
-              message: '请输入需要绑定的前台账号名称',
-              trigger: 'blur',
-            },
-          ]"
-          class="form-item"
-        >
-          <el-input v-model="bindAccountForm.bindAccount" placeholder="请输入需要绑定的前台账号名称" />
-        </el-form-item>
         <el-form-item
           v-for="(domain, index) in bindAccountForm.domains"
           :key="domain.key"
-          :label="`绑定账号名${index + 2}`"
+          :label="`绑定账号名${index + 1}`"
           :prop="`domains.${index}.value`"
           :rules="{
             required: true,
             message: '请输入需要绑定的前台账号名称',
-            trigger: 'blur',
           }"
           class="form-item-custom"
         >
           <div class="inp-wrap">
             <el-input v-model="domain.value" placeholder="请输入需要绑定的前台账号名称" />
-            <el-button class="del-btn" link @click.prevent="removeDomain(domain)">删除</el-button>
+            <el-button v-if="index > 0" class="del-btn" link @click.prevent="removeDomain(domain)">删除</el-button>
           </div>
         </el-form-item>
         <el-form-item class="form-item-action">
           <div class="actions">
-            <el-button type="primary" class="action-btn" @click="submitForm(formRef)">确定</el-button>
-            <el-button v-if="bindAccountForm.domains.length < 4" class="action-btn" @click="addDomain">
+            <el-button type="primary" class="action-btn" @click="submitForm(formRef)">确定修改</el-button>
+            <el-button v-if="bindAccountForm.domains.length < 5" class="action-btn" @click="addDomain">
               增加绑定账号
             </el-button>
           </div>
@@ -54,29 +38,41 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive, ref, watchEffect } from 'vue';
 import type { FormInstance } from 'element-plus';
-import { bindAccountStore, userStore } from '@/store';
-
-const router = useRouter();
+import { settingStore, bindAccountStore } from '@/store';
+import { BindUserRes } from '@/typings/comment';
 
 interface DomainItem {
   key: string;
   value: string;
 }
 
+interface Emits {
+  (e: 'update:visible', visible: boolean): void;
+}
+
+const props = withDefaults(defineProps<{ visible: boolean; getValues: Function }>(), {
+  visible: false,
+  getValues: () => {},
+});
+
+const emit = defineEmits<Emits>();
+
 const formRef = ref<FormInstance>();
 const bindAccountForm = reactive<{
   domains: DomainItem[];
-  bindAccount: string;
 }>({
   domains: [],
-  bindAccount: '',
 });
 
-onMounted(() => {
-  getBindUserList();
+watchEffect(() => {
+  if (props.visible) {
+    bindAccountForm.domains = settingStore.bindUserInfo.map((i) => ({
+      key: i.userId,
+      value: i.username,
+    }));
+  }
 });
 
 // 删除绑定输入框
@@ -95,33 +91,28 @@ const addDomain = () => {
   });
 };
 
-// 确认绑定账号
+// 确定修改
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid) => {
     if (valid) {
-      const values = bindAccountForm.domains.map((i) => i.value);
-      const usernames = [bindAccountForm.bindAccount, ...values];
-      const res = await bindAccountStore.bindAccount({
+      const usernames = bindAccountForm.domains.map((i) => i.value);
+      const res = (await bindAccountStore.bindAccount({
         usernames,
-      });
-      if (res && userStore.bindAccount?.length) {
-        router.push('/home');
-      }
+      })) as BindUserRes;
+
+      const userInfos = res.findUsernames.map((i, index) => ({
+        userId: res.bindUserIds[index],
+        username: i,
+      }));
+
+      settingStore.setBindUsernames(userInfos);
+
+      emit('update:visible', false);
     } else {
-      console.log(bindAccountForm, 'error submit!');
       return false;
     }
   });
-};
-
-// 获取绑定账号列表
-const getBindUserList = async () => {
-  if (!userStore?.userId) return;
-  const res: string[] = await userStore.getUserInfo();
-  if (res?.length) {
-    router.push('/home');
-  }
 };
 </script>
 
@@ -132,6 +123,7 @@ const getBindUserList = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   height: 100%;
   color: @fff;
   background-color: @fff;
@@ -142,33 +134,24 @@ const getBindUserList = async () => {
     flex-direction: column;
     justify-content: center;
     box-sizing: border-box;
-    height: 375px;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgb(255 255 255 / 20%);
-    backdrop-filter: blur(1px);
-
-    .header {
-      height: 50px;
-      line-height: 50px;
-      margin-bottom: 30px;
-      padding: 0 65px;
-      font-size: 20px;
-      font-weight: 700;
-      color: @000;
-    }
+    width: 100%;
+    padding: 0 20px;
 
     .form-wrap {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      width: 500px;
+      width: 100%;
 
       .form-item,
       .form-item-custom,
       .form-item-action {
         margin-bottom: 30px;
-        padding: 0 50px;
+        padding-right: 50px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
 
       .form-item-custom {
@@ -195,6 +178,7 @@ const getBindUserList = async () => {
 
           .action-btn {
             flex: 1;
+            margin-bottom: 31px;
           }
         }
       }

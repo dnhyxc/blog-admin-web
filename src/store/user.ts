@@ -5,7 +5,7 @@ import { normalizeResult, encrypt, locGetItem, locSetItem, locRemoveItem } from 
 import { ElMessage } from 'element-plus';
 
 interface IProps extends UserLoginParams {
-  userInfo: any;
+  userInfo: UserInfoParams;
   bindAccount: string[] | null | undefined;
 }
 
@@ -17,7 +17,7 @@ export const useUserStore = defineStore('user', {
     auth: Number(locGetItem('auth')), // 管理员权限
     registerTime: 0, // 注册时间
     bindAccount: JSON.parse(locGetItem('bindAccount')!),
-    userInfo: {},
+    userInfo: { id: '', username: '' },
   }),
 
   actions: {
@@ -77,17 +77,19 @@ export const useUserStore = defineStore('user', {
     },
 
     // 获取用户信息
-    async getUserInfo(data: { userId: string }) {
+    async getUserInfo() {
       try {
         const res = normalizeResult<UserInfoParams>(
           await Service.getUserInfo({
-            userId: data.userId,
+            userId: this.userId!,
           }),
         );
         if (res.success) {
           this.userInfo = res.data;
+          this.bindAccount = res.data.bindUserIds;
+          locSetItem('bindAccount', JSON.stringify(res.data.bindUserIds));
         }
-        return res.data;
+        return res.data.bindUserIds;
       } catch (error) {
         throw error;
       }

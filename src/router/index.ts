@@ -93,12 +93,22 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/create/index.vue'),
       },
       {
-        path: '/setting',
-        name: 'setting',
+        path: '/pageSet',
+        name: 'pageSet',
         meta: {
           title: '主题设置',
           keepAlive: true,
           requireAuth: true,
+        },
+        component: () => import('@/views/pageSet/index.vue'),
+      },
+      {
+        path: '/setting',
+        name: 'setting',
+        meta: {
+          title: '账号设置',
+          keepAlive: true,
+          requireAuth: false,
         },
         component: () => import('@/views/setting/index.vue'),
       },
@@ -152,11 +162,15 @@ router.beforeEach(async (to, from, next) => {
     if (userStore.auth === AUTH_CONFIG.SUPER) {
       next();
     } else {
-      if (to.name === 'users') {
-        router.push('/home');
+      if (to.name === 'users' || to.name === 'account') {
+        if (userStore.auth === AUTH_CONFIG.ADMIN) {
+          router.push('/home');
+        } else {
+          router.push('/article');
+        }
       } else {
         if (userStore.bindAccount?.length) {
-          to.name === 'bind' ? router.push('/home') : next();
+          to.name === 'bind' ? router.push('/article') : next();
         } else {
           to.name === 'bind' ? next() : router.push('/bind');
         }

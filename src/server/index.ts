@@ -73,3 +73,9 @@ export const pageConfig = async (params: PageConfigParams) => {
   const res = await post(API.PAGE_CONFIG, params);
   return res;
 };
+
+// 主题设置
+export const getBindUsers = async (params: { userIds: string[]; userId: string }) => {
+  const res = await post(API.FIND_BIND_USERS, params);
+  return res;
+};

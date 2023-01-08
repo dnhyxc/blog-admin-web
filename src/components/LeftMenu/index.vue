@@ -9,7 +9,7 @@
         <el-icon v-if="menu.icon === 'document'">
           <document />
         </el-icon>
-        <el-icon v-if="menu.icon === 'setting'">
+        <el-icon v-if="menu.icon === 'pageSet'">
           <setting />
         </el-icon>
         <el-icon v-if="menu.icon === 'tag'">
@@ -50,7 +50,7 @@ import {
   User,
 } from '@element-plus/icons-vue';
 import { useRouter, useRoute } from 'vue-router';
-import { MENULIST, MenuListParams } from '@/constant';
+import { MENULIST, MenuListParams, AUTH_CONFIG } from '@/constant';
 import { userStore } from '@/store';
 
 const router = useRouter();
@@ -58,15 +58,18 @@ const route = useRoute();
 
 // 判断是否是超级管理员
 const menuList = computed(() => {
-  if (userStore.auth === 1) {
+  if (userStore.auth === AUTH_CONFIG.SUPER) {
     return MENULIST;
   } else {
-    const menus = MENULIST.filter((i) => i.key !== 'users' && i.key !== 'account');
+    const menus = MENULIST.filter((i) => {
+      if (userStore.auth === AUTH_CONFIG.ADMIN) {
+        return i.key !== 'users' && i.key !== 'account';
+      }
+      return i.key !== 'users' && i.key !== 'account' && i.key !== 'home';
+    });
     return menus;
   }
 });
-
-console.log(menuList, 'menuList');
 
 // 点击跳转页面
 const onClick = (menu: MenuListParams) => {

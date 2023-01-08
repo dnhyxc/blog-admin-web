@@ -45,6 +45,7 @@ const onClick = () => {
 // 账号设置
 const onSetting = () => {
   console.log('账号设置');
+  router.push('/setting');
 };
 
 // 退出登录

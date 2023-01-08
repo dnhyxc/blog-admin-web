@@ -56,9 +56,9 @@ export const MENULIST: MenuListParams[] = [
   },
   {
     name: '主题设置',
-    key: 'setting',
-    path: '/setting',
-    icon: 'setting',
+    key: 'pageSet',
+    path: '/pageSet',
+    icon: 'pageSet',
   },
   {
     name: '发布文章',

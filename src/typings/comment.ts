@@ -52,6 +52,7 @@ export interface UserInfoParams {
   mainCover?: string;
   articleTotal?: string;
   registerTime?: number;
+  bindUserIds?: string[];
 }
 
 // 用户列表相应参数
@@ -72,7 +73,7 @@ export interface PageConfig {
   layout: number;
   layoutSet: number;
   cardLayout: number;
-  coverImgs: string[];
+  coverImgs?: string[];
 }
 
 // 主题设置接口传参
@@ -80,7 +81,14 @@ export interface PageConfigParams {
   layout: number;
   layoutSet: number;
   cardLayout: number;
-  coverImgs: string[];
   userId: string;
+  bindUserIds: string[];
+  coverImgs?: string[];
+}
+
+// 绑定用户信息返回结果
+export interface BindUserRes {
+  notFindUsers: string[];
+  findUsernames: string[];
   bindUserIds: string[];
 }

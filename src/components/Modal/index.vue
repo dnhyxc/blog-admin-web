@@ -10,7 +10,7 @@
       <div class="content">
         <slot>请向插槽中插入内容</slot>
       </div>
-      <template #footer>
+      <template v-if="needFooter" #footer>
         <span class="footer">
           <el-button @click="handleCancel">{{ cancelText }}</el-button>
           <el-button type="primary" @click="onConfirm">{{ onText }}</el-button>
@@ -26,9 +26,10 @@ import { computed } from 'vue';
 interface IProps {
   visible: boolean;
   title: string;
-  onSubmit: (data?: any) => Promise<any>;
+  onSubmit?: (data?: any) => any;
   cancelText?: string;
   onText?: string;
+  needFooter?: boolean;
 }
 
 interface Emits {
@@ -40,6 +41,8 @@ const props = withDefaults(defineProps<IProps>(), {
   title: 'title',
   cancelText: '取消',
   onText: '确定',
+  needFooter: false,
+  onSubmit: () => {},
 });
 
 const visible = computed({

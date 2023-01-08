@@ -7,7 +7,7 @@
 <template>
   <div class="cover-set-wrap">
     <div class="title">
-      <div class="title-left">封面图设置</div>
+      <div class="title-left">封面图设置<span class="info">（需要同时选择两张封面图）</span></div>
       <el-button type="primary" @click="onSave">保存设置</el-button>
     </div>
     <div class="cover-set">
@@ -63,6 +63,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { ElMessage } from 'element-plus';
 import { COVER_LIST, IMAGES } from '@/constant';
 import { pageConfigStore } from '@/store';
 
@@ -131,11 +132,11 @@ const fileList = ref<any[]>([
 
 // 保存设置
 const onSave = () => {
-  console.log(props.layout, 'layout');
-  console.log(props.layoutSet, 'layoutSet');
-  console.log(props.cardLayout, 'cardLayout');
-  console.log(props.checkedImgs, 'checkedImgs');
   const { layout, layoutSet, cardLayout, checkedImgs } = props;
+  if (!checkedImgs?.length || (checkedImgs?.length > 0 && checkedImgs?.length < 2)) {
+    ElMessage.info('请同时选择两张封面图');
+    return;
+  }
   pageConfigStore.setPageConfig({
     layout,
     layoutSet,
@@ -164,6 +165,11 @@ const onSave = () => {
     margin-bottom: 10px;
     font-size: 18px;
     padding: 10px;
+
+    .info {
+      font-size: 14px;
+      color: @warning;
+    }
   }
 
   .cover-set {

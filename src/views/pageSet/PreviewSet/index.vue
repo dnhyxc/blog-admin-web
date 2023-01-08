@@ -102,6 +102,7 @@
 import { ref, computed } from 'vue';
 import classname from 'classname';
 import { ArrowRight, DArrowRight, ArrowLeft, Sunny } from '@element-plus/icons-vue';
+import { pageConfigStore } from '@/store';
 
 const rightContentRef = ref<HTMLDivElement | null>(null);
 const headerRef = ref<HTMLDivElement | null>(null);
@@ -111,7 +112,6 @@ interface IProps {
   layout: number;
   layoutSet: number;
   cardLayout: number;
-  checkedImgs: string[];
 }
 
 interface Emits {
@@ -163,10 +163,12 @@ const onToggle = () => {
 
 // 保存设置
 const onSave = () => {
-  console.log(layout.value, 'layout');
-  console.log(layoutSet.value, 'layoutSet');
-  console.log(props.cardLayout, 'cardLayout');
-  console.log(props.checkedImgs, 'cardLayout');
+  const { layout, layoutSet, cardLayout } = props;
+  pageConfigStore.setPageConfig({
+    layout,
+    layoutSet,
+    cardLayout,
+  });
 };
 </script>
 

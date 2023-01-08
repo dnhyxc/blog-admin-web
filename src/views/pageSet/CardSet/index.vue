@@ -62,12 +62,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { IMAGES } from '@/constant';
+import { pageConfigStore } from '@/store';
 
 interface IProps {
   cardLayout: number;
   layout: number;
   layoutSet: number;
-  checkedImgs: string[];
 }
 
 interface Emits {
@@ -92,16 +92,17 @@ const emit = defineEmits<Emits>();
 
 // 切换页面布局
 const onChangeCardLayout = (value: number) => {
-  console.log(value, 'value>>>onChangeIsOpen');
   emit('update:cardLayout', value);
 };
 
 // 保存设置
 const onSave = () => {
-  console.log(cardLayout.value, 'cardLayout');
-  console.log(props.layout, 'layout');
-  console.log(props.layoutSet, 'layoutSet');
-  console.log(props.checkedImgs, 'checkedImgs');
+  const { layout, layoutSet, cardLayout } = props;
+  pageConfigStore.setPageConfig({
+    layout,
+    layoutSet,
+    cardLayout,
+  });
 };
 </script>
 

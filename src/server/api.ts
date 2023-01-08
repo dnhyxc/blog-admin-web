@@ -25,5 +25,8 @@ export const GET_USER_INFO = '/admin/getUserInfo';
 // 绑定账户
 export const BIND_ACCOUNT = '/admin/bindAccount';
 
-// 绑定账户
+// 主题设置
 export const PAGE_CONFIG = '/admin/pageConfig';
+
+// 获取绑定账户信息
+export const FIND_BIND_USERS = '/admin/findBindUsers';
