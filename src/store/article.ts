@@ -97,6 +97,30 @@ export const useArticleStore = defineStore('article', {
       }
     },
 
+    // 上架文章
+    async batchDelArticle(articleIds: string[]) {
+      try {
+        this.loading = true;
+        const res = normalizeResult<number>(
+          await Service.batchDelArticle({
+            articleIds,
+            userId: userStore?.userId!,
+          }),
+        );
+        this.loading = false;
+        if (res.success) {
+          console.log(res.data, 'shelvesArticle');
+          this.list = this.list.filter((i) => !articleIds.includes(i.id));
+          this.total = this.total - articleIds.length;
+          ElMessage.success(res.message);
+        } else {
+          ElMessage.error(res.message);
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+
     // 清除文章列表数据
     removeArticleList() {
       this.list = [];

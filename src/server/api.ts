@@ -39,3 +39,6 @@ export const REMOVE_ARTICLE = '/admin/removeArticle';
 
 // 上架文章
 export const SHELVES_ARTICLE = '/admin/shelvesArticle';
+
+// 批量删除文章
+export const BATCH_DEL_ARTICLE = '/admin/batchDelArticle';

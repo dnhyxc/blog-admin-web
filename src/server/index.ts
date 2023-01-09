@@ -97,3 +97,9 @@ export const shelvesArticle = async (params: { articleIds: string[]; userId: str
   const res = await post(API.SHELVES_ARTICLE, params);
   return res;
 };
+
+// 批量删除文章
+export const batchDelArticle = async (params: { articleIds: string[]; userId: string }) => {
+  const res = await post(API.BATCH_DEL_ARTICLE, params);
+  return res;
+};

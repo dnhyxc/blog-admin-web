@@ -85,6 +85,7 @@ const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
 const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
 const deleteId = ref<string>(''); // 选中需要删除的文章id
+const deleteIds = ref<string[]>([]); // 批量删除ids
 
 const router = useRouter();
 
@@ -143,17 +144,18 @@ const onDelete = (id: string) => {
 
 // 多选删除
 const onDeleteAll = () => {
-  console.log(multipleSelection.value, 'multipleSelection');
+  const ids = multipleSelection.value.map((j) => j.id) || [];
+  deleteIds.value = ids;
+  messageVisible.value = true;
 };
 
 // 二次确认删除
 const onSubmitDelete = async () => {
   console.log(deleteId.value, 'deleteID');
-
-  // await accountStore.batchDeleteUser({ userIds: deleteIds.value.length ? deleteIds.value : [deleteId.value] });
-  // getAccountList();
-  // // 删除完成之后，清除之前选择的账号ids
-  // deleteIds.value = [];
+  console.log(deleteIds.value, 'deleteIds>>>>deleteIds');
+  await articleStore.batchDelArticle(deleteIds.value.length ? deleteIds.value : [deleteId.value]);
+  // 删除完成之后，清除之前选择的账号ids
+  deleteIds.value = [];
 };
 
 // 切换分页
