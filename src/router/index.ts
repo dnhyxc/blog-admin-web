@@ -116,7 +116,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: { name: 'home' },
   },
   {
-    path: '/detail',
+    path: '/detail/:id',
     name: 'detail',
     meta: {
       title: '文章详情',
@@ -172,7 +172,7 @@ router.beforeEach(async (to, from, next) => {
     if (userStore.auth === AUTH_CONFIG.SUPER) {
       next();
     } else {
-      if (to.name === 'users' || to.name === 'account') {
+      if (to.name === 'users' || to.name === 'account' || to.name === 'home') {
         if (userStore.auth === AUTH_CONFIG.ADMIN) {
           router.push('/home');
         } else {

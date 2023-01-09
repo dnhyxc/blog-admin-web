@@ -1,70 +1,76 @@
+import {
+  Document,
+  Grid,
+  Setting,
+  Discount,
+  Menu,
+  Postcard,
+  ChatLineSquare,
+  Position,
+  User,
+} from '@element-plus/icons-vue';
 import QD from '@/assets/img/qd.jpg';
 import SEA from '@/assets/img/sea.jpg';
 import SSM from '@/assets/img/ssm.jpg';
 import GIRL from '@/assets/img/girl.png';
-
-export interface MenuListParams {
-  name: string;
-  key: string;
-  path: string;
-  icon: string;
-}
+import PAGE_ICON from '@/assets/svg/pageIcon.svg';
+import { MenuListParams } from '@/typings/comment';
 
 // 左侧菜单配置
-export const MENULIST: MenuListParams[] = [
+export const MENULIST: MenuListParams<typeof Grid>[] = [
   {
     name: '数据管理',
     key: 'home',
     path: '/home',
-    icon: 'home',
+    icon: Grid,
   },
   {
     name: '文章管理',
     key: 'article',
     path: '/article',
-    icon: 'document',
+    icon: Document,
   },
   {
     name: '分类管理',
     key: 'classify',
     path: '/classify',
-    icon: 'classify',
+    icon: Menu,
   },
   {
     name: '标签管理',
     key: 'tag',
     path: '/tag',
-    icon: 'tag',
+    icon: Discount,
   },
   {
     name: '账号管理',
     key: 'account',
     path: '/account',
-    icon: 'account',
+    icon: Postcard,
   },
   {
     name: '后台账户',
     key: 'users',
     path: '/users',
-    icon: 'users',
+    icon: User,
   },
   {
     name: '留言管理',
     key: 'comment',
     path: '/comment',
-    icon: 'comment',
+    icon: ChatLineSquare,
   },
   {
     name: '主题设置',
     key: 'pageSet',
     path: '/pageSet',
-    icon: 'pageSet',
+    icon: Setting,
   },
   {
     name: '发布文章',
     key: 'create',
     path: '/create',
-    icon: 'create',
+    icon: Position,
   },
 ];
 
@@ -79,6 +85,7 @@ export const IMAGES = {
   sea: SEA,
   ssm: SSM,
   girl: GIRL,
+  pageIcon: PAGE_ICON,
 };
 
 // 封面图地址

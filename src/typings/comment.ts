@@ -1,3 +1,11 @@
+// 菜单类型
+export interface MenuListParams<T> {
+  name: string;
+  key: string;
+  path: string;
+  icon: T;
+}
+
 // user store 属性声明
 export interface LoginParams {
   username: string;

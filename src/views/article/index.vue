@@ -12,7 +12,7 @@
       <el-table-column fixed="right" label="操作" width="145">
         <template #default="scope">
           <div class="actions">
-            <el-button link type="primary" @click="toDetail(scope.$index, scope.row.id)">详情</el-button>
+            <el-button link type="primary" @click="toDetail(scope.row.id)">详情</el-button>
             <el-button link type="primary" @click="onEdit(scope.$index, scope.row.id)">编辑</el-button>
             <el-button link type="primary" @click="onDelete(scope.$index, scope.row.id)">删除</el-button>
           </div>
@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { ElTable } from 'element-plus';
 import { PAGESIZE } from '@/constant';
 
@@ -55,6 +56,8 @@ const multipleSelection = ref<ArticleType[]>([]);
 const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
 
+const router = useRouter();
+
 // 多选
 const handleSelectionChange = (val: ArticleType[]) => {
   multipleSelection.value = val;
@@ -66,8 +69,9 @@ const onDeleteAll = () => {
 };
 
 // 去详情
-const toDetail = (index: number, id: string) => {
-  console.log(index, id, 'toDetail');
+const toDetail = (id: string) => {
+  console.log(id, 'toDetail');
+  router.push(`/detail/${id}`);
 };
 
 // 编辑

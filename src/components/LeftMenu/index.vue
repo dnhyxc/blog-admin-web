@@ -1,34 +1,21 @@
 <template>
   <div class="menu-wrap">
-    <div class="title">后台管理</div>
+    <div class="title">
+      <img :src="IMAGES.pageIcon" alt="" class="icon" />
+      <span>后台管理</span>
+    </div>
     <el-menu :default-active="route.name" class="el-menu">
       <el-menu-item v-for="menu in menuList" :key="menu.key" :index="menu.key" class="menuList" @click="onClick(menu)">
-        <el-icon v-if="menu.icon === 'home'">
-          <Grid />
-        </el-icon>
-        <el-icon v-if="menu.icon === 'document'">
-          <document />
-        </el-icon>
-        <el-icon v-if="menu.icon === 'pageSet'">
-          <setting />
-        </el-icon>
-        <el-icon v-if="menu.icon === 'tag'">
-          <Discount />
-        </el-icon>
-        <el-icon v-if="menu.icon === 'classify'">
-          <Menu />
-        </el-icon>
-        <el-icon v-if="menu.icon === 'account'">
-          <Postcard />
-        </el-icon>
-        <el-icon v-if="menu.icon === 'comment'">
-          <ChatLineSquare />
-        </el-icon>
-        <el-icon v-if="menu.icon === 'create'">
-          <Position />
-        </el-icon>
-        <el-icon v-if="menu.icon === 'users'">
-          <User />
+        <el-icon class="icon">
+          <Grid v-if="menu.key === 'home'" />
+          <document v-if="menu.key === 'article'" />
+          <Menu v-if="menu.key === 'classify'" />
+          <Discount v-if="menu.key === 'tag'" />
+          <Postcard v-if="menu.key === 'account'" />
+          <User v-if="menu.key === 'users'" />
+          <ChatLineSquare v-if="menu.key === 'comment'" />
+          <setting v-if="menu.key === 'pageSet'" />
+          <Position v-if="menu.key === 'create'" />
         </el-icon>
         <div class="item" :to="menu.path">{{ menu.name }}</div>
       </el-menu-item>
@@ -37,7 +24,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
 import {
   Document,
   Grid,
@@ -49,8 +35,10 @@ import {
   Position,
   User,
 } from '@element-plus/icons-vue';
+import { computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { MENULIST, MenuListParams, AUTH_CONFIG } from '@/constant';
+import { MENULIST, AUTH_CONFIG, IMAGES } from '@/constant';
+import { MenuListParams } from '@/typings/comment';
 import { userStore } from '@/store';
 
 const router = useRouter();
@@ -72,7 +60,7 @@ const menuList = computed(() => {
 });
 
 // 点击跳转页面
-const onClick = (menu: MenuListParams) => {
+const onClick = (menu: MenuListParams<typeof Grid>) => {
   router.push(menu.path);
 };
 </script>
