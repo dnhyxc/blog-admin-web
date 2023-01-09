@@ -7,14 +7,23 @@ export const REGISTER = '/admin/register';
 // 获取用户列表
 export const GET_USER_LIST = '/admin/getUserList';
 
-// 批量移除用户
+// 批量作废、恢复用户
 export const UPDATE_USERS = '/admin/updateUsers';
 
 // 批量删除用户
 export const BATCH_DELETE_USER = '/admin/batchDeleteUser';
 
+// 批量删除后台用户
+export const DELETE_ADMIN_USERS = '/admin/deleteAdminUsers';
+
+// 批量作废、恢复后台用户
+export const MANAGE_ADMIN_USERS = '/admin/manageAdminUsers';
+
 // 设置用户权限
 export const SET_AUTH = '/admin/setAuth';
+
+// 设置后台用户权限
+export const SET_ADMIN_USER_AUTH = '/admin/setAdminUserAuth';
 
 // 获取后台账号列表
 export const GET_ADMIN_USER_LIST = '/admin/getAdminUserList';

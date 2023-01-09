@@ -3,6 +3,8 @@ import { Params, UserListRes } from '@/typings/comment';
 import * as Service from '@/server';
 import { normalizeResult } from '@/utils';
 import { ElMessage } from 'element-plus';
+import { PAGESIZE } from '@/constant';
+import { userStore } from '.';
 
 interface IParams extends UserListRes {
   loading: boolean;
@@ -34,13 +36,30 @@ export const useAccountStore = defineStore('account', {
       }
     },
 
-    // 移除账号
-    async removeAccount(params: { userIds: string[]; type: number }) {
+    // 移除账号：1 删除，0 恢复
+    async manageAccount(params: { userIds: string[]; type: number }) {
+      if (!params.userIds.length) {
+        ElMessage.info(params.type === 1 ? '没有可作废的账号' : '没有可恢复的账号');
+        return;
+      }
       try {
         this.loading = true;
         const res = normalizeResult<{ userIds: string[] }>(await Service.deleteUsers(params));
         this.loading = false;
         if (res.success) {
+          if (params.type === 1) {
+            this.list.forEach((i) => {
+              if (params.userIds.includes(i.id)) {
+                i.isDelete = true;
+              }
+            });
+          } else {
+            this.list.forEach((i) => {
+              if (params.userIds.includes(i.id)) {
+                delete i.isDelete;
+              }
+            });
+          }
           ElMessage.success(res.message);
         } else {
           ElMessage.error(res.message);
@@ -51,12 +70,17 @@ export const useAccountStore = defineStore('account', {
     },
 
     // 批量删除账号
-    async batchDeleteUser(params: { userIds: string[] }) {
+    async batchDeleteUser(params: { userIds: string[]; pageNo: number }) {
+      if (!params.userIds.length) {
+        ElMessage.info('没有可删除的账号');
+        return;
+      }
       try {
         this.loading = true;
         const res = normalizeResult<{ userIds: string[] }>(await Service.batchDeleteUser(params));
         this.loading = false;
         if (res.success) {
+          this.getAccountList({ pageNo: params.pageNo, pageSize: PAGESIZE, userId: userStore?.userId! });
           ElMessage.success(res.message);
         } else {
           ElMessage.error(res.message);

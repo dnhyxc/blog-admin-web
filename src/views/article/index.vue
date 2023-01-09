@@ -37,8 +37,11 @@
       </el-table-column>
     </el-table>
     <div class="footer">
-      <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
-      <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+      <div>
+        <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量上架</el-button>
+        <el-button type="primary" :disabled="!multipleSelection.length" @click="onRemoveAll">批量下架</el-button>
+        <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+      </div>
       <el-pagination
         v-model:current-page="currentPage"
         :page-size="PAGESIZE"
@@ -69,18 +72,8 @@ import { ArticleItem } from '@/typings/comment';
 import { articleStore } from '@/store';
 import Message from '@/components/Message/index.vue';
 
-interface ArticleType {
-  id: string;
-  title: string;
-  author: string;
-  classify: string;
-  tag: string;
-  createTime: string;
-  status: boolean;
-}
-
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();
-const multipleSelection = ref<ArticleType[]>([]);
+const multipleSelection = ref<ArticleItem[]>([]);
 const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
 const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
@@ -90,17 +83,16 @@ const deleteIds = ref<string[]>([]); // 批量删除ids
 const router = useRouter();
 
 onMounted(() => {
-  articleStore.getArticleList({ pageNo: currentPage.value });
+  articleStore.getArticleList(currentPage.value);
 });
 
 // 监听分页变化，实时获取对应页数的文章列表
 watch(currentPage, (newVal, oldVal) => {
-  console.log('值改变了', newVal, oldVal);
-  articleStore.getArticleList({ pageNo: newVal });
+  articleStore.getArticleList(newVal);
 });
 
 // 多选
-const handleSelectionChange = (val: ArticleType[]) => {
+const handleSelectionChange = (val: ArticleItem[]) => {
   multipleSelection.value = val;
 };
 
@@ -129,17 +121,37 @@ const onManageArticle = (item: ArticleItem) => {
 const onRestore = (id: string) => {
   console.log(id, 'id');
   articleStore.shelvesArticle([id]);
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 下架
 const onRemove = (id: string) => {
   articleStore.removeArticle([id]);
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 删除
 const onDelete = (id: string) => {
   deleteId.value = id;
   messageVisible.value = true;
+};
+
+// 多选下架
+const onRemoveAll = () => {
+  const ids = multipleSelection.value.filter((j) => !j.isDelete).map((i) => i.id) || [];
+  articleStore.removeArticle(ids);
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
+};
+
+// 多选上架
+const onRestoreAll = () => {
+  const ids = multipleSelection.value.filter((j) => j.isDelete).map((i) => i.id) || [];
+  articleStore.shelvesArticle(ids);
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 多选删除
@@ -151,11 +163,11 @@ const onDeleteAll = () => {
 
 // 二次确认删除
 const onSubmitDelete = async () => {
-  console.log(deleteId.value, 'deleteID');
-  console.log(deleteIds.value, 'deleteIds>>>>deleteIds');
-  await articleStore.batchDelArticle(deleteIds.value.length ? deleteIds.value : [deleteId.value]);
+  await articleStore.batchDelArticle(deleteIds.value.length ? deleteIds.value : [deleteId.value], currentPage.value);
   // 删除完成之后，清除之前选择的账号ids
   deleteIds.value = [];
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 切换分页

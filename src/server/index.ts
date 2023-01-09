@@ -44,6 +44,18 @@ export const deleteUsers = async (params: { userIds: string[]; type: number }) =
   return res;
 };
 
+// 批量作废、恢复后台账号 type: 0 恢复，1 删除
+export const manageAdminUsers = async (params: { userIds: string[]; type: number }) => {
+  const res = await post(API.MANAGE_ADMIN_USERS, params);
+  return res;
+};
+
+// 批量删除后台账号
+export const deleteAdminUsers = async (params: { userIds: string[] }) => {
+  const res = await post(API.DELETE_ADMIN_USERS, params);
+  return res;
+};
+
 // 批量删除账号
 export const batchDeleteUser = async (params: { userIds: string[] }) => {
   const res = await post(API.BATCH_DELETE_USER, params);
@@ -53,6 +65,12 @@ export const batchDeleteUser = async (params: { userIds: string[] }) => {
 // 设置权限
 export const setAuth = async (params: { auth: number; userId: string }) => {
   const res = await post(API.SET_AUTH, params);
+  return res;
+};
+
+// 设置权限
+export const setAdminUserAuth = async (params: { auth: number; userId: string }) => {
+  const res = await post(API.SET_ADMIN_USER_AUTH, params);
   return res;
 };
 

@@ -56,14 +56,14 @@
         <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
         <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
       </div>
-      <!-- :hide-on-single-page="tableData.length < 50" -->
       <el-pagination
         v-model:current-page="currentPage"
         :page-size="PAGESIZE"
         background
         :disabled="disabled"
         layout="prev, pager, next"
-        :total="tableData.length"
+        :total="adminAccountStore.total"
+        :hide-on-single-page="adminAccountStore.list.length <= adminAccountStore.total"
         @current-change="onPageChange"
       />
     </div>
@@ -71,7 +71,7 @@
       <template #default>
         <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
           <el-radio :label="1">超级管理员</el-radio>
-          <el-radio :label="2">管理员</el-radio>
+          <el-radio v-if="userAuth !== AUTH_CONFIG.SUPER" :label="2">管理员</el-radio>
         </el-radio-group>
       </template>
     </Modal>
@@ -87,7 +87,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { ElTable } from 'element-plus';
-import { PAGESIZE } from '@/constant';
+import { AUTH_CONFIG, PAGESIZE } from '@/constant';
 import Modal from '@/components/Modal/index.vue';
 import Message from '@/components/Message/index.vue';
 import { adminAccountStore, userStore } from '@/store';
@@ -110,8 +110,7 @@ const authStatus = ref<number>(1); // 选择需要设置的权限类型
 const deleteId = ref<string>(''); // 删除id
 const deleteIds = ref<string[]>([]); // 批量删除ids
 const authUserId = ref<string>(''); // 需要设置权限的userId
-
-console.log(adminAccountStore.list, 'adminAccountStore', adminAccountStore.total, userStore);
+const userAuth = ref<number>(0); // 需要设置权限的userId
 
 onMounted(() => {
   getAdminAccountList();
@@ -131,16 +130,44 @@ const handleSelectionChange = (val: UserType[]) => {
   multipleSelection.value = val;
 };
 
+// 账号作废及恢复
+const onManageUser = (scope: UserType) => {
+  const { id, isDelete } = scope;
+  if (isDelete) {
+    onRestore(id);
+  } else {
+    onRemove(id);
+  }
+};
+
+// 废除
+const onRemove = (id: string) => {
+  adminAccountStore.manageAccount({ userIds: [id], type: 1 });
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
+};
+
+// 恢复
+const onRestore = (id: string) => {
+  adminAccountStore.manageAccount({ userIds: [id], type: 0 });
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
+};
+
 // 批量作废
 const onRemoveAll = () => {
   const ids = multipleSelection.value.filter((i) => !i.isDelete).map((j) => j.id);
-  console.log(ids, 'onRemoveAll');
+  adminAccountStore.manageAccount({ userIds: ids, type: 1 });
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 批量恢复
 const onRestoreAll = () => {
   const ids = multipleSelection.value.filter((i) => i.isDelete).map((j) => j.id);
-  console.log(ids, 'onRestoreAll');
+  adminAccountStore.manageAccount({ userIds: ids, type: 0 });
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 删除账号
@@ -155,112 +182,42 @@ const onDeleteAll = () => {
   const ids = multipleSelection.value.map((j) => j.id);
   deleteIds.value = ids;
   messageVisible.value = true;
-  console.log(ids, 'onDeleteAll');
 };
 
 // 删除二次确认
-const onSubmitDelete = () => {
-  console.log('调用删除接口', deleteId, deleteIds);
+const onSubmitDelete = async () => {
+  await adminAccountStore.deleteAdminUsers({
+    userIds: deleteIds.value.length ? deleteIds.value : [deleteId.value],
+    pageNo: currentPage.value,
+  });
   deleteIds.value = [];
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 设置权限
 const onSetAuth = (scope: UserType) => {
-  const { id } = scope;
+  const { id, auth } = scope;
   authUserId.value = id;
+  userAuth.value = auth;
   visible.value = true;
 };
 
 // 切换权限
 const onChangeAuthStatus = (auth: number) => {
-  console.log(auth, 'onChangeAuthStatus');
   authStatus.value = auth;
 };
 
 // 设置权限确认回调
-const onSetAuthSubmit = () => {
-  console.log(authStatus.value, 'authStatus');
-  console.log(authUserId.value, 'authUserId');
-  return Promise.resolve();
-};
-
-// 账号作废及恢复
-const onManageUser = (scope: UserType) => {
-  const { id, isDelete } = scope;
-  console.log(id, 'onManageUser');
-  if (isDelete) {
-    onRestore(id);
-  } else {
-    onRemove(id);
-  }
-};
-
-// 废除
-const onRemove = (id: string) => {
-  console.log(id, 'onRemove');
-};
-
-// 恢复
-const onRestore = (id: string) => {
-  console.log(id, 'onRestore');
+const onSetAuthSubmit = async () => {
+  return await adminAccountStore.setAdminUserAuth({ userId: authUserId.value, auth: authStatus.value });
 };
 
 // 切换分页
 const onPageChange = (value: number) => {
   currentPage.value = value;
+  getAdminAccountList();
 };
-
-const tableData: UserType[] = [
-  {
-    id: '111',
-    username: '我的县长父亲',
-    createTime: '2022-12-12',
-    auth: 1,
-    isDelete: true,
-  },
-  {
-    id: '222',
-    username: 'React 项目搭建',
-    createTime: '2022-12-12',
-    auth: 0,
-    isDelete: false,
-  },
-  {
-    id: '333',
-    username: '我的县长父亲',
-    createTime: '2022-12-12',
-    auth: 0,
-    isDelete: true,
-  },
-  {
-    id: '444',
-    username: '我的县长父亲',
-    createTime: '2022-12-12',
-    auth: 0,
-    isDelete: true,
-  },
-  {
-    id: '555',
-    username: '我的县长父亲',
-    createTime: '2022-12-12',
-    auth: 0,
-    isDelete: false,
-  },
-  {
-    id: '666',
-    username: '我的县长父亲',
-    createTime: '2022-12-12',
-    auth: 0,
-    isDelete: true,
-  },
-  {
-    id: '777',
-    username: '我的县长父亲',
-    createTime: '2022-12-12',
-    auth: 0,
-    isDelete: true,
-  },
-];
 </script>
 
 <style scoped lang="less">

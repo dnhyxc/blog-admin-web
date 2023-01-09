@@ -61,6 +61,8 @@ export interface UserInfoParams {
   articleTotal?: string;
   registerTime?: number;
   bindUserIds?: string[];
+  isDelete?: boolean;
+  auth?: number;
 }
 
 // 用户列表相应参数

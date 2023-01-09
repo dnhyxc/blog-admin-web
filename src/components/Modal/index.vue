@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<IProps>(), {
   title: 'title',
   cancelText: '取消',
   onText: '确定',
-  needFooter: false,
+  needFooter: true,
   onSubmit: () => {},
 });
 

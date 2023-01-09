@@ -20,12 +20,12 @@ export const useArticleStore = defineStore('article', {
   getters: {},
 
   actions: {
-    async getArticleList(params: { pageNo: number }) {
+    async getArticleList(pageNo: number) {
       try {
         this.loading = true;
         const res = normalizeResult<ArticleListResult>(
           await Service.getArticleList({
-            ...params,
+            pageNo,
             pageSize: PAGESIZE,
             userId: userStore?.userId!,
           }),
@@ -45,6 +45,10 @@ export const useArticleStore = defineStore('article', {
 
     // 下架文章
     async removeArticle(articleIds: string[]) {
+      if (!articleIds.length) {
+        ElMessage.info('没有可下架的文章');
+        return;
+      }
       try {
         this.loading = true;
         const res = normalizeResult<ArticleListResult>(
@@ -72,6 +76,10 @@ export const useArticleStore = defineStore('article', {
 
     // 上架文章
     async shelvesArticle(articleIds: string[]) {
+      if (!articleIds.length) {
+        ElMessage.info('没有可上架的文章');
+        return;
+      }
       try {
         this.loading = true;
         const res = normalizeResult<ArticleListResult>(
@@ -82,7 +90,6 @@ export const useArticleStore = defineStore('article', {
         );
         this.loading = false;
         if (res.success) {
-          console.log(res.data, 'shelvesArticle');
           this.list.forEach((i) => {
             if (articleIds.includes(i.id)) {
               delete i.isDelete;
@@ -97,8 +104,12 @@ export const useArticleStore = defineStore('article', {
       }
     },
 
-    // 上架文章
-    async batchDelArticle(articleIds: string[]) {
+    // 删除文章（支持批量删除）
+    async batchDelArticle(articleIds: string[], pageNo: number) {
+      if (!articleIds.length) {
+        ElMessage.info('没有可删除的文章');
+        return;
+      }
       try {
         this.loading = true;
         const res = normalizeResult<number>(
@@ -109,9 +120,7 @@ export const useArticleStore = defineStore('article', {
         );
         this.loading = false;
         if (res.success) {
-          console.log(res.data, 'shelvesArticle');
-          this.list = this.list.filter((i) => !articleIds.includes(i.id));
-          this.total = this.total - articleIds.length;
+          this.getArticleList(pageNo);
           ElMessage.success(res.message);
         } else {
           ElMessage.error(res.message);

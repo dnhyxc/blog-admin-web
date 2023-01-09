@@ -174,7 +174,11 @@ router.beforeEach(async (to, from, next) => {
     } else {
       if (to.name === 'users' || to.name === 'account' || to.name === 'home') {
         if (userStore.auth === AUTH_CONFIG.ADMIN) {
-          router.push('/home');
+          if (to.name !== 'home') {
+            router.push('/home');
+          } else {
+            next();
+          }
         } else {
           router.push('/article');
         }

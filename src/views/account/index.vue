@@ -180,14 +180,17 @@ const onMenageAccount = (scope: AccountType) => {
 // 恢复账号
 const onRecovery = async (id: string) => {
   // type：1 删除，0 恢复
-  await accountStore.removeAccount({ userIds: [id], type: 0 });
-  getAccountList();
+  await accountStore.manageAccount({ userIds: [id], type: 0 });
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 移除账号
 const onDelete = async (id: string) => {
-  await accountStore.removeAccount({ userIds: [id], type: 1 });
-  getAccountList();
+  // type：1 删除，0 恢复
+  await accountStore.manageAccount({ userIds: [id], type: 1 });
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 删除账号
@@ -199,17 +202,14 @@ const onDeleteAccount = (scope: AccountType) => {
 
 // 确认删除账号
 const onSubmitDelete = async () => {
-  await accountStore.batchDeleteUser({ userIds: deleteIds.value.length ? deleteIds.value : [deleteId.value] });
-  getAccountList();
+  await accountStore.batchDeleteUser({
+    userIds: deleteIds.value.length ? deleteIds.value : [deleteId.value],
+    pageNo: currentPage.value,
+  });
   // 删除完成之后，清除之前选择的账号ids
   deleteIds.value = [];
-};
-
-// 批量移除
-const onRemoveAll = async () => {
-  const ids = multipleSelection.value.filter((i) => !i.isDelete).map((j) => j.id) || [];
-  await accountStore.removeAccount({ userIds: ids, type: 1 });
-  getAccountList();
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 批量删除
@@ -219,12 +219,21 @@ const onDeleteAll = () => {
   messageVisible.value = true;
 };
 
+// 批量移除
+const onRemoveAll = async () => {
+  const ids = multipleSelection.value.filter((i) => !i.isDelete).map((j) => j.id) || [];
+  await accountStore.manageAccount({ userIds: ids, type: 1 });
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
+};
+
 // 批量恢复
 const onRestoreAll = async () => {
   const ids = multipleSelection.value.filter((i) => i.isDelete).map((j) => j.id) || [];
   // type：1 删除，0 恢复
-  await accountStore.removeAccount({ userIds: ids, type: 0 });
-  getAccountList();
+  await accountStore.manageAccount({ userIds: ids, type: 0 });
+  // 取消多选
+  multipleTableRef.value!.clearSelection();
 };
 
 // 切换分页
