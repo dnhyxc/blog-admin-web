@@ -17,25 +17,28 @@
       </el-table-column>
       <el-table-column property="status" label="发布状态" show-overflow-tooltip>
         <template #default="scope">
-          <div class="status" :title="scope.row.isDelete ? '已作废' : '使用中'">
+          <div class="status" :title="scope.row.isDelete ? '已下架' : '上架中'">
             <span v-if="scope.row.isDelete"><span class="status-del" />已下架</span>
             <span v-else><span class="status-use" />上架中</span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="145">
+      <el-table-column fixed="right" label="操作" width="195">
         <template #default="scope">
           <div class="actions">
             <el-button link type="primary" @click="toDetail(scope.row.id)">详情</el-button>
             <el-button link type="primary" @click="onEdit(scope.$index, scope.row.id)">编辑</el-button>
-            <el-button link type="primary" @click="onManageArticle(scope.row)">下架</el-button>
-            <el-button link type="primary" @click="onDelete(scope.$index, scope.row.id)">删除</el-button>
+            <el-button link type="primary" @click="onManageArticle(scope.row)">
+              {{ scope.row.isDelete ? '上架' : '下架' }}
+            </el-button>
+            <el-button link type="primary" @click="onDelete(scope.row.id)">删除</el-button>
           </div>
         </template>
       </el-table-column>
     </el-table>
     <div class="footer">
-      <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll()">批量删除</el-button>
+      <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+      <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
       <el-pagination
         v-model:current-page="currentPage"
         :page-size="PAGESIZE"
@@ -47,6 +50,12 @@
         @current-change="onPageChange"
       />
     </div>
+    <Message
+      v-model:visible="messageVisible"
+      title="删除文章"
+      content="确定删除该文章吗？"
+      :on-submit="onSubmitDelete"
+    />
   </div>
 </template>
 
@@ -58,6 +67,7 @@ import { PAGESIZE } from '@/constant';
 import { formatDate } from '@/utils';
 import { ArticleItem } from '@/typings/comment';
 import { articleStore } from '@/store';
+import Message from '@/components/Message/index.vue';
 
 interface ArticleType {
   id: string;
@@ -73,6 +83,8 @@ const multipleTableRef = ref<InstanceType<typeof ElTable>>();
 const multipleSelection = ref<ArticleType[]>([]);
 const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
+const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
+const deleteId = ref<string>(''); // 选中需要删除的文章id
 
 const router = useRouter();
 
@@ -89,11 +101,6 @@ watch(currentPage, (newVal, oldVal) => {
 // 多选
 const handleSelectionChange = (val: ArticleType[]) => {
   multipleSelection.value = val;
-};
-
-// 多选删除
-const onDeleteAll = () => {
-  console.log(multipleSelection.value, 'multipleSelection');
 };
 
 // 去详情
@@ -120,6 +127,7 @@ const onManageArticle = (item: ArticleItem) => {
 // 上架
 const onRestore = (id: string) => {
   console.log(id, 'id');
+  articleStore.shelvesArticle([id]);
 };
 
 // 下架
@@ -128,8 +136,24 @@ const onRemove = (id: string) => {
 };
 
 // 删除
-const onDelete = (index: number, id: string) => {
-  console.log(index, id, 'onDelete');
+const onDelete = (id: string) => {
+  deleteId.value = id;
+  messageVisible.value = true;
+};
+
+// 多选删除
+const onDeleteAll = () => {
+  console.log(multipleSelection.value, 'multipleSelection');
+};
+
+// 二次确认删除
+const onSubmitDelete = async () => {
+  console.log(deleteId.value, 'deleteID');
+
+  // await accountStore.batchDeleteUser({ userIds: deleteIds.value.length ? deleteIds.value : [deleteId.value] });
+  // getAccountList();
+  // // 删除完成之后，清除之前选择的账号ids
+  // deleteIds.value = [];
 };
 
 // 切换分页

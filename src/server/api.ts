@@ -36,3 +36,6 @@ export const ARTICLE_LIST = '/admin/articleList';
 
 // 下架文章
 export const REMOVE_ARTICLE = '/admin/removeArticle';
+
+// 上架文章
+export const SHELVES_ARTICLE = '/admin/shelvesArticle';

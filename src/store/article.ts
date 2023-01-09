@@ -70,6 +70,33 @@ export const useArticleStore = defineStore('article', {
       }
     },
 
+    // 上架文章
+    async shelvesArticle(articleIds: string[]) {
+      try {
+        this.loading = true;
+        const res = normalizeResult<ArticleListResult>(
+          await Service.shelvesArticle({
+            articleIds,
+            userId: userStore?.userId!,
+          }),
+        );
+        this.loading = false;
+        if (res.success) {
+          console.log(res.data, 'shelvesArticle');
+          this.list.forEach((i) => {
+            if (articleIds.includes(i.id)) {
+              delete i.isDelete;
+            }
+          });
+          ElMessage.success(res.message);
+        } else {
+          ElMessage.error(res.message);
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+
     // 清除文章列表数据
     removeArticleList() {
       this.list = [];

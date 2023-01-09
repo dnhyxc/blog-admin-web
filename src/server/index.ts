@@ -86,8 +86,14 @@ export const getArticleList = async (params: Params) => {
   return res;
 };
 
-// 获取文章列表
+// 下架文章
 export const removeArticle = async (params: { articleIds: string[]; userId: string }) => {
   const res = await post(API.REMOVE_ARTICLE, params);
+  return res;
+};
+
+// 上架文章
+export const shelvesArticle = async (params: { articleIds: string[]; userId: string }) => {
+  const res = await post(API.SHELVES_ARTICLE, params);
   return res;
 };
