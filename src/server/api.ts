@@ -30,3 +30,9 @@ export const PAGE_CONFIG = '/admin/pageConfig';
 
 // 获取绑定账户信息
 export const FIND_BIND_USERS = '/admin/findBindUsers';
+
+// 获取文章列表
+export const ARTICLE_LIST = '/admin/articleList';
+
+// 下架文章
+export const REMOVE_ARTICLE = '/admin/removeArticle';

@@ -100,3 +100,24 @@ export interface BindUserRes {
   findUsernames: string[];
   bindUserIds: string[];
 }
+
+// 文章详情
+export interface ArticleItem {
+  abstract: string;
+  authorId: string;
+  authorName: string;
+  classify: string;
+  content?: string;
+  coverImage: string;
+  createTime: number;
+  id: string;
+  tag: string;
+  title: string;
+  isDelete?: boolean;
+}
+
+// 文章列表
+export interface ArticleListResult {
+  list: ArticleItem[];
+  total: number;
+}

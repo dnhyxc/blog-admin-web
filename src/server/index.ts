@@ -79,3 +79,15 @@ export const getBindUsers = async (params: { userIds: string[]; userId: string }
   const res = await post(API.FIND_BIND_USERS, params);
   return res;
 };
+
+// 获取文章列表
+export const getArticleList = async (params: Params) => {
+  const res = await post(API.ARTICLE_LIST, params);
+  return res;
+};
+
+// 获取文章列表
+export const removeArticle = async (params: { articleIds: string[]; userId: string }) => {
+  const res = await post(API.REMOVE_ARTICLE, params);
+  return res;
+};

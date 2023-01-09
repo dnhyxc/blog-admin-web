@@ -1,19 +1,34 @@
 <template>
   <div class="article-list-wrap">
-    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
+    <el-table
+      ref="multipleTableRef"
+      :data="articleStore.list"
+      style="width: 100%"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" />
       <el-table-column label="标题" show-overflow-tooltip>
         <template #default="scope">{{ scope.row.title }}</template>
       </el-table-column>
       <el-table-column property="classify" label="分类" />
       <el-table-column property="tag" label="标签" show-overflow-tooltip />
-      <el-table-column property="createTime" label="发表时间" show-overflow-tooltip />
-      <el-table-column property="status" label="发布状态" />
+      <el-table-column property="createTime" label="发表时间" show-overflow-tooltip>
+        <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
+      </el-table-column>
+      <el-table-column property="status" label="发布状态" show-overflow-tooltip>
+        <template #default="scope">
+          <div class="status" :title="scope.row.isDelete ? '已作废' : '使用中'">
+            <span v-if="scope.row.isDelete"><span class="status-del" />已下架</span>
+            <span v-else><span class="status-use" />上架中</span>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" width="145">
         <template #default="scope">
           <div class="actions">
             <el-button link type="primary" @click="toDetail(scope.row.id)">详情</el-button>
             <el-button link type="primary" @click="onEdit(scope.$index, scope.row.id)">编辑</el-button>
+            <el-button link type="primary" @click="onManageArticle(scope.row)">下架</el-button>
             <el-button link type="primary" @click="onDelete(scope.$index, scope.row.id)">删除</el-button>
           </div>
         </template>
@@ -21,14 +36,14 @@
     </el-table>
     <div class="footer">
       <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll()">批量删除</el-button>
-      <!-- :hide-on-single-page="tableData.length < 50" -->
       <el-pagination
         v-model:current-page="currentPage"
         :page-size="PAGESIZE"
         background
         :disabled="disabled"
         layout="prev, pager, next"
-        :total="tableData.length"
+        :total="articleStore.total"
+        :hide-on-single-page="articleStore.list.length <= PAGESIZE"
         @current-change="onPageChange"
       />
     </div>
@@ -36,10 +51,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElTable } from 'element-plus';
 import { PAGESIZE } from '@/constant';
+import { formatDate } from '@/utils';
+import { ArticleItem } from '@/typings/comment';
+import { articleStore } from '@/store';
 
 interface ArticleType {
   id: string;
@@ -57,6 +75,16 @@ const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
 
 const router = useRouter();
+
+onMounted(() => {
+  articleStore.getArticleList({ pageNo: currentPage.value });
+});
+
+// 监听分页变化，实时获取对应页数的文章列表
+watch(currentPage, (newVal, oldVal) => {
+  console.log('值改变了', newVal, oldVal);
+  articleStore.getArticleList({ pageNo: newVal });
+});
 
 // 多选
 const handleSelectionChange = (val: ArticleType[]) => {
@@ -79,6 +107,26 @@ const onEdit = (index: number, id: string) => {
   console.log(index, id, 'onEdit');
 };
 
+// 上架、下架操作
+const onManageArticle = (item: ArticleItem) => {
+  const { isDelete, id } = item;
+  if (isDelete) {
+    onRestore(id);
+  } else {
+    onRemove(id);
+  }
+};
+
+// 上架
+const onRestore = (id: string) => {
+  console.log(id, 'id');
+};
+
+// 下架
+const onRemove = (id: string) => {
+  articleStore.removeArticle([id]);
+};
+
 // 删除
 const onDelete = (index: number, id: string) => {
   console.log(index, id, 'onDelete');
@@ -88,72 +136,6 @@ const onDelete = (index: number, id: string) => {
 const onPageChange = (value: number) => {
   console.log(`current page: ${value}`);
 };
-
-const tableData: ArticleType[] = [
-  {
-    id: '111',
-    title: '我的县长父亲',
-    author: 'dnhyxc',
-    classify: 'JavaScript',
-    tag: '前端',
-    createTime: '2022-12-12',
-    status: true,
-  },
-  {
-    id: '222',
-    title: 'React 项目搭建',
-    author: 'dnhyxc',
-    classify: 'JavaScript',
-    tag: '前端',
-    createTime: '2022-12-12',
-    status: true,
-  },
-  {
-    id: '333',
-    title: '我的县长父亲',
-    author: 'dnhyxc',
-    classify: 'JavaScript',
-    tag: '前端',
-    createTime: '2022-12-12',
-    status: true,
-  },
-  {
-    id: '444',
-    title: '我的县长父亲',
-    author: 'dnhyxc',
-    classify: 'JavaScript',
-    tag: '前端',
-    createTime: '2022-12-12',
-    status: true,
-  },
-  {
-    id: '555',
-    title: '我的县长父亲',
-    author: 'dnhyxc',
-    classify: 'JavaScript',
-    tag: '前端',
-    createTime: '2022-12-12',
-    status: true,
-  },
-  {
-    id: '666',
-    title: '我的县长父亲',
-    author: 'dnhyxc',
-    classify: 'JavaScript',
-    tag: '前端',
-    createTime: '2022-12-12',
-    status: true,
-  },
-  {
-    id: '777',
-    title: '我的县长父亲',
-    author: 'dnhyxc',
-    classify: 'JavaScript',
-    tag: '前端',
-    createTime: '2022-12-12',
-    status: true,
-  },
-];
 </script>
 
 <style lang="less" scoped>
@@ -161,6 +143,25 @@ const tableData: ArticleType[] = [
 
 .article-list-wrap {
   .layoutStyles();
+
+  .status {
+    .status-use,
+    .status-del {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 10px;
+      margin-right: 6px;
+    }
+
+    .status-use {
+      background-color: @success;
+    }
+
+    .status-del {
+      background-color: @warning;
+    }
+  }
 
   .actions {
     display: flex;
