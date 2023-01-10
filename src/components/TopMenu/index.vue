@@ -2,7 +2,7 @@
   <div class="container">
     <div class="title" @click="toHome">
       <img :src="IMAGES.pageIcon" alt="" class="icon" />
-      <span>后台管理</span>
+      后台管理
     </div>
     <div v-if="htmlWidth <= 1150" class="menuList">
       <el-dropdown trigger="click" @visible-change="onVisibleChange">
@@ -136,6 +136,7 @@ const onSelectMenu = (item: any) => {
     font-size: 18px;
     font-weight: 700;
     cursor: pointer;
+    color: @000;
 
     .icon {
       height: 32px;

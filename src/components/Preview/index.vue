@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="preview-wrap">
-    <v-md-preview :text="mackdown"></v-md-preview>
+    <v-md-preview :text="mackdown" default-show-toc></v-md-preview>
   </div>
 </template>
 
