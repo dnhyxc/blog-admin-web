@@ -38,6 +38,10 @@ export const useAdminAccountStore = defineStore('adminAccount', {
 
     // 废除、恢复账号
     async manageAccount(params: { userIds: string[]; type: number }) {
+      if (!params.userIds.length) {
+        ElMessage.info(params.type === 1 ? '没有可作废的账号' : '没有可恢复的账号');
+        return;
+      }
       try {
         this.loading = true;
         const res = normalizeResult<{ userIds: string[] }>(await Service.manageAdminUsers(params));
@@ -67,13 +71,15 @@ export const useAdminAccountStore = defineStore('adminAccount', {
 
     // 批量删除后台账号
     async deleteAdminUsers(params: { userIds: string[]; pageNo: number }) {
+      if (!params.userIds.length) {
+        ElMessage.info('没有可删除的账号');
+        return;
+      }
       try {
         this.loading = true;
         const res = normalizeResult<{ userIds: string[] }>(await Service.deleteAdminUsers(params));
         this.loading = false;
         if (res.success) {
-          console.log(params.pageNo, '-----');
-
           this.getAdminUserList({ pageNo: params.pageNo, pageSize: PAGESIZE, userId: userStore?.userId! });
           ElMessage.success(res.message);
         } else {

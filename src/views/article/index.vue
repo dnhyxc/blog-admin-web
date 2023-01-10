@@ -57,6 +57,7 @@
       v-model:visible="messageVisible"
       title="删除文章"
       content="确定删除该文章吗？"
+      info="删除文章后，该文章将无法恢复！"
       :on-submit="onSubmitDelete"
     />
   </div>

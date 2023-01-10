@@ -88,7 +88,8 @@
     <Modal v-model:visible="visible" :on-submit="onSubmit" title="权限设置">
       <template #default>
         <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
-          <el-radio :label="1">设置为博主</el-radio>
+          <el-radio v-if="userStore?.auth === AUTH_CONFIG.SUPER" :label="1">设置为博主</el-radio>
+          <el-radio :label="0">设置为普通用户</el-radio>
         </el-radio-group>
       </template>
     </Modal>
@@ -104,7 +105,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { ElTable } from 'element-plus';
-import { PAGESIZE, IMAGES } from '@/constant';
+import { PAGESIZE, IMAGES, AUTH_CONFIG } from '@/constant';
 import { accountStore, userStore } from '@/store';
 import { formatDate } from '@/utils';
 import Modal from '@/components/Modal/index.vue';

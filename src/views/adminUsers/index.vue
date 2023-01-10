@@ -72,6 +72,7 @@
         <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
           <el-radio :label="1">超级管理员</el-radio>
           <el-radio v-if="userAuth !== AUTH_CONFIG.SUPER" :label="2">管理员</el-radio>
+          <el-radio :label="0">普通用户</el-radio>
         </el-radio-group>
       </template>
     </Modal>
@@ -88,9 +89,9 @@
 import { ref, onMounted } from 'vue';
 import { ElTable } from 'element-plus';
 import { AUTH_CONFIG, PAGESIZE } from '@/constant';
+import { adminAccountStore, userStore } from '@/store';
 import Modal from '@/components/Modal/index.vue';
 import Message from '@/components/Message/index.vue';
-import { adminAccountStore, userStore } from '@/store';
 
 interface UserType {
   id: string;

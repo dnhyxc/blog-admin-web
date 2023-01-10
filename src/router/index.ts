@@ -70,7 +70,7 @@ const routes: Array<RouteRecordRaw> = [
           keepAlive: true,
           requireAuth: true,
         },
-        component: () => import('@/views/users/index.vue'),
+        component: () => import('@/views/adminUsers/index.vue'),
       },
       {
         path: '/comment',

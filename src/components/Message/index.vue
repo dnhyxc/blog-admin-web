@@ -8,7 +8,13 @@
   <div class="container">
     <el-dialog v-model="visible" :title="title" :width="width">
       <div class="content">
-        <el-icon class="warn-icon"><WarningFilled /></el-icon>{{ content }}
+        <div class="wrap">
+          <el-icon class="warn-icon"><WarningFilled /></el-icon>
+          <div class="desc">
+            <div class="desc-text">{{ content }}</div>
+            <div class="info">{{ info }}</div>
+          </div>
+        </div>
       </div>
       <template #footer>
         <span class="footer">
@@ -30,6 +36,7 @@ interface IProps {
   onSubmit: (data?: any) => void;
   onCancel?: (data?: any) => void;
   content?: string;
+  info?: string;
   cancelText?: string;
   onText?: string;
   width?: string;
@@ -46,6 +53,7 @@ const props = withDefaults(defineProps<IProps>(), {
   onText: '确定',
   width: '350',
   content: '',
+  info: '',
   onCancel: () => {},
 });
 
@@ -85,7 +93,23 @@ const onConfirm = () => {
   .content {
     display: flex;
     align-items: center;
-    padding: 0 10px;
+    justify-content: center;
+
+    .wrap {
+      display: flex;
+      justify-content: flex-start;
+
+      .desc {
+        display: flex;
+        flex-direction: column;
+        font-size: 16px;
+      }
+
+      .info {
+        margin-top: 10px;
+        font-size: 14px;
+      }
+    }
 
     .warn-icon {
       margin-top: -2px;
