@@ -1,31 +1,25 @@
 <!--
- * 文章预览页面
+ * 预览HTML组件
  * @author: dnhyxc
- * @since: 2023-01-08
+ * @since: 2023-01-10
  * index.vue
 -->
 <template>
   <div class="preview-wrap">
-    <v-md-preview :text="mackdown"></v-md-preview>
+    <v-md-preview-html :html="html" preview-class="vuepress-markdown-body"></v-md-preview-html>
   </div>
 </template>
 
 <script setup lang="ts">
 interface IProps {
-  mackdown: string;
+  html: string;
 }
 
 withDefaults(defineProps<IProps>(), {
-  mackdown: '',
+  html: '',
 });
 </script>
 
 <style scoped lang="less">
 @import '@/styles/index.less';
-
-:deep {
-  .vuepress-markdown-body {
-    padding: 30px;
-  }
-}
 </style>

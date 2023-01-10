@@ -34,7 +34,13 @@ export default defineConfig({
     proxy: {
       '/admin': {
         target: 'http://localhost:9112',
-        changeOrigin: true,
+        changeOrigin: true, // 允许跨域
+      },
+
+      '/wss': {
+        target: 'http://localhost:9112',
+        changeOrigin: true, // 允许跨域
+        ws: false,
       },
     },
   },

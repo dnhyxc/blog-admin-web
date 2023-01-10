@@ -7,12 +7,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AuthDialog: typeof import('./src/components/AuthDialog/index.vue')['default']
     Card: typeof import('./src/components/Card/index.vue')['default']
     Content: typeof import('./src/components/Content/index.vue')['default']
-    copy: typeof import('./src/components/Modal copy/index.vue')['default']
     Editor: typeof import('./src/components/Editor/index.vue')['default']
-    ElAffix: typeof import('element-plus/es')['ElAffix']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -36,9 +33,7 @@ declare module '@vue/runtime-core' {
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadio: typeof import('element-plus/es')['ElRadio']
-    ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
-    ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
@@ -52,6 +47,7 @@ declare module '@vue/runtime-core' {
     Modal: typeof import('./src/components/Modal/index.vue')['default']
     Popover: typeof import('./src/components/Popover/index.vue')['default']
     Preview: typeof import('./src/components/Preview/index.vue')['default']
+    PreviewHtml: typeof import('./src/components/PreviewHtml/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TopMenu: typeof import('./src/components/TopMenu/index.vue')['default']

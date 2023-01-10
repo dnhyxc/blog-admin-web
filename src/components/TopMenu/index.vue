@@ -4,7 +4,7 @@
       <img :src="IMAGES.pageIcon" alt="" class="icon" />
       <span>后台管理</span>
     </div>
-    <div v-if="htmlWidth <= 960" class="menuList">
+    <div v-if="htmlWidth <= 1150" class="menuList">
       <el-dropdown trigger="click" @visible-change="onVisibleChange">
         <span class="el-dropdown-link">
           <span class="current-menu">文章详情</span>

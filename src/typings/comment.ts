@@ -123,3 +123,21 @@ export interface ArticleListResult {
   list: ArticleItem[];
   total: number;
 }
+
+// 文章详情返回
+export interface ArticleDetail {
+  id?: string;
+  title?: string;
+  content?: string;
+  classify?: string;
+  tag?: string;
+  abstract?: string;
+  createTime?: number;
+  authorId?: string;
+  coverImage?: string;
+  likeCount?: number;
+  isLike?: number;
+  authorName?: string;
+  originalArticleId?: string;
+  readCount?: number;
+}
