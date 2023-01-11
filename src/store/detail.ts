@@ -36,5 +36,9 @@ export const useDetailStore = defineStore('detail', {
         throw error;
       }
     },
+
+    clearDetail() {
+      this.detail = {};
+    },
   },
 });
