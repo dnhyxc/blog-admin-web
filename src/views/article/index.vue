@@ -70,7 +70,7 @@ import { ElTable } from 'element-plus';
 import { PAGESIZE } from '@/constant';
 import { formatDate } from '@/utils';
 import { ArticleItem } from '@/typings/comment';
-import { articleStore } from '@/store';
+import { articleStore, userStore } from '@/store';
 import Message from '@/components/Message/index.vue';
 import { sendMessage } from '@/websocket';
 
@@ -117,7 +117,7 @@ const onManageArticle = (item: ArticleItem) => {
   } else {
     onRemove(id);
   }
-  sendMessage(JSON.stringify({ action: 'send', data: '来了老弟' }));
+  sendMessage(JSON.stringify({ action: 'send', data: '来了老弟', userId: userStore?.userId! }));
 };
 
 // 上架
@@ -126,7 +126,6 @@ const onRestore = (id: string) => {
   articleStore.shelvesArticle([id]);
   // 取消多选
   multipleTableRef.value!.clearSelection();
-  sendMessage(JSON.stringify({ action: 'send', data: '来了老弟' }));
 };
 
 // 下架
