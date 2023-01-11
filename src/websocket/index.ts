@@ -1,11 +1,13 @@
-import { userStore } from '@/store';
+import { userStore, messageStore } from '@/store';
 
 export let ws: any;
 let wstime: any = null;
 // lockReconnect用于避免重复连接
 let lockReconnect = false;
 // 连接ws的url
-const wsUrl = `ws://127.0.0.1:9002/ws?id=${userStore?.userId}`;
+const wsUrl = `ws://${location.hostname === '43.143.114.71' ? '43.143.114.71' : '127.0.0.1'}:9002/ws?id=${
+  userStore?.userId
+}`;
 let timeoutObj: any = null;
 let serverTimeoutObj: any = null;
 const timeout: number = 50000;
@@ -117,6 +119,8 @@ function onOpen(event: any) {
 function onMessage(event: any) {
   try {
     const data = JSON.parse(event.data);
+    console.log(data, 'data');
+
     if (data.code === 200) {
       // 心跳数据不处理
       // 所需的正常操作
@@ -124,13 +128,10 @@ function onMessage(event: any) {
         console.log(event.data);
       } else {
         // 解析处理数据
-        console.log('解析处理数据>>>做事情');
-
-        // if (data.action === 'queryMessage') {
-        //   initTaskList(data.data || []);
-        // } else if (data.action === 'saveMessage') {
-        //   addTask(data.data || null);
-        // }
+        if (data.action === 'push') {
+          console.log('推送消息');
+          messageStore.setCount();
+        }
       }
     } else {
       console.log('收到非格式化数据');

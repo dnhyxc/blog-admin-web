@@ -29,3 +29,10 @@ withDefaults(defineProps<IProps>(), {
   className: 'el-popover',
 });
 </script>
+
+<style scoped lang="less">
+.container {
+  display: flex;
+  align-items: center;
+}
+</style>

@@ -7,6 +7,7 @@ import { usePageConfigStore } from './pageConfig';
 import { useSettingStore } from './setting';
 import { useArticleStore } from './article';
 import { useDetailStore } from './detail';
+import { useMessageStore } from './message';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -17,6 +18,7 @@ const pageConfigStore = usePageConfigStore();
 const settingStore = useSettingStore();
 const articleStore = useArticleStore();
 const detailStore = useDetailStore();
+const messageStore = useMessageStore();
 
 export {
   userStore,
@@ -28,4 +30,5 @@ export {
   settingStore,
   articleStore,
   detailStore,
+  messageStore,
 };

@@ -117,7 +117,7 @@ const onManageArticle = (item: ArticleItem) => {
   } else {
     onRemove(id);
   }
-  sendMessage(JSON.stringify({ action: 'send', data: '来了老弟', userId: userStore?.userId! }));
+  sendMessage(JSON.stringify({ action: 'push', data: '来了老弟', userId: userStore?.userId! }));
 };
 
 // 上架

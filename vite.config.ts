@@ -29,7 +29,7 @@ export default defineConfig({
   server: {
     port: 8088, // 启动端口
     hmr: {
-      host: '127.0.0.1',
+      host: 'localhost',
     },
     proxy: {
       '/admin': {
