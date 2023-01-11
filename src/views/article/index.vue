@@ -72,6 +72,7 @@ import { formatDate } from '@/utils';
 import { ArticleItem } from '@/typings/comment';
 import { articleStore } from '@/store';
 import Message from '@/components/Message/index.vue';
+import { sendMessage } from '@/websocket';
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();
 const multipleSelection = ref<ArticleItem[]>([]);
@@ -116,6 +117,7 @@ const onManageArticle = (item: ArticleItem) => {
   } else {
     onRemove(id);
   }
+  sendMessage(JSON.stringify({ action: 'send', data: '来了老弟' }));
 };
 
 // 上架
@@ -124,6 +126,7 @@ const onRestore = (id: string) => {
   articleStore.shelvesArticle([id]);
   // 取消多选
   multipleTableRef.value!.clearSelection();
+  sendMessage(JSON.stringify({ action: 'send', data: '来了老弟' }));
 };
 
 // 下架
