@@ -72,7 +72,7 @@ import { formatDate } from '@/utils';
 import { ArticleItem } from '@/typings/comment';
 import { articleStore, userStore } from '@/store';
 import Message from '@/components/Message/index.vue';
-import { sendMessage } from '@/websocket';
+import { sendMessage } from '@/socket';
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();
 const multipleSelection = ref<ArticleItem[]>([]);

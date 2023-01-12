@@ -34,3 +34,9 @@
   }
 }
 ```
+
+### 弹幕插件
+
+```
+yarn add vue-baberrage
+```
