@@ -8,6 +8,7 @@ import { useSettingStore } from './setting';
 import { useArticleStore } from './article';
 import { useDetailStore } from './detail';
 import { useMessageStore } from './message';
+import { useCreateStore } from './create';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -19,6 +20,7 @@ const settingStore = useSettingStore();
 const articleStore = useArticleStore();
 const detailStore = useDetailStore();
 const messageStore = useMessageStore();
+const createStore = useCreateStore();
 
 export {
   userStore,
@@ -31,4 +33,5 @@ export {
   articleStore,
   detailStore,
   messageStore,
+  createStore,
 };

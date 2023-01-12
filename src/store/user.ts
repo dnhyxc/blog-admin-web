@@ -7,6 +7,7 @@ import { ElMessage } from 'element-plus';
 interface IProps extends UserLoginParams {
   userInfo: UserInfoParams;
   bindAccount: string[] | null | undefined;
+  bindUserInfo: { username: string; userId: string }[];
 }
 
 export const useUserStore = defineStore('user', {
@@ -17,6 +18,7 @@ export const useUserStore = defineStore('user', {
     auth: Number(locGetItem('auth')), // 管理员权限
     registerTime: 0, // 注册时间
     bindAccount: JSON.parse(locGetItem('bindAccount')!),
+    bindUserInfo: JSON.parse(locGetItem('bindUserInfo')!),
     userInfo: { id: '', username: '' },
   }),
 

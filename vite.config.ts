@@ -1,10 +1,11 @@
+import * as path from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import ElementPlus from 'unplugin-element-plus/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-import * as path from 'path';
+import prismjs from 'vite-plugin-prismjs';
 
 export default defineConfig({
   base: './', // 打包路径
@@ -17,6 +18,9 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
     ElementPlus(),
+    prismjs({
+      languages: 'all',
+    }),
   ],
   resolve: {
     // 设置别名
@@ -35,7 +39,10 @@ export default defineConfig({
       '/admin': {
         target: 'http://localhost:9112',
         changeOrigin: true, // 允许跨域
-        ws: false,
+      },
+      '/api': {
+        target: 'http://localhost:9112',
+        changeOrigin: true, // 允许跨域
       },
     },
   },

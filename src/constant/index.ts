@@ -14,6 +14,7 @@ import SEA from '@/assets/img/sea.jpg';
 import SSM from '@/assets/img/ssm.jpg';
 import GIRL from '@/assets/img/girl.png';
 import PAGE_ICON from '@/assets/svg/pageIcon.svg';
+import PUSH_ICON from '@/assets/svg/push.svg';
 import { MenuListParams } from '@/typings/comment';
 
 // 左侧菜单配置
@@ -86,6 +87,7 @@ export const IMAGES = {
   ssm: SSM,
   girl: GIRL,
   pageIcon: PAGE_ICON,
+  push: PUSH_ICON,
 };
 
 // 封面图地址
@@ -109,3 +111,35 @@ export const AUTH_CONFIG = {
   SUPER: 1,
   ADMIN: 2,
 };
+
+// 创建文章表单配置
+export const CREATE_ARTICLE_CONFIG = [
+  {
+    prop: 'title',
+    label: '文章标题',
+    message: '请输入文章标题',
+  },
+  {
+    prop: 'classify',
+    label: '文章分类',
+    message: '请输入文章分类',
+  },
+  {
+    prop: 'tag',
+    label: '文章标签',
+    message: '请输入文章标签',
+  },
+  {
+    prop: 'createTime',
+    label: '发文时间',
+    message: '请选择发文时间',
+  },
+  {
+    prop: 'abstract',
+    label: '文章摘要',
+    message: '请输入文章摘要',
+    type: 'textarea',
+    maxlength: 300,
+    autosize: { minRows: 5, maxRows: 8 },
+  },
+];

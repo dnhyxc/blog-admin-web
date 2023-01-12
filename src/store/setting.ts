@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ElMessage } from 'element-plus';
 import * as Service from '@/server';
 import { normalizeResult } from '@/utils';
-import { userStore } from '.';
+import { userStore } from '@/store';
 
 interface bindUserInfoPrams {
   username: string;

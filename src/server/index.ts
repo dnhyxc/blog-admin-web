@@ -1,5 +1,5 @@
 import { post } from '@/utils/request';
-import { LoginParams, PageConfigParams, Params } from '@/typings/comment';
+import { LoginParams, PageConfigParams, Params, CreateArticleParams } from '@/typings/comment';
 import * as API from './api';
 
 // 登录
@@ -123,7 +123,19 @@ export const batchDelArticle = async (params: { articleIds: string[]; userId: st
 };
 
 // 获取文章详情
-export const getArticleDetail = async (params: { id: string; userId: string }) => {
+export const getArticleDetail = async (params: CreateArticleParams) => {
   const res = await post(API.ARTICLE_DETAIL, params);
+  return res;
+};
+
+// 获取文章详情
+export const createArticle = async (params: CreateArticleParams) => {
+  const res = await post(API.CREATE_ARTICLE, params);
+  return res;
+};
+
+// 获取文章详情
+export const updateArticle = async (params: CreateArticleParams) => {
+  const res = await post(API.UPDATE_ARTICLE, params);
   return res;
 };

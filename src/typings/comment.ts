@@ -141,3 +141,17 @@ export interface ArticleDetail {
   originalArticleId?: string;
   readCount?: number;
 }
+
+// 发布文章参数
+
+export interface CreateArticleParams {
+  title?: string;
+  content?: string;
+  classify?: string;
+  tag?: string;
+  coverImage?: string;
+  abstract?: string;
+  createTime: number;
+  authorId: string;
+  userId?: string;
+}

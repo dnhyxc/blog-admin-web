@@ -23,8 +23,6 @@ export const usePageConfigStore = defineStore('pageConfig', {
           await Service.pageConfig({ ...params, userId: userStore?.userId!, bindUserIds: userStore.bindAccount! }),
         );
 
-        console.log(res, 'res');
-
         this.loading = false;
         if (res.success) {
           ElMessage.success(res.message);

@@ -54,3 +54,9 @@ export const BATCH_DEL_ARTICLE = '/admin/batchDelArticle';
 
 // 批量删除文章
 export const ARTICLE_DETAIL = '/admin/articleDetail';
+
+// 创建文章
+export const CREATE_ARTICLE = '/admin/createArticle';
+
+// 更新文章
+export const UPDATE_ARTICLE = '/admin/updateArticle';

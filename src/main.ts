@@ -13,6 +13,10 @@ import '@kangc/v-md-editor/lib/style/preview-html.css';
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
 
+// 快捷复制
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+
 import Prism from 'prismjs';
 import hljs from 'highlight.js';
 import router from '@/router';
@@ -26,6 +30,9 @@ VueMarkdownEditor.use(vuepressTheme, {
   Prism,
   Hljs: hljs,
 });
+
+// 快捷复制配置
+VueMarkdownEditor.use(createCopyCodePlugin());
 
 // 预览mackdown配置
 VMdPreview.use(vuepressTheme, {
