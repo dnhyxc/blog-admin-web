@@ -147,6 +147,7 @@ const createArticleForm = ref<CreateArticleParams>({
   abstract: '',
   authorId: '',
   articleId: '',
+  authorName: '',
 });
 
 // 监听 visible 状态实时设置表单值
@@ -203,6 +204,8 @@ const confirmClick = () => {
       };
       if (route.query.id) {
         params.articleId = route.query.id as string;
+        params.authorName =
+          settingStore.bindUserInfo.find((i) => i.userId === createArticleForm.value.authorId)?.username || '';
         await createStore.updateArticle(params);
       } else {
         await createStore.createArticle(params);

@@ -155,4 +155,5 @@ export interface CreateArticleParams {
   authorId: string;
   userId?: string;
   articleId?: string;
+  authorName?: string;
 }
