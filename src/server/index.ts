@@ -123,7 +123,7 @@ export const batchDelArticle = async (params: { articleIds: string[]; userId: st
 };
 
 // 获取文章详情
-export const getArticleDetail = async (params: CreateArticleParams) => {
+export const getArticleDetail = async (params: { id: string; userId: string }) => {
   const res = await post(API.ARTICLE_DETAIL, params);
   return res;
 };

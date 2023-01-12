@@ -126,7 +126,7 @@
 
 <script setup lang="ts">
 import { onMounted, onBeforeMount, ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance } from 'element-plus';
 import { detailStore, settingStore, createStore } from '@/store';
@@ -134,6 +134,7 @@ import { CreateArticleParams } from '@/typings/comment';
 import Editor from '@/components/Editor/index.vue';
 
 const route = useRoute();
+const router = useRouter();
 
 const mackdownValue = ref<string>('');
 const visible = ref<boolean>(false);
@@ -145,6 +146,7 @@ const createArticleForm = ref<CreateArticleParams>({
   createTime: 0,
   abstract: '',
   authorId: '',
+  articleId: '',
 });
 
 // 监听 visible 状态实时设置表单值
@@ -200,12 +202,13 @@ const confirmClick = () => {
         content: mackdownValue.value,
       };
       if (route.query.id) {
-        console.log(params, '更新文章文章>>>>>>html');
+        params.articleId = route.query.id as string;
+        await createStore.updateArticle(params);
       } else {
-        console.log(params, '发布文章>>>>>>html');
-        createStore.createArticle(params);
+        await createStore.createArticle(params);
       }
       visible.value = false;
+      router.push('/article');
     } else {
       console.log(createArticleForm, 'error submit!');
       return false;

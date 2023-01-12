@@ -24,6 +24,7 @@ export const useCreateStore = defineStore('create', {
         this.loading = false;
         if (res.success) {
           this.id = res.data.id;
+          ElMessage.success(res.message);
         } else {
           ElMessage.error(res.message);
         }
@@ -40,6 +41,7 @@ export const useCreateStore = defineStore('create', {
         this.loading = false;
         if (res.success) {
           this.id = res.data.id;
+          ElMessage.success(res.message);
         } else {
           ElMessage.error(res.message);
         }

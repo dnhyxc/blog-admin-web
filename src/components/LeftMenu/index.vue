@@ -61,6 +61,7 @@ const menuList = computed(() => {
 
 // 点击跳转页面
 const onClick = (menu: MenuListParams<typeof Grid>) => {
+  if (route.name === menu.key) return;
   router.push(menu.path);
 };
 </script>
