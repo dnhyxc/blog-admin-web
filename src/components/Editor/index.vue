@@ -1,25 +1,31 @@
 <template>
   <div class="container">
-    <v-md-editor v-model="mackdown.text" :height="height"></v-md-editor>
+    <v-md-editor v-model="mackdown" :height="height" autofocus placeholder="编辑内容"></v-md-editor>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 interface IProps {
   height?: string;
+  mackdown?: string;
 }
 
-withDefaults(defineProps<IProps>(), {
+const props = withDefaults(defineProps<IProps>(), {
   height: 'calc(100vh - 70px)',
+  mackdown: '',
 });
 
-type mackdownType = {
-  text: string;
-};
+const mackdown = ref<string>('');
 
-const mackdown = reactive<mackdownType>({ text: 'text' });
+watchEffect(() => {
+  console.log('mackdown', props.mackdown);
+
+  if (props.mackdown) {
+    mackdown.value = props.mackdown;
+  }
+});
 </script>
 
 <style lang="less" scoped>

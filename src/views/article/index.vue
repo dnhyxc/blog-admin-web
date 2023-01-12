@@ -27,7 +27,7 @@
         <template #default="scope">
           <div class="actions">
             <el-button link type="primary" @click="toDetail(scope.row.id)">详情</el-button>
-            <el-button link type="primary" @click="onEdit(scope.$index, scope.row.id)">编辑</el-button>
+            <el-button link type="primary" @click="onEdit(scope.row)">编辑</el-button>
             <el-button link type="primary" @click="onManageArticle(scope.row)">
               {{ scope.row.isDelete ? '上架' : '下架' }}
             </el-button>
@@ -105,8 +105,9 @@ const toDetail = (id: string) => {
 };
 
 // 编辑
-const onEdit = (index: number, id: string) => {
-  console.log(index, id, 'onEdit');
+const onEdit = (item: ArticleItem) => {
+  const { id } = item;
+  router.push(`/create?id=${id}`);
 };
 
 // 上架、下架操作
