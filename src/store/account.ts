@@ -4,7 +4,7 @@ import * as Service from '@/server';
 import { normalizeResult } from '@/utils';
 import { ElMessage } from 'element-plus';
 import { PAGESIZE } from '@/constant';
-import { userStore } from '.';
+import { userStore } from '@/store';
 
 interface IParams extends UserListRes {
   loading: boolean;
@@ -22,7 +22,12 @@ export const useAccountStore = defineStore('account', {
     async getAccountList(params: Params) {
       try {
         this.loading = true;
-        const res = normalizeResult<UserListRes>(await Service.getAccountList(params));
+        const res = normalizeResult<UserListRes>(
+          await Service.getAccountList({
+            ...params,
+            userId: userStore?.userId!,
+          }),
+        );
         this.loading = false;
         if (res.success) {
           const { list, total } = res.data;

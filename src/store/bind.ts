@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ElMessage } from 'element-plus';
 import * as Service from '@/server';
-import { normalizeResult, locSetItem } from '@/utils';
+import { normalizeResult, ssnSetItem } from '@/utils';
 import { BindUserRes } from '@/typings/comment';
 import { userStore } from '@/store';
 
@@ -36,7 +36,7 @@ export const useBindAccountStore = defineStore('bindAccount', {
         if (res.success) {
           const { notFindUsers, bindUserIds } = res.data;
           userStore.bindAccount = bindUserIds;
-          locSetItem('bindAccount', JSON.stringify(bindUserIds));
+          ssnSetItem('bindAccount', JSON.stringify(bindUserIds));
           if (notFindUsers.length) {
             const notFindUsernames = notFindUsers.join('，');
             ElMessage({

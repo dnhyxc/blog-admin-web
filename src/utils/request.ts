@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus';
 import { stringify } from 'query-string';
 import { AuthParams } from '@/typings/comment';
 import { addGatewayPattern } from './urlTool';
+import { ssnGetItem } from './storage';
 
 // const authStore = useAuthStore();
 
@@ -93,7 +94,7 @@ export default function request(_url: string, options?: any): FetchResult {
       newOptions.headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${ssnGetItem('token')}`,
         ...newOptions.headers,
       };
       newOptions.body = JSON.stringify(newOptions.body);
@@ -101,7 +102,7 @@ export default function request(_url: string, options?: any): FetchResult {
       // NewOptions.body is FormData
       newOptions.headers = {
         Accept: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${ssnGetItem('token')}`,
         ...newOptions.headers,
       };
     }

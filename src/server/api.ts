@@ -4,6 +4,9 @@ export const LOGIN = '/admin/login';
 // 用户注册
 export const REGISTER = '/admin/register';
 
+// 校验token是否过期
+export const VERIFY = '/admin/verify';
+
 // 获取用户列表
 export const GET_USER_LIST = '/admin/getUserList';
 

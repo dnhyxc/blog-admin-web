@@ -22,6 +22,16 @@ export const register = async (params: LoginParams) => {
   }
 };
 
+// 校验token是否过期
+export const verify = async () => {
+  try {
+    const res = await post(API.VERIFY);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 获取用户信息
 export const getUserInfo = async (params: { userId: string }) => {
   try {
