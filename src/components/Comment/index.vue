@@ -5,7 +5,7 @@
  * index.vue
 -->
 <template>
-  <div class="Comments">
+  <div v-if="commentStore.comments?.length > 0" class="Comments">
     <div v-if="commentStore.comments?.length > 0" class="title">
       全部评论
       <span class="replyCount">{{ getCommentCount(commentStore.comments) }}</span>
@@ -21,11 +21,11 @@
           <div class="userInfo">
             <span class="name">{{ i.username }}</span>
             <div class="date">
-              {{ formatGapTime(i.date) }}
+              {{ formatGapTime(i.date!) }}
               <el-button v-if="i?.isDelete" type="primary" link class="deleteComment" @click="onRestoreComment(i)">
                 恢复评论
               </el-button>
-              <el-button v-else type="warning" link class="deleteComment" @click="onRemoveComment(i, true)">
+              <el-button v-else type="warning" link class="deleteComment" @click="onRemoveComment(i)">
                 作废评论
               </el-button>
               <el-button type="danger" link class="deleteComment" @click="onDeleteComment(i)">删除评论</el-button>
@@ -53,7 +53,7 @@
                   </span>
                 </span>
                 <div class="date">
-                  {{ formatGapTime(j.date) }}
+                  {{ formatGapTime(j.date!) }}
                   <el-button
                     v-if="j?.isDelete"
                     type="primary"
@@ -98,29 +98,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { IMAGES } from '@/constant';
 import { formatGapTime } from '@/utils';
-import { CommentParams, ManageCommentParams } from '@/typings/comment';
+import { CommentParams } from '@/typings/comment';
 import { commentStore } from '@/store';
 import Message from '@/components/Message/index.vue';
 
+interface IParams {
+  comment: CommentParams;
+  articleId: string;
+  isThreeTier?: boolean;
+}
+
 const viewMoreComments = ref<string[]>([]);
 const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
-const deleteParams = ref<ManageCommentParams>({
-  commentId: '',
+const deleteParams = ref<IParams>({
+  comment: {},
+  isThreeTier: false,
   articleId: '',
 });
 
 const props = defineProps<{ authorId: string; articleId: string }>();
-
-onMounted(() => {
-  console.log(props.articleId, 'props.articleId');
-  if (props.articleId) {
-    commentStore.getCommentList(props.articleId);
-  }
-});
 
 // 计算评论数
 const getCommentCount = (comments: CommentParams[]) => {
@@ -134,59 +134,30 @@ const getCommentCount = (comments: CommentParams[]) => {
 
 // 作废评论
 const onRemoveComment = (comment: CommentParams, isThreeTier?: boolean) => {
-  console.log(comment, '作废');
   if (!props.articleId) return;
-  const params = isThreeTier
-    ? {
-        commentId: comment.commentId!,
-        fromCommentId: comment.commentId!,
-        articleId: props.articleId,
-      }
-    : {
-        commentId: comment.commentId!,
-        articleId: props.articleId,
-      };
-  commentStore.removeComment(params, props.articleId);
+  commentStore.removeComment({ comment, isThreeTier, articleId: props.articleId });
 };
 
 // 恢复评论
 const onRestoreComment = (comment: CommentParams, isThreeTier?: boolean) => {
-  console.log(comment, '恢复评论');
   if (!props.articleId) return;
-  const params = isThreeTier
-    ? {
-        commentId: comment.commentId!,
-        fromCommentId: comment.commentId!,
-        articleId: props.articleId,
-      }
-    : {
-        commentId: comment.commentId!,
-        articleId: props.articleId,
-      };
-  commentStore.restoreComment(params, props.articleId);
+  commentStore.restoreComment({ comment, isThreeTier, articleId: props.articleId });
 };
 
 // 删除评论
 const onDeleteComment = (comment: CommentParams, isThreeTier?: boolean) => {
-  console.log(comment, '删除评论');
   if (!props.articleId) return;
-  const params = isThreeTier
-    ? {
-        commentId: comment.commentId!,
-        fromCommentId: comment.commentId!,
-        articleId: props.articleId,
-      }
-    : {
-        commentId: comment.commentId!,
-        articleId: props.articleId,
-      };
-  deleteParams.value = params;
+  deleteParams.value = {
+    comment,
+    isThreeTier,
+    articleId: props.articleId,
+  };
   messageVisible.value = true;
 };
 
 // 确认删除评论
 const onSubmitDelete = async () => {
-  commentStore.deleteComment(deleteParams.value, props.articleId);
+  commentStore.deleteComment(deleteParams.value);
 };
 
 // 判断viewMoreComments是否包含commentId，以此返回对应的replyList

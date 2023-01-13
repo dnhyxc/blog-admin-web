@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ElMessage } from 'element-plus';
 import * as Service from '@/server';
-import { CommentParams, ManageCommentParams } from '@/typings/comment';
+import { CommentParams } from '@/typings/comment';
 import { normalizeResult } from '@/utils';
 
 interface IProps {
@@ -32,14 +32,32 @@ export const useCommentStore = defineStore('comment', {
       }
     },
 
+    // 处理参数
+    manageParams(data: { comment: CommentParams; articleId: string; isThreeTier?: boolean }) {
+      const { comment, articleId, isThreeTier } = data;
+      const params = isThreeTier
+        ? {
+            commentId: comment.commentId!,
+            fromCommentId: comment.commentId!,
+            articleId,
+          }
+        : {
+            commentId: comment.commentId!,
+            articleId,
+          };
+      return params;
+    },
+
     // 删除详情对应的文章评论
-    async deleteComment(params: ManageCommentParams, id: string) {
+    async deleteComment(data: { comment: CommentParams; articleId: string; isThreeTier?: boolean }) {
+      const { comment, articleId, isThreeTier } = data;
+      const params = this.manageParams({ comment, articleId, isThreeTier });
       this.loading = true;
       try {
         const res = normalizeResult<string>(await Service.deleteComment(params));
         this.loading = false;
         if (res.success) {
-          this.getCommentList(id);
+          this.getCommentList(articleId);
           ElMessage.success(res.message);
         } else {
           ElMessage.error(res.message);
@@ -50,13 +68,17 @@ export const useCommentStore = defineStore('comment', {
     },
 
     // 作废详情对应的文章评论
-    async removeComment(params: ManageCommentParams, id: string) {
+    async removeComment(data: { comment: CommentParams; articleId: string; isThreeTier?: boolean }) {
+      const { comment, articleId, isThreeTier } = data;
+      console.log(isThreeTier, 'isThreeTier');
+
+      const params = this.manageParams({ comment, articleId, isThreeTier });
       this.loading = true;
       try {
         const res = normalizeResult<string>(await Service.removeComment(params));
         this.loading = false;
         if (res.success) {
-          this.getCommentList(id);
+          this.getCommentList(articleId);
           ElMessage.success(res.message);
         } else {
           ElMessage.error(res.message);
@@ -67,13 +89,15 @@ export const useCommentStore = defineStore('comment', {
     },
 
     // 恢复详情对应的文章评论
-    async restoreComment(params: ManageCommentParams, id: string) {
+    async restoreComment(data: { comment: CommentParams; articleId: string; isThreeTier?: boolean }) {
+      const { comment, articleId, isThreeTier } = data;
+      const params = this.manageParams({ comment, isThreeTier, articleId });
       this.loading = true;
       try {
         const res = normalizeResult<string>(await Service.restoreComment(params));
         this.loading = false;
         if (res.success) {
-          this.getCommentList(id);
+          this.getCommentList(articleId);
           ElMessage.success(res.message);
         } else {
           ElMessage.error(res.message);

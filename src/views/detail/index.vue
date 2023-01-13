@@ -29,9 +29,12 @@
         </div>
         <div class="abstract">{{ detailStore.detail?.abstract }}</div>
         <Preview v-if="detailStore.detail.content" :mackdown="detailStore.detail?.content" class="preview-content" />
-        <div v-if="detailStore.detail?.id!" class="comment-detail">
-          <Comment :article-id="detailStore.detail?.id!" :author-id="detailStore.detail?.authorId!" />
-        </div>
+        <Comment
+          v-if="detailStore.detail?.id!"
+          :article-id="detailStore.detail?.id!"
+          :author-id="detailStore.detail?.authorId!"
+          class="comment-detail"
+        />
       </div>
     </div>
   </div>
@@ -40,7 +43,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { detailStore } from '@/store';
+import { detailStore, commentStore } from '@/store';
 import { formatDate } from '@/utils';
 import { IMAGES } from '@/constant';
 import Preview from '@/components/Preview/index.vue';
@@ -50,8 +53,12 @@ import Comment from '@/components/Comment/index.vue';
 const route = useRoute();
 
 onMounted(() => {
-  if (route.params.id) {
-    detailStore.getArticleDetail(route.params.id as string);
+  const { id } = route.params;
+  if (id) {
+    // 获取文章详情
+    detailStore.getArticleDetail(id as string);
+    // 获取文章评论
+    commentStore.getCommentList(id as string);
   }
 });
 

@@ -162,10 +162,10 @@ export interface CreateArticleParams {
 // 评论参数
 export interface CommentParams {
   commentId?: string;
-  articleId: string;
-  userId: string;
-  username: string;
-  date: number;
+  articleId?: string;
+  userId?: string;
+  username?: string;
+  date?: number;
   content?: string;
   fromUserId?: string;
   likeCount?: number;
