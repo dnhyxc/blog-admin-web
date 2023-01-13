@@ -28,10 +28,10 @@
           <div class="actions">
             <el-button link type="primary" @click="toDetail(scope.row.id)">详情</el-button>
             <el-button link type="primary" @click="onEdit(scope.row)">编辑</el-button>
-            <el-button link type="primary" @click="onManageArticle(scope.row)">
+            <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onManageArticle(scope.row)">
               {{ scope.row.isDelete ? '上架' : '下架' }}
             </el-button>
-            <el-button link type="primary" @click="onDelete(scope.row.id)">删除</el-button>
+            <el-button link type="danger" @click="onDelete(scope.row.id)">删除</el-button>
           </div>
         </template>
       </el-table-column>
@@ -39,8 +39,8 @@
     <div class="footer">
       <div>
         <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量上架</el-button>
-        <el-button type="primary" :disabled="!multipleSelection.length" @click="onRemoveAll">批量下架</el-button>
-        <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+        <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量下架</el-button>
+        <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
       </div>
       <el-pagination
         v-model:current-page="currentPage"

@@ -60,19 +60,19 @@
         <template #default="scope">
           <div class="actions">
             <el-button link type="primary" @click="onSetAuth(scope.row)">权限设置</el-button>
-            <el-button link type="primary" @click="onMenageAccount(scope.row)">
+            <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onMenageAccount(scope.row)">
               {{ scope.row.isDelete ? '恢复' : '作废' }}
             </el-button>
-            <el-button link type="primary" @click="onDeleteAccount(scope.row)">删除</el-button>
+            <el-button link type="danger" @click="onDeleteAccount(scope.row)">删除</el-button>
           </div>
         </template>
       </el-table-column>
     </el-table>
     <div class="footer">
       <div class="action-btn">
-        <el-button type="primary" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
+        <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
         <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
-        <el-button type="primary" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+        <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
       </div>
       <el-pagination
         v-model:current-page="currentPage"

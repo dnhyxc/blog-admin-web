@@ -135,6 +135,7 @@ export interface ArticleDetail {
   createTime?: number;
   authorId?: string;
   coverImage?: string;
+  headUrl?: string;
   likeCount?: number;
   isLike?: number;
   authorName?: string;
@@ -156,4 +157,31 @@ export interface CreateArticleParams {
   userId?: string;
   articleId?: string;
   authorName?: string;
+}
+
+// 评论参数
+export interface CommentParams {
+  commentId?: string;
+  articleId: string;
+  userId: string;
+  username: string;
+  date: number;
+  content?: string;
+  fromUserId?: string;
+  likeCount?: number;
+  replyCount?: number;
+  headUrl?: string;
+  fromUsername?: string;
+  formContent?: string;
+  replyList?: CommentParams[];
+  fromCommentId?: string;
+  isLike?: boolean;
+  isDelete?: boolean;
+}
+
+// 删除、恢复评论传参
+export interface ManageCommentParams {
+  commentId: string;
+  fromCommentId?: string;
+  articleId: string;
 }

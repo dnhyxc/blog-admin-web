@@ -1,5 +1,5 @@
 import { post } from '@/utils/request';
-import { LoginParams, PageConfigParams, Params, CreateArticleParams } from '@/typings/comment';
+import { LoginParams, PageConfigParams, Params, CreateArticleParams, ManageCommentParams } from '@/typings/comment';
 import * as API from './api';
 
 // 登录
@@ -147,5 +147,29 @@ export const createArticle = async (params: CreateArticleParams) => {
 // 获取文章详情
 export const updateArticle = async (params: CreateArticleParams) => {
   const res = await post(API.UPDATE_ARTICLE, params);
+  return res;
+};
+
+// 获取详情文章评论
+export const getCommentList = async (params: { id: string }) => {
+  const res = await post(API.GET_COMMENT_LIST, params);
+  return res;
+};
+
+// 删除评论
+export const deleteComment = async (params: ManageCommentParams) => {
+  const res = await post(API.DELETE_COMMENT, params);
+  return res;
+};
+
+// 作废评论
+export const removeComment = async (params: ManageCommentParams) => {
+  const res = await post(API.REMOVE_COMMENT, params);
+  return res;
+};
+
+// 恢复评论
+export const restoreComment = async (params: ManageCommentParams) => {
+  const res = await post(API.RESTORE_COMMENT, params);
   return res;
 };

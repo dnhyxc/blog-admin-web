@@ -9,6 +9,7 @@ import { useArticleStore } from './article';
 import { useDetailStore } from './detail';
 import { useMessageStore } from './message';
 import { useCreateStore } from './create';
+import { useCommentStore } from './comment';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -21,6 +22,7 @@ const articleStore = useArticleStore();
 const detailStore = useDetailStore();
 const messageStore = useMessageStore();
 const createStore = useCreateStore();
+const commentStore = useCommentStore();
 
 export {
   userStore,
@@ -34,4 +36,5 @@ export {
   detailStore,
   messageStore,
   createStore,
+  commentStore,
 };

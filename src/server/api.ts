@@ -63,3 +63,15 @@ export const CREATE_ARTICLE = '/admin/createArticle';
 
 // 更新文章
 export const UPDATE_ARTICLE = '/admin/updateArticle';
+
+// 获取文章评论
+export const GET_COMMENT_LIST = '/admin/getCommentList';
+
+// 作废评论
+export const REMOVE_COMMENT = '/admin/removeComment';
+
+// 删除评论
+export const DELETE_COMMENT = '/admin/deleteComment';
+
+// 恢复前台删除的评论
+export const RESTORE_COMMENT = '/admin/restoreComment';

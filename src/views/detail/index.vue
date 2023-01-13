@@ -8,7 +8,31 @@
   <div v-loading="detailStore.loading" class="detail-wrap">
     <TopMenu class="top-menu" />
     <div class="content">
-      <Preview v-if="detailStore.detail.content" :mackdown="detailStore.detail.content" class="preview-container" />
+      <div class="prewiew">
+        <div class="header">{{ detailStore.detail?.title }}</div>
+        <div class="info">
+          <div class="avatar">
+            <el-avatar :size="60" fit="cover" :src="IMAGES.sea" @error="errorHandler">
+              <img :src="detailStore.detail?.headUrl || IMAGES.sea" />
+            </el-avatar>
+          </div>
+          <div class="art-info">
+            <div class="username">{{ detailStore.detail.authorName }}</div>
+            <div class="read-info">
+              <span class="time">{{ formatDate(detailStore.detail?.createTime!) }}</span>
+              <span class="read-count">阅读 {{ detailStore.detail?.readCount }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="coverImg">
+          <el-image class="el-image" :src="detailStore.detail?.coverImage" fit="cover" />
+        </div>
+        <div class="abstract">{{ detailStore.detail?.abstract }}</div>
+        <Preview v-if="detailStore.detail.content" :mackdown="detailStore.detail?.content" class="preview-content" />
+        <div v-if="detailStore.detail?.id!" class="comment-detail">
+          <Comment :article-id="detailStore.detail?.id!" :author-id="detailStore.detail?.authorId!" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -16,9 +40,12 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { detailStore } from '@/store';
+import { formatDate } from '@/utils';
+import { IMAGES } from '@/constant';
 import Preview from '@/components/Preview/index.vue';
 import TopMenu from '@/components/TopMenu/index.vue';
-import { detailStore } from '@/store';
+import Comment from '@/components/Comment/index.vue';
 
 const route = useRoute();
 
@@ -27,6 +54,9 @@ onMounted(() => {
     detailStore.getArticleDetail(route.params.id as string);
   }
 });
+
+// 图片加载失败事件
+const errorHandler = () => true;
 </script>
 
 <style scoped lang="less">
@@ -50,11 +80,69 @@ onMounted(() => {
     margin-top: 60px;
     margin-bottom: 10px;
 
-    .preview-container {
-      max-width: 820px;
-      overflow-x: auto;
-      background-color: @fff;
+    .prewiew {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      width: 820px;
+      margin: 0 10px;
       border-radius: 5px;
+
+      .header {
+        max-width: 100%;
+        padding: 30px;
+        font-size: 32px;
+        line-height: 32px;
+        font-weight: 700;
+        background-color: @fff;
+        border-radius: 5px;
+      }
+
+      .info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0 30px;
+        background-color: @fff;
+
+        .art-info {
+          margin-left: 12px;
+
+          .read-info {
+            color: @text-color;
+            font-size: 14px;
+
+            .read-count {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+
+      .coverImg {
+        padding: 15px 30px 0;
+        background-color: @fff;
+
+        .el-image {
+          border-radius: 5px;
+        }
+      }
+
+      .abstract {
+        padding: 0 30px;
+        background-color: @fff;
+      }
+
+      .preview-content {
+        max-width: 100%;
+        overflow-x: auto;
+        border-radius: 5px;
+      }
+
+      .comment-detail {
+        margin-top: 10px;
+        border-radius: 5px;
+      }
     }
   }
 }
