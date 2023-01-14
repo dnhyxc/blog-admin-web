@@ -5,7 +5,7 @@
  * index.vue
 -->
 <template>
-  <div v-loading="detailStore.loading" class="detail-wrap">
+  <div id="__DETAIL__" v-loading="detailStore.loading" class="detail-wrap">
     <TopMenu class="top-menu" />
     <div class="content">
       <div class="prewiew">
@@ -36,6 +36,9 @@
           class="comment-detail"
         />
       </div>
+      <el-affix v-if="detailStore.tocTitles.length" target="#__DETAIL__" :offset="60" class="toc-el-affix">
+        <Toc />
+      </el-affix>
     </div>
   </div>
 </template>
@@ -49,6 +52,7 @@ import { IMAGES } from '@/constant';
 import Preview from '@/components/Preview/index.vue';
 import TopMenu from '@/components/TopMenu/index.vue';
 import Comment from '@/components/Comment/index.vue';
+import Toc from '@/components/Toc/index.vue';
 
 const route = useRoute();
 
@@ -70,6 +74,7 @@ const errorHandler = () => true;
 @import '@/styles/index.less';
 
 .detail-wrap {
+  position: relative;
   height: 100%;
   background-color: @bg-color-page;
   overflow-x: hidden;
@@ -87,9 +92,14 @@ const errorHandler = () => true;
     margin-top: 60px;
     margin-bottom: 10px;
 
+    .toc-el-affix {
+      box-sizing: border-box;
+      width: 280px;
+      height: calc(100vh - 70px);
+    }
+
     .prewiew {
       display: flex;
-      justify-content: center;
       flex-direction: column;
       width: 820px;
       margin: 0 10px;

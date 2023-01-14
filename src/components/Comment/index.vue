@@ -32,6 +32,10 @@
             </div>
           </div>
           <div class="desc">{{ i.content }}</div>
+          <div class="comment-count">
+            <span v-if="i.likeCount">点赞 {{ i.likeCount }}</span>
+            <span v-if="i.replyList?.length" class="replay-count">评论 {{ i.replyList?.length }}</span>
+          </div>
         </div>
         <div v-if="i.replyList && i.replyList?.length! > 0" class="commentChild">
           <div v-for="j in checkReplyList(i.replyList, i.commentId!)" :key="j.commentId" class="commentChildItem">
@@ -275,6 +279,16 @@ const errorHandler = () => true;
           justify-content: flex-end;
           align-items: center;
           color: @text-color;
+        }
+      }
+
+      .comment-count {
+        margin-top: 10px;
+        font-size: 14px;
+        color: @text-color;
+
+        .replay-count {
+          margin-left: 10px;
         }
       }
 
