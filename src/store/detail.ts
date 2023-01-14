@@ -16,6 +16,7 @@ interface IProps {
   detail: ArticleDetail;
   tocTitles: tocTitlesParams[];
   previewRef: any;
+  titles: HTMLHeadElement[];
 }
 
 export const useDetailStore = defineStore('detail', {
@@ -24,6 +25,7 @@ export const useDetailStore = defineStore('detail', {
     detail: {},
     tocTitles: [],
     previewRef: null,
+    titles: [],
   }),
 
   actions: {
@@ -39,6 +41,7 @@ export const useDetailStore = defineStore('detail', {
         this.loading = false;
         if (res.success) {
           this.detail = { ...res.data };
+          return res.data;
         } else {
           ElMessage.error(res.message);
         }

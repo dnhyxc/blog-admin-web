@@ -28,7 +28,7 @@
           <el-image class="el-image" :src="detailStore.detail?.coverImage" fit="cover" />
         </div>
         <div class="abstract">{{ detailStore.detail?.abstract }}</div>
-        <Preview v-if="detailStore.detail.content" :mackdown="detailStore.detail?.content" class="preview-content" />
+        <Preview v-if="mackdown" :mackdown="mackdown" class="preview-content" />
         <Comment
           v-if="detailStore.detail?.id!"
           :article-id="detailStore.detail?.id!"
@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { detailStore, commentStore } from '@/store';
 import { formatDate } from '@/utils';
@@ -56,11 +56,15 @@ import Toc from '@/components/Toc/index.vue';
 
 const route = useRoute();
 
-onMounted(() => {
+const mackdown = ref<string | undefined>('');
+
+onMounted(async () => {
   const { id } = route.params;
   if (id) {
     // 获取文章详情
-    detailStore.getArticleDetail(id as string);
+    const res = await detailStore.getArticleDetail(id as string);
+    // 使用 ref 存储文章正文内容，已到达实时更新文章目录的效果
+    mackdown.value = res?.content;
     // 获取文章评论
     commentStore.getCommentList(id as string);
   }
