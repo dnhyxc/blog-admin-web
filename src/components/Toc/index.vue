@@ -24,7 +24,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import _ from 'lodash';
 import { detailStore } from '@/store';
 
-const checkTocTitle = ref<string | undefined>();
+const checkTocTitle = ref<string | undefined>('');
 
 const tocRef = ref<HTMLDivElement | null>(null);
 // const prevHtags = ref<string>('');
@@ -67,6 +67,7 @@ const onScroll = _.debounce(() => {
 }, 10);
 
 onMounted(() => {
+  checkTocTitle.value = detailStore.tocTitles[0].title + 0;
   const detailElement: HTMLDivElement | null = document.querySelector('#__DETAIL__');
   detailElement?.addEventListener('scroll', onScroll);
 });

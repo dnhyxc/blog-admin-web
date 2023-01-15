@@ -102,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { IMAGES } from '@/constant';
 import { formatGapTime } from '@/utils';
@@ -114,6 +114,7 @@ interface IParams {
   comment: CommentParams;
   articleId: string;
   isThreeTier?: boolean;
+  comments?: CommentParams;
 }
 
 const viewMoreComments = ref<string[]>([]);
@@ -125,6 +126,8 @@ const deleteParams = ref<IParams>({
 });
 
 const props = defineProps<{ authorId: string; articleId: string }>();
+
+onUnmounted(() => {});
 
 // 计算评论数
 const getCommentCount = (comments: CommentParams[]) => {

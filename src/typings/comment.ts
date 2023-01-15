@@ -103,6 +103,26 @@ export interface BindUserRes {
   bindUserIds: string[];
 }
 
+// 评论参数
+export interface CommentParams {
+  commentId?: string;
+  articleId?: string;
+  userId?: string;
+  username?: string;
+  date?: number;
+  content?: string;
+  fromUserId?: string;
+  likeCount?: number;
+  replyCount?: number;
+  headUrl?: string;
+  fromUsername?: string;
+  formContent?: string;
+  replyList?: CommentParams[];
+  fromCommentId?: string;
+  isLike?: boolean;
+  isDelete?: boolean;
+}
+
 // 文章详情
 export interface ArticleItem {
   abstract: string;
@@ -116,6 +136,7 @@ export interface ArticleItem {
   tag: string;
   title: string;
   isDelete?: boolean;
+  comments?: CommentParams;
 }
 
 // 文章列表
@@ -157,26 +178,6 @@ export interface CreateArticleParams {
   userId?: string;
   articleId?: string;
   authorName?: string;
-}
-
-// 评论参数
-export interface CommentParams {
-  commentId?: string;
-  articleId?: string;
-  userId?: string;
-  username?: string;
-  date?: number;
-  content?: string;
-  fromUserId?: string;
-  likeCount?: number;
-  replyCount?: number;
-  headUrl?: string;
-  fromUsername?: string;
-  formContent?: string;
-  replyList?: CommentParams[];
-  fromCommentId?: string;
-  isLike?: boolean;
-  isDelete?: boolean;
 }
 
 // 删除、恢复评论传参

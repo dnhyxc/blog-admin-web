@@ -54,9 +54,9 @@ onMounted(async () => {
   isMounted.value = true;
   loading.value = true;
   const res = await commentStore.getArticlesComments({ pageNo: pageNo.value });
-  loading.value = false;
   dataSource.value = res!;
   pageNo.value++;
+  loading.value = false;
 });
 
 // 折叠板展开事件
@@ -69,12 +69,9 @@ const handleChange = async (id: string) => {
 const load = async () => {
   loading.value = true;
   const res = await commentStore.getArticlesComments({ pageNo: pageNo.value });
-  loading.value = false;
-  dataSource.value = {
-    list: [...dataSource.value.list, ...res?.list!],
-    total: res?.total!,
-  };
+  dataSource.value = res!;
   pageNo.value++;
+  loading.value = false;
 };
 </script>
 

@@ -125,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeMount, ref, watchEffect } from 'vue';
+import { onMounted, ref, watchEffect, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance } from 'element-plus';
@@ -161,13 +161,6 @@ watchEffect(() => {
   }
 });
 
-// 进入创建页前，先清除详情内容
-onBeforeMount(() => {
-  if (!route.query.id) {
-    detailStore.clearDetail();
-  }
-});
-
 onMounted(() => {
   // 获取绑定的前台账号信息
   settingStore.getBindUserInfo();
@@ -176,6 +169,12 @@ onMounted(() => {
   if (id) {
     detailStore.getArticleDetail(id as string);
   }
+});
+
+onUnmounted(() => {
+  detailStore.clearDetail();
+  settingStore.onReset();
+  createStore.clearId();
 });
 
 // 发布文章

@@ -50,7 +50,7 @@ export const useCreateStore = defineStore('create', {
       }
     },
 
-    clearDetail() {
+    clearId() {
       this.id = '';
     },
   },

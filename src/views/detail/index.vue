@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { detailStore, commentStore } from '@/store';
 import { formatDate } from '@/utils';
@@ -68,6 +68,11 @@ onMounted(async () => {
     // 获取文章评论
     commentStore.getCommentList(id as string);
   }
+});
+
+onUnmounted(() => {
+  detailStore.clearDetail();
+  commentStore.clearComment();
 });
 
 // 图片加载失败事件

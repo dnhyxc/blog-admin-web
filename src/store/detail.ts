@@ -62,6 +62,9 @@ export const useDetailStore = defineStore('detail', {
 
     clearDetail() {
       this.detail = {};
+      this.tocTitles = [];
+      this.previewRef = null;
+      this.titles = [];
     },
   },
 });

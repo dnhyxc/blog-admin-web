@@ -75,3 +75,6 @@ export const DELETE_COMMENT = '/admin/deleteComment';
 
 // 恢复前台删除的评论
 export const RESTORE_COMMENT = '/admin/restoreComment';
+
+// 恢复前台删除的评论
+export const GET_ARTICLES_COMMENTS = '/admin/getArticlesComments';

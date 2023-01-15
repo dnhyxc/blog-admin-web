@@ -50,7 +50,6 @@
         layout="prev, pager, next"
         :total="articleStore.total"
         :hide-on-single-page="articleStore.list.length <= PAGESIZE"
-        @current-change="onPageChange"
       />
     </div>
     <Message
@@ -123,7 +122,6 @@ const onManageArticle = (item: ArticleItem) => {
 
 // 上架
 const onRestore = (id: string) => {
-  console.log(id, 'id');
   articleStore.shelvesArticle([id]);
   // 取消多选
   multipleTableRef.value!.clearSelection();
@@ -172,11 +170,6 @@ const onSubmitDelete = async () => {
   deleteIds.value = [];
   // 取消多选
   multipleTableRef.value!.clearSelection();
-};
-
-// 切换分页
-const onPageChange = (value: number) => {
-  console.log(`current page: ${value}`);
 };
 </script>
 

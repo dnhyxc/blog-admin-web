@@ -1,21 +1,53 @@
 import { defineStore } from 'pinia';
 import { ElMessage } from 'element-plus';
 import * as Service from '@/server';
-import { CommentParams } from '@/typings/comment';
+import { CommentParams, ArticleItem } from '@/typings/comment';
 import { normalizeResult } from '@/utils';
+import { PAGESIZE } from '@/constant';
+import { userStore } from '.';
 
 interface IProps {
   loading: boolean;
   comments: CommentParams[];
+  articleList: {
+    list: ArticleItem[];
+    total: number;
+  };
 }
 
 export const useCommentStore = defineStore('comment', {
   state: (): IProps => ({
     loading: false,
-    comments: [],
+    comments: [], // 详情评论
+    articleList: {
+      list: [],
+      total: 0,
+    },
   }),
 
   actions: {
+    // 获取评论列表
+    async getArticlesComments(params: { pageNo: number }) {
+      this.loading = true;
+      try {
+        const res = normalizeResult<{ list: ArticleItem[]; total: number }>(
+          await Service.getArticlesComments({ ...params, pageSize: PAGESIZE, userId: userStore?.userId! }),
+        );
+        this.loading = false;
+        if (res.success) {
+          this.articleList = {
+            list: [...this.articleList.list, ...res.data.list],
+            total: res.data.total,
+          };
+          return res.data;
+        } else {
+          ElMessage.error(res.message);
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+
     // 获取详情对应的文章评论
     async getCommentList(id: string) {
       this.loading = true;
@@ -105,6 +137,11 @@ export const useCommentStore = defineStore('comment', {
       } catch (error) {
         throw error;
       }
+    },
+
+    // 清除评论
+    clearComment() {
+      this.comments = [];
     },
   },
 });

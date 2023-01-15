@@ -173,3 +173,9 @@ export const restoreComment = async (params: ManageCommentParams) => {
   const res = await post(API.RESTORE_COMMENT, params);
   return res;
 };
+
+// 获取评论列表
+export const getArticlesComments = async (params: { pageNo: number; pageSize: number; userId: string }) => {
+  const res = await post(API.GET_ARTICLES_COMMENTS, params);
+  return res;
+};
