@@ -1,6 +1,6 @@
 <template>
   <div class="comment">
-    <el-collapse v-model="activeNames" class="el-collapse" @change="handleChange">
+    <el-collapse v-model="activeNames" class="el-collapse">
       <div v-if="isMounted" class="tag-list">
         <div class="infinite-list-wrapper" style="overflow: auto">
           <div
@@ -8,17 +8,18 @@
             class="list"
             :infinite-scroll-disabled="disabled"
             infinite-scroll-immediate
-            infinite-scroll-distance="2"
+            infinite-scroll-distance="5"
           >
             <el-collapse-item v-for="item in dataSource.list" :key="item.id" :name="item.id">
               <template #title>
                 <div class="title">{{ item.title }}</div>
               </template>
               <Comment
-                :comments="item.comments"
+                v-model:comment-list="item.commentList"
                 :article-id="item.authorId!"
                 :author-id="item.authorId!"
                 class="comment-detail"
+                :reset-comment-list="resetCommentList"
               />
             </el-collapse-item>
           </div>
@@ -33,12 +34,12 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed, onBeforeMount } from 'vue';
 import { commentStore } from '@/store';
-import { ArticleItem } from '@/typings/comment';
+import { ArticleItem, CommentParams } from '@/typings/comment';
 import Comment from '@/components/Comment/index.vue';
 
 type loadType = boolean;
 
-const activeNames = ref();
+const activeNames = ref<string[]>([]);
 const dataSource = ref<{ list: ArticleItem[]; total: number }>({ list: [], total: 0 });
 const loading = ref<loadType>(false);
 const noMore = computed(() => dataSource.value.list.length >= dataSource.value.total);
@@ -56,13 +57,66 @@ onMounted(async () => {
   const res = await commentStore.getArticlesComments({ pageNo: pageNo.value });
   loading.value = false;
   dataSource.value = res!;
-  pageNo.value++;
+  if (dataSource.value.list.length < res?.total!) {
+    pageNo.value++;
+  }
+  activeNames.value = res?.list.filter((i) => i.commentList?.comments.length!).map((j) => j.id) || [];
 });
 
-// 折叠板展开事件
-const handleChange = async (id: string) => {
-  // if (!id) return;
-  // await commentStore.getCommentList(id);
+// 评论删除、恢复、作废操作回调
+const resetCommentList = async ({
+  comment,
+  isRestore,
+  isDelete,
+}: {
+  comment: CommentParams;
+  isRestore: boolean;
+  isDelete: boolean;
+}) => {
+  // 删除
+  if (isDelete) {
+    dataSource.value.list.forEach((i) => {
+      if (i.commentList?.comments?.length) {
+        i.commentList?.comments.forEach((j, index) => {
+          if (j.id === comment.id && isDelete) {
+            i.commentList?.comments.splice(index, 1);
+            return;
+          }
+          if (j.replyList?.length) {
+            j.replyList.forEach((k, index) => {
+              if (k._id === comment._id && isDelete) {
+                j.replyList?.splice(index, 1);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+
+  // 恢复、作废
+  dataSource.value.list.forEach((i) => {
+    if (i.commentList?.comments?.length) {
+      i.commentList?.comments.forEach((j) => {
+        if (j.id === comment.id) {
+          j.isDelete = !j.isDelete;
+          return;
+        }
+
+        if (j.replyList?.length) {
+          j.replyList.forEach((k) => {
+            if (k._id === comment._id) {
+              if (isRestore) {
+                k.isDelete = false;
+              } else {
+                k.isDelete = true;
+              }
+            }
+          });
+        }
+      });
+    }
+  });
 };
 
 // 滚动加载事件
@@ -74,7 +128,11 @@ const load = async () => {
     list: [...dataSource.value.list, ...res?.list!],
     total: res?.total!,
   };
-  pageNo.value++;
+  const ids = res?.list.filter((i) => i.commentList?.comments.length!).map((j) => j.id) || [];
+  activeNames.value = [...activeNames.value, ...ids] || [];
+  if (dataSource.value.list.length < res?.total!) {
+    pageNo.value++;
+  }
 };
 </script>
 

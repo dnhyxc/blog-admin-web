@@ -121,6 +121,15 @@ export interface CommentParams {
   fromCommentId?: string;
   isLike?: boolean;
   isDelete?: boolean;
+  _id?: string; // 评论列表子级 commentId
+  id?: string; // 评论列表父级 commentId
+}
+
+// 评论列表返回
+export interface CommentListParams {
+  comments: CommentParams[];
+  count: number;
+  articleId: string;
 }
 
 // 文章详情
@@ -136,7 +145,7 @@ export interface ArticleItem {
   tag: string;
   title: string;
   isDelete?: boolean;
-  comments?: CommentParams;
+  commentList?: CommentListParams;
 }
 
 // 文章列表
@@ -183,6 +192,6 @@ export interface CreateArticleParams {
 // 删除、恢复评论传参
 export interface ManageCommentParams {
   commentId: string;
-  fromCommentId?: string;
   articleId: string;
+  fromCommentId?: string;
 }

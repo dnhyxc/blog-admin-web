@@ -5,12 +5,18 @@
  * index.vue
 -->
 <template>
-  <div v-if="commentStore.comments?.length > 0" class="Comments">
-    <div v-if="commentStore.comments?.length > 0" class="title">
+  <div v-if="commentList.comments.length > 0 || commentStore.comments?.length > 0" class="Comments">
+    <div v-if="commentList.comments.length > 0 || commentStore.comments?.length > 0" class="title">
       全部评论
-      <span class="replyCount">{{ getCommentCount(commentStore.comments) }}</span>
+      <span class="replyCount">
+        {{ getCommentCount(commentList.comments.length ? commentList.comments : commentStore.comments) }}
+      </span>
     </div>
-    <div v-for="i in commentStore.comments" :key="i.commentId" class="commentWrap">
+    <div
+      v-for="i in commentList.comments.length > 0 ? commentList.comments : commentStore.comments"
+      :key="i.commentId"
+      class="commentWrap"
+    >
       <div class="avatar">
         <el-avatar class="image" fit="cover" :src="IMAGES.sea" @error="errorHandler">
           <img :src="i.headUrl || IMAGES.sea" />
@@ -22,18 +28,36 @@
             <span class="name">{{ i.username }}</span>
             <div class="date">
               {{ formatGapTime(i.date!) }}
-              <el-button v-if="i?.isDelete" type="primary" link class="deleteComment" @click="onRestoreComment(i)">
+              <el-button
+                v-if="i?.isDelete"
+                type="primary"
+                link
+                class="deleteComment"
+                @click="onRestoreComment({ comment: i, articleId: commentList.articleId })"
+              >
                 恢复评论
               </el-button>
-              <el-button v-else type="warning" link class="deleteComment" @click="onRemoveComment(i)">
+              <el-button
+                v-else
+                type="warning"
+                link
+                class="deleteComment"
+                @click="onRemoveComment({ comment: i, articleId: commentList.articleId })"
+              >
                 作废评论
               </el-button>
-              <el-button type="danger" link class="deleteComment" @click="onDeleteComment(i)">删除评论</el-button>
+              <el-button
+                type="danger"
+                link
+                class="deleteComment"
+                @click="onDeleteComment({ comment: i, articleId: commentList.articleId })"
+                >删除评论</el-button
+              >
             </div>
           </div>
           <div class="desc">{{ i.content }}</div>
           <div class="comment-count">
-            <span v-if="i.likeCount">点赞 {{ i.likeCount }}</span>
+            <span v-if="i.likeCount" class="like-count">点赞 {{ i.likeCount }}</span>
             <span v-if="i.replyList?.length" class="replay-count">评论 {{ i.replyList?.length }}</span>
           </div>
         </div>
@@ -63,14 +87,25 @@
                     type="primary"
                     link
                     class="deleteComment"
-                    @click="onRestoreComment(j, true)"
+                    @click="onRestoreComment({ comment: j, isThreeTier: true, articleId: commentList.articleId })"
                   >
                     恢复评论
                   </el-button>
-                  <el-button v-else type="warning" link class="deleteComment" @click="onRemoveComment(j, true)">
+                  <el-button
+                    v-else
+                    type="warning"
+                    link
+                    class="deleteComment"
+                    @click="onRemoveComment({ comment: j, isThreeTier: true, articleId: commentList.articleId })"
+                  >
                     作废评论
                   </el-button>
-                  <el-button type="danger" link class="deleteComment" @click="onDeleteComment(j, true)">
+                  <el-button
+                    type="danger"
+                    link
+                    class="deleteComment"
+                    @click="onDeleteComment({ comment: j, isThreeTier: true, articleId: commentList.articleId })"
+                  >
                     删除评论
                   </el-button>
                 </div>
@@ -102,11 +137,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { IMAGES } from '@/constant';
 import { formatGapTime } from '@/utils';
-import { CommentParams } from '@/typings/comment';
+import { CommentParams, CommentListParams } from '@/typings/comment';
 import { commentStore } from '@/store';
 import Message from '@/components/Message/index.vue';
 
@@ -114,8 +149,31 @@ interface IParams {
   comment: CommentParams;
   articleId: string;
   isThreeTier?: boolean;
-  comments?: CommentParams;
 }
+
+interface IProps {
+  authorId: string;
+  articleId: string;
+  commentList?: CommentListParams;
+  resetCommentList?: Function;
+}
+
+interface manageParams {
+  comment: CommentParams;
+  articleId?: string;
+  isThreeTier?: boolean;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  authorId: '',
+  articleId: '',
+  commentList: () => ({
+    comments: [],
+    count: 0,
+    articleId: '',
+  }),
+  resetCommentList: () => {},
+});
 
 const viewMoreComments = ref<string[]>([]);
 const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
@@ -125,10 +183,6 @@ const deleteParams = ref<IParams>({
   articleId: '',
 });
 
-const props = defineProps<{ authorId: string; articleId: string }>();
-
-onUnmounted(() => {});
-
 // 计算评论数
 const getCommentCount = (comments: CommentParams[]) => {
   let count = 0;
@@ -136,35 +190,45 @@ const getCommentCount = (comments: CommentParams[]) => {
     const length: number = i.replyList?.length || 0;
     count += length + 1;
   });
+
+  console.log(count, 'count');
+
   return count;
 };
 
 // 作废评论
-const onRemoveComment = (comment: CommentParams, isThreeTier?: boolean) => {
+const onRemoveComment = async (params: manageParams) => {
+  const { comment, isThreeTier, articleId } = params;
+  console.log(isThreeTier, 'isThreeTier', comment, props.articleId, '<<<<<articleId', articleId);
   if (!props.articleId) return;
-  commentStore.removeComment({ comment, isThreeTier, articleId: props.articleId });
+  await commentStore.removeComment({ comment, isThreeTier, articleId: articleId || props.articleId });
+  props.resetCommentList({ comment });
 };
 
 // 恢复评论
-const onRestoreComment = (comment: CommentParams, isThreeTier?: boolean) => {
-  if (!props.articleId) return;
-  commentStore.restoreComment({ comment, isThreeTier, articleId: props.articleId });
+const onRestoreComment = async (params: manageParams) => {
+  const { comment, isThreeTier, articleId } = params;
+  if (!props.articleId && !articleId) return;
+  await commentStore.restoreComment({ comment, isThreeTier, articleId: articleId || props.articleId });
+  props.resetCommentList({ comment, isRestore: true });
 };
 
 // 删除评论
-const onDeleteComment = (comment: CommentParams, isThreeTier?: boolean) => {
+const onDeleteComment = (params: manageParams) => {
+  const { comment, isThreeTier, articleId } = params;
   if (!props.articleId) return;
   deleteParams.value = {
     comment,
     isThreeTier,
-    articleId: props.articleId,
+    articleId: articleId || props.articleId,
   };
   messageVisible.value = true;
 };
 
 // 确认删除评论
 const onSubmitDelete = async () => {
-  commentStore.deleteComment(deleteParams.value);
+  await commentStore.deleteComment(deleteParams.value);
+  props.resetCommentList({ comment: deleteParams.value.comment, isDelete: true });
 };
 
 // 判断viewMoreComments是否包含commentId，以此返回对应的replyList
@@ -290,8 +354,8 @@ const errorHandler = () => true;
         font-size: 14px;
         color: @text-color;
 
-        .replay-count {
-          margin-left: 10px;
+        .like-count {
+          margin-right: 10px;
         }
       }
 

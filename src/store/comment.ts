@@ -69,12 +69,12 @@ export const useCommentStore = defineStore('comment', {
       const { comment, articleId, isThreeTier } = data;
       const params = isThreeTier
         ? {
-            commentId: comment.commentId!,
-            fromCommentId: comment.commentId!,
+            commentId: comment.commentId! || comment?._id!,
+            fromCommentId: comment.commentId! || comment?._id!,
             articleId,
           }
         : {
-            commentId: comment.commentId!,
+            commentId: comment.commentId! || comment?.id!,
             articleId,
           };
       return params;
@@ -102,8 +102,6 @@ export const useCommentStore = defineStore('comment', {
     // 作废详情对应的文章评论
     async removeComment(data: { comment: CommentParams; articleId: string; isThreeTier?: boolean }) {
       const { comment, articleId, isThreeTier } = data;
-      console.log(isThreeTier, 'isThreeTier');
-
       const params = this.manageParams({ comment, articleId, isThreeTier });
       this.loading = true;
       try {

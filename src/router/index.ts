@@ -153,6 +153,17 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHistory(),
+  scrollBehavior: (to, from, savePosition) => {
+    if (savePosition) {
+      console.log(to, 'totototo');
+      console.log(from, 'from');
+      console.log(savePosition, 'savePosition');
+
+      // return savePosition;
+    } else {
+      return { top: 0 };
+    }
+  },
   routes,
 });
 
