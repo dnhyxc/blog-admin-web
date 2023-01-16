@@ -191,15 +191,12 @@ const getCommentCount = (comments: CommentParams[]) => {
     count += length + 1;
   });
 
-  console.log(count, 'count');
-
   return count;
 };
 
 // 作废评论
 const onRemoveComment = async (params: manageParams) => {
   const { comment, isThreeTier, articleId } = params;
-  console.log(isThreeTier, 'isThreeTier', comment, props.articleId, '<<<<<articleId', articleId);
   if (!props.articleId) return;
   await commentStore.removeComment({ comment, isThreeTier, articleId: articleId || props.articleId });
   props.resetCommentList({ comment });
