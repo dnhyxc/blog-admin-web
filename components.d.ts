@@ -48,7 +48,6 @@ declare module '@vue/runtime-core' {
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Header: typeof import('./src/components/Header/index.vue')['default']
-    Idnex: typeof import('./src/components/comment/idnex.vue')['default']
     LeftMenu: typeof import('./src/components/LeftMenu/index.vue')['default']
     List: typeof import('./src/components/List/index.vue')['default']
     Message: typeof import('./src/components/Message/index.vue')['default']
