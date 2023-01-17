@@ -2,7 +2,7 @@
   <div class="login">
     <div class="content">
       <div class="title">账号密码登录</div>
-      <el-form ref="formRef" :model="dynamicValidateForm" class="form-wrap">
+      <el-form ref="formRef" :model="loginForm" class="form-wrap">
         <el-form-item
           prop="username"
           :rules="[
@@ -14,7 +14,7 @@
           ]"
           class="form-item"
         >
-          <el-input v-model="dynamicValidateForm.username" size="large" placeholder="请输入用户名" />
+          <el-input v-model="loginForm.username" size="large" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item
           prop="password"
@@ -25,7 +25,13 @@
           }"
           class="form-item"
         >
-          <el-input v-model="dynamicValidateForm.password" size="large" placeholder="请输入密码" show-password />
+          <el-input
+            v-model="loginForm.password"
+            size="large"
+            placeholder="请输入密码"
+            show-password
+            @keyup.enter="onEnter"
+          />
         </el-form-item>
         <el-form-item class="form-item action-list">
           <el-button type="primary" size="large" class="action" @click="onLogin(formRef)">用户登录</el-button>
@@ -41,7 +47,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { useUserStore } from '@/store/user';
 
@@ -50,7 +56,7 @@ const userStore = useUserStore();
 
 const formRef = ref<FormInstance>();
 
-const dynamicValidateForm = reactive<{
+const loginForm = reactive<{
   username: string;
   password: string;
 }>({
@@ -58,14 +64,12 @@ const dynamicValidateForm = reactive<{
   password: '',
 });
 
-onMounted(() => {});
-
 // 登录
 const onLogin = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid) => {
     if (valid) {
-      const res = await userStore.onLogin(dynamicValidateForm);
+      const res = await userStore.onLogin(loginForm);
       if (res.success) {
         router.push('/home');
       }
@@ -81,9 +85,24 @@ const onRegister = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid) => {
     if (valid) {
-      userStore.onRegister(dynamicValidateForm);
+      userStore.onRegister(loginForm);
     } else {
       console.log('error submit!');
+      return false;
+    }
+  });
+};
+
+const onEnter = () => {
+  if (!formRef.value) return;
+  formRef.value.validate(async (valid) => {
+    if (valid) {
+      const res = await userStore.onLogin(loginForm);
+      if (res.success) {
+        router.push('/home');
+      }
+    } else {
+      console.log(loginForm, 'error submit!');
       return false;
     }
   });

@@ -52,13 +52,11 @@ const onClick = () => {
 
 // 账号设置
 const onSetting = () => {
-  console.log('账号设置');
   router.push('/setting');
 };
 
 // 退出登录
 const onLogout = () => {
-  console.log('退出登录');
   router.replace('/login');
   // 清除store中的登录信息
   userStore.onLogout();

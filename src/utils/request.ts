@@ -1,12 +1,9 @@
-// import { useAuthStore } from '@/store/auth';
 import fetch from 'isomorphic-fetch';
 import { ElMessage } from 'element-plus';
 import { stringify } from 'query-string';
 import { AuthParams } from '@/typings/comment';
 import { addGatewayPattern } from './urlTool';
-import { ssnGetItem } from './storage';
-
-// const authStore = useAuthStore();
+import { ssnGetItem, ssnSetItem } from './storage';
 
 export interface ICheckStatusProps {
   response: Response;
@@ -19,7 +16,8 @@ interface ErrorWithResponse extends Error {
 
 // 设置用户权限相关
 function setAuth(value: AuthParams) {
-  // authStore.setAuth(value);
+  console.log(value, 'value>>>>>login');
+  ssnSetItem('redirectUrl', JSON.stringify(value));
 }
 
 function checkRedirection(response: Response): boolean {
@@ -71,7 +69,7 @@ function parseJSON(response: Response) {
 
 function onRedirect(pathname: string, search: string) {
   if (pathname !== '/login') {
-    // show({ pathname, search });
+    location.href = '/login';
   }
 }
 
@@ -132,7 +130,6 @@ export default function request(_url: string, options?: any): FetchResult {
 
         return err.response.json().then((data: any) => {
           if (err.response.status === 401 || err.response.status === 403) {
-            // 重定向跳转
             setAuth({ redirectUrl: `${pathname}${search}` });
             onRedirect(pathname, search);
             return {
