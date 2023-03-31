@@ -55,6 +55,7 @@ declare module '@vue/runtime-core' {
     Popover: typeof import('./src/components/Popover/index.vue')['default']
     Preview: typeof import('./src/components/Preview/index.vue')['default']
     PreviewHtml: typeof import('./src/components/PreviewHtml/index.vue')['default']
+    Rotation: typeof import('./src/components/Rotation/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Toc: typeof import('./src/components/Toc/index.vue')['default']

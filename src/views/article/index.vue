@@ -10,6 +10,9 @@
       <el-table-column label="标题" show-overflow-tooltip>
         <template #default="scope">{{ scope.row.title }}</template>
       </el-table-column>
+      <el-table-column label="作者" show-overflow-tooltip>
+        <template #default="scope">{{ scope.row.authorName }}</template>
+      </el-table-column>
       <el-table-column property="classify" label="分类" />
       <el-table-column property="tag" label="标签" show-overflow-tooltip />
       <el-table-column property="createTime" label="发表时间" show-overflow-tooltip>
@@ -17,9 +20,9 @@
       </el-table-column>
       <el-table-column property="status" label="发布状态" show-overflow-tooltip>
         <template #default="scope">
-          <div class="status" :title="scope.row.isDelete ? '已下架' : '上架中'">
+          <div class="status" :title="scope.row.isDelete ? '已下架' : '已上架'">
             <span v-if="scope.row.isDelete"><span class="status-del" />已下架</span>
-            <span v-else><span class="status-use" />上架中</span>
+            <span v-else><span class="status-use" />已上架</span>
           </div>
         </template>
       </el-table-column>
