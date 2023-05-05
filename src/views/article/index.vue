@@ -13,7 +13,7 @@
       <el-table-column label="作者" show-overflow-tooltip>
         <template #default="scope">{{ scope.row.authorName }}</template>
       </el-table-column>
-      <el-table-column property="classify" label="分类" />
+      <el-table-column property="classify" label="分类" show-overflow-tooltip />
       <el-table-column property="tag" label="标签" show-overflow-tooltip />
       <el-table-column property="createTime" label="发表时间" show-overflow-tooltip>
         <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
@@ -210,8 +210,8 @@ const onSubmitDelete = async () => {
   .footer {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
     background-color: @fff;
+    padding: 18px 10px;
   }
 }
 </style>
