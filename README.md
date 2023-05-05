@@ -40,3 +40,13 @@
 ```
 yarn add vue-baberrage
 ```
+
+### 允许他人访问本地启动的项目
+
+在项目启动命令中添加 `--host=0.0.0.0` 即可：
+
+```json
+"scripts": {
+  "dev": "cross-env NODE_ENV=development vite --host=0.0.0.0",
+},
+```
