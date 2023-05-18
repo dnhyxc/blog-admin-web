@@ -14,6 +14,7 @@
           <Postcard v-if="menu.key === 'account'" />
           <User v-if="menu.key === 'users'" />
           <ChatLineSquare v-if="menu.key === 'comment'" />
+          <Tickets v-if="menu.key === 'interact'" />
           <setting v-if="menu.key === 'pageSet'" />
           <Position v-if="menu.key === 'create'" />
         </el-icon>
@@ -34,6 +35,7 @@ import {
   ChatLineSquare,
   Position,
   User,
+  Tickets,
 } from '@element-plus/icons-vue';
 import { computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';

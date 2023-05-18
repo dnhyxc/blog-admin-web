@@ -10,6 +10,7 @@ import { useDetailStore } from './detail';
 import { useMessageStore } from './message';
 import { useCreateStore } from './create';
 import { useCommentStore } from './comment';
+import { useInteractStore } from './interact';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -23,6 +24,7 @@ const detailStore = useDetailStore();
 const messageStore = useMessageStore();
 const createStore = useCreateStore();
 const commentStore = useCommentStore();
+const interactStore = useInteractStore();
 
 export {
   userStore,
@@ -37,4 +39,5 @@ export {
   messageStore,
   createStore,
   commentStore,
+  interactStore,
 };

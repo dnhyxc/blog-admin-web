@@ -195,3 +195,18 @@ export interface ManageCommentParams {
   articleId: string;
   fromCommentId?: string;
 }
+
+// 留言参数
+export interface InteractParams {
+  id: string;
+  avatar: string;
+  comment: string;
+  userId: string;
+  username: string;
+  isDelete?: boolean;
+}
+
+export interface InteractListRes {
+  total: number;
+  list: InteractParams[];
+}

@@ -78,3 +78,12 @@ export const RESTORE_COMMENT = '/admin/restoreComment';
 
 // 恢复前台删除的评论
 export const GET_ARTICLES_COMMENTS = '/admin/getArticlesComments';
+
+// 获取留言列表
+export const GET_INTERACTS = '/api/getInteracts';
+
+// 分页获取留言列表
+export const GET_INTERACT_LIST = '/api/getInteractList';
+
+// 移除留言
+export const REMOVE_INTERACTS = '/api/removeInteracts';

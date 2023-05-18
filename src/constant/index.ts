@@ -8,6 +8,7 @@ import {
   ChatLineSquare,
   Position,
   User,
+  Tickets,
 } from '@element-plus/icons-vue';
 import QD from '@/assets/img/qd.jpg';
 import SEA from '@/assets/img/sea.jpg';
@@ -16,6 +17,8 @@ import GIRL from '@/assets/img/girl.png';
 import PAGE_ICON from '@/assets/svg/pageIcon.svg';
 import PUSH_ICON from '@/assets/svg/push.svg';
 import { MenuListParams } from '@/typings/comment';
+
+export { QD, SEA, SSM, GIRL };
 
 // 左侧菜单配置
 export const MENULIST: MenuListParams<typeof Grid>[] = [
@@ -56,10 +59,16 @@ export const MENULIST: MenuListParams<typeof Grid>[] = [
     icon: User,
   },
   {
-    name: '留言管理',
+    name: '评论管理',
     key: 'comment',
     path: '/comment',
     icon: ChatLineSquare,
+  },
+  {
+    name: '留言管理',
+    key: 'interact',
+    path: '/interact',
+    icon: Tickets,
   },
   {
     name: '主题设置',

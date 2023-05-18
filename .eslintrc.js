@@ -1,21 +1,3 @@
-// module.exports = {
-//   env: {
-//     browser: true,
-//     es2021: true,
-//     node: true,
-//   },
-//   extends: ['plugin:vue/vue3-essential', 'standard-with-typescript'],
-//   overrides: [],
-//   parserOptions: {
-//     ecmaVersion: 'latest',
-//     sourceType: 'module',
-//   },
-//   plugins: ['vue'],
-//   rules: {
-//     'vue/valid-v-for': 0,
-//   },
-// };
-
 module.exports = {
   env: {
     browser: true,
@@ -46,11 +28,15 @@ module.exports = {
     'vue/max-attributes-per-line': [
       'error',
       {
-        singleline: { max: 5 },
-        multiline: { max: 5 },
+        singleline: { max: 6 },
+        multiline: { max: 6 },
       },
     ], // vue template模板元素第一行最多5个属性
     'vue/multi-word-component-names': 0,
     'no-useless-catch': 0,
+    'prettier/prettier': 0,
+    'vue/no-mutating-props': 0,
+    'vue/no-deprecated-v-on-native-modifier': 0,
+    'vue/no-v-html': 0,
   },
 };

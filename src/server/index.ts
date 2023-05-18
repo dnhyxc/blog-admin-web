@@ -179,3 +179,15 @@ export const getArticlesComments = async (params: { pageNo: number; pageSize: nu
   const res = await post(API.GET_ARTICLES_COMMENTS, params);
   return res;
 };
+
+// 分页获取留言列表
+export const getInteractList = async (params: { pageNo: number; pageSize: number; userId: string }) => {
+  const res = await post(API.GET_INTERACT_LIST, params);
+  return res;
+};
+
+// 移除留言
+export const removeInteracts = async (ids: string | string[]) => {
+  const res = await post(API.REMOVE_INTERACTS, { ids });
+  return res;
+};

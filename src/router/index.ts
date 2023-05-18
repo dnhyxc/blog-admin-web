@@ -76,11 +76,21 @@ const routes: Array<RouteRecordRaw> = [
         path: '/comment',
         name: 'comment',
         meta: {
-          title: '留言管理',
+          title: '评论管理',
           keepAlive: true,
           requireAuth: true,
         },
         component: () => import('@/views/comment/index.vue'),
+      },
+      {
+        path: '/interact',
+        name: 'interact',
+        meta: {
+          title: '留言管理',
+          keepAlive: true,
+          requireAuth: true,
+        },
+        component: () => import('@/views/interact/index.vue'),
       },
       {
         path: '/create',
