@@ -26,10 +26,13 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="195">
+      <el-table-column fixed="right" label="操作" width="265">
         <template #default="scope">
           <div class="actions">
             <el-button link type="primary" @click="toDetail(scope.row.id)">详情</el-button>
+            <el-button link :type="!scope.row.isTop ? 'primary' : 'warning'" @click="onTopOfCancelTop(scope.row)">
+              {{ scope.row.isTop ? '取消置顶' : '文章置顶' }}
+            </el-button>
             <el-button link type="primary" @click="onEdit(scope.row)">编辑</el-button>
             <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onManageArticle(scope.row)">
               {{ scope.row.isDelete ? '上架' : '下架' }}
@@ -72,7 +75,7 @@ import { ElTable } from 'element-plus';
 import { PAGESIZE } from '@/constant';
 import { formatDate } from '@/utils';
 import { ArticleItem } from '@/typings/comment';
-import { articleStore, userStore } from '@/store';
+import { articleStore, userStore, createStore } from '@/store';
 import Message from '@/components/Message/index.vue';
 import { sendMessage } from '@/socket';
 
@@ -104,6 +107,34 @@ const handleSelectionChange = (val: ArticleItem[]) => {
 const toDetail = (id: string) => {
   console.log(id, 'toDetail');
   router.push(`/detail/${id}`);
+};
+
+// 设置文章置顶或者取消置顶
+const onTopOfCancelTop = (item: ArticleItem) => {
+  const { isTop, id } = item;
+  if (isTop) {
+    onCancelTop(id);
+  } else {
+    onTop(id);
+  }
+};
+
+// 置顶
+const onTop = async (id: string) => {
+  await createStore.updateArticle({
+    articleId: id,
+    isTop: new Date().valueOf(),
+  });
+  articleStore.getArticleList(currentPage.value);
+};
+
+// 取消置顶
+const onCancelTop = async (id: string) => {
+  await createStore.updateArticle({
+    articleId: id,
+    isTop: 0,
+  });
+  articleStore.getArticleList(currentPage.value);
 };
 
 // 编辑

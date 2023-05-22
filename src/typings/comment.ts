@@ -146,6 +146,7 @@ export interface ArticleItem {
   title: string;
   isDelete?: boolean;
   commentList?: CommentListParams;
+  isTop?: number;
 }
 
 // 文章列表
@@ -182,11 +183,12 @@ export interface CreateArticleParams {
   tag?: string;
   coverImage?: string;
   abstract?: string;
-  createTime: number;
-  authorId: string;
+  createTime?: number;
+  authorId?: string;
   userId?: string;
   articleId?: string;
   authorName?: string;
+  isTop?: number;
 }
 
 // 删除、恢复评论传参

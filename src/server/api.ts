@@ -80,10 +80,10 @@ export const RESTORE_COMMENT = '/admin/restoreComment';
 export const GET_ARTICLES_COMMENTS = '/admin/getArticlesComments';
 
 // 获取留言列表
-export const GET_INTERACTS = '/api/getInteracts';
+export const GET_INTERACTS = '/admin/getInteracts';
 
 // 分页获取留言列表
-export const GET_INTERACT_LIST = '/api/getInteractList';
+export const GET_INTERACT_LIST = '/admin/getInteractList';
 
 // 移除留言
-export const REMOVE_INTERACTS = '/api/removeInteracts';
+export const REMOVE_INTERACTS = '/admin/removeInteracts';

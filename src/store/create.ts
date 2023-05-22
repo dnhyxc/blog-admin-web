@@ -41,9 +41,17 @@ export const useCreateStore = defineStore('create', {
         this.loading = false;
         if (res.success) {
           this.id = res.data.id;
-          ElMessage.success(res.message);
+          if (params.isTop) {
+            ElMessage.success('设置置顶成功');
+          } else {
+            ElMessage.success(res.message);
+          }
         } else {
-          ElMessage.error(res.message);
+          if (params.isTop) {
+            ElMessage.success('设置置顶失败');
+          } else {
+            ElMessage.error(res.message);
+          }
         }
       } catch (error) {
         throw error;
