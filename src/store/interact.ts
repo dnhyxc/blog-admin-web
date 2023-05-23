@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ElMessage } from 'element-plus';
 import * as Service from '@/server';
-import { PAGESIZE, SSM } from '@/constant';
+import { PAGESIZE } from '@/constant';
 import { InteractListRes } from '@/typings/comment';
 import { normalizeResult } from '@/utils';
 import { userStore } from '@/store';
@@ -12,57 +12,9 @@ interface IProps extends InteractListRes {
   pageSize: number;
 }
 
-const data = [
-  {
-    id: '1',
-    username: 'dnhyxc',
-    userId: '630da8cef24c2b18524a296a',
-    comment: '时光的河入海流',
-    avatar: SSM,
-    createTime: 1682329107216,
-    isDelete: true,
-  },
-  {
-    id: '2',
-    username: 'dnhyxc',
-    userId: '630da8cef24c2b18524a296a',
-    comment: '时光的河入海流时光的河入海流时光的河入海流时光的河入海流时光的河入海流时光的河入海流时光的河入海流',
-    avatar: SSM,
-    createTime: 1682329107216,
-    isDelete: true,
-  },
-  {
-    id: '3',
-    username: 'dnhyxc',
-    userId: '630da8cef24c2b18524a296a',
-    comment: '时光的河入海流时光的河入海流时光的河入海流时光的河入海流时光的河入海流',
-    avatar: SSM,
-    createTime: 1682329107216,
-    isDelete: true,
-  },
-  {
-    id: '4',
-    username: 'dnhyxc',
-    userId: '630da8cef24c2b18524a296a',
-    comment: '时光的河入海流时光的河入海流时光的河入海流',
-    avatar: SSM,
-    createTime: 1682329107216,
-    isDelete: true,
-  },
-  {
-    id: '5',
-    username: 'dnhyxc',
-    userId: '630da8cef24c2b18524a296a',
-    comment: '时光的河入海流时光的河入海流',
-    avatar: SSM,
-    createTime: 1682329107216,
-    isDelete: true,
-  },
-];
-
 export const useInteractStore = defineStore('interact', {
   state: (): IProps => ({
-    list: data,
+    list: [],
     total: 0,
     pageNo: 1,
     pageSize: PAGESIZE,
@@ -94,24 +46,23 @@ export const useInteractStore = defineStore('interact', {
     },
 
     // 下架文章
-    async removeInteracts(articleIds: string[]) {
-      if (!articleIds.length) {
+    async removeInteracts(ids: string | string[]) {
+      if (!ids.length) {
         ElMessage.info('没有可隐藏的留言');
         return;
       }
       try {
         this.loading = true;
         const res = normalizeResult(
-          await Service.removeArticle({
-            articleIds,
+          await Service.removeInteracts({
+            ids,
             userId: userStore?.userId!,
           }),
         );
         this.loading = false;
         if (res.success) {
-          console.log(res.data, 'removeArticle');
           this.list.forEach((i) => {
-            if (articleIds.includes(i.id)) {
+            if (ids.includes(i.id)) {
               i.isDelete = true;
             }
           });
@@ -125,23 +76,23 @@ export const useInteractStore = defineStore('interact', {
     },
 
     // 上架文章
-    async shelvesInteracts(articleIds: string[]) {
-      if (!articleIds.length) {
+    async restoreInteracts(ids: string | string[]) {
+      if (!ids.length) {
         ElMessage.info('没有可显示的留言');
         return;
       }
       try {
         this.loading = true;
         const res = normalizeResult(
-          await Service.shelvesArticle({
-            articleIds,
+          await Service.restoreInteracts({
+            ids,
             userId: userStore?.userId!,
           }),
         );
         this.loading = false;
         if (res.success) {
           this.list.forEach((i) => {
-            if (articleIds.includes(i.id)) {
+            if (ids.includes(i.id)) {
               delete i.isDelete;
             }
           });
@@ -155,16 +106,16 @@ export const useInteractStore = defineStore('interact', {
     },
 
     // 删除文章（支持批量删除）
-    async batchDelInteracts(articleIds: string[], pageNo: number) {
-      if (!articleIds.length) {
+    async delInteracts(ids: string | string[]) {
+      if (!ids.length) {
         ElMessage.info('没有可删除的留言');
         return;
       }
       try {
         this.loading = true;
         const res = normalizeResult<number>(
-          await Service.batchDelArticle({
-            articleIds,
+          await Service.delInteracts({
+            ids,
             userId: userStore?.userId!,
           }),
         );

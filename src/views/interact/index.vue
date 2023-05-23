@@ -5,7 +5,7 @@
  * index.vue
 -->
 <template>
-  <div class="intecact-wrap">
+  <el-scrollbar class="intecact-wrap">
     <el-table
       ref="multipleTableRef"
       :data="interactStore.list"
@@ -13,8 +13,13 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" />
-      <el-table-column label="用户名称" show-overflow-tooltip width="120">
-        <template #default="scope">{{ scope.row.username }}</template>
+      <el-table-column label="用户名称" show-overflow-tooltip width="150">
+        <template #default="scope">
+          <div class="user-info">
+            <el-image style="width: 50px; height: 50px; border-radius: 5px" :src="scope.row.avatar" fit="cover" />
+            <span class="username">{{ scope.row.username }}</span>
+          </div>
+        </template>
       </el-table-column>
       <el-table-column property="comment" label="留言内容">
         <template #default="scope">
@@ -24,7 +29,7 @@
       <el-table-column property="createTime" label="发表时间" show-overflow-tooltip width="180">
         <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
       </el-table-column>
-      <el-table-column property="status" label="发布状态" show-overflow-tooltip width="110">
+      <el-table-column property="status" label="显示状态" show-overflow-tooltip width="110">
         <template #default="scope">
           <div class="status" :title="scope.row.isDelete ? '隐藏' : '显示'">
             <span v-if="scope.row.isDelete"><span class="status-del" />已隐藏</span>
@@ -66,7 +71,7 @@
       info="删除留言后，该留言将无法恢复！"
       :on-submit="onSubmitDelete"
     />
-  </div>
+  </el-scrollbar>
 </template>
 
 <script setup lang="ts">
@@ -112,7 +117,7 @@ const onManageInteract = (item: any) => {
 
 // 上架
 const onRestore = (id: string) => {
-  interactStore.shelvesInteracts([id]);
+  interactStore.restoreInteracts([id]);
   // 取消多选
   multipleTableRef.value!.clearSelection();
 };
@@ -141,7 +146,7 @@ const onRemoveAll = () => {
 // 多选上架
 const onRestoreAll = () => {
   const ids = multipleSelection.value.filter((j) => j.isDelete).map((i) => i.id) || [];
-  interactStore.shelvesInteracts(ids);
+  interactStore.restoreInteracts(ids);
   // 取消多选
   multipleTableRef.value!.clearSelection();
 };
@@ -155,7 +160,7 @@ const onDeleteAll = () => {
 
 // 二次确认删除
 const onSubmitDelete = async () => {
-  await interactStore.batchDelInteracts(deleteIds.value.length ? deleteIds.value : [deleteId.value], currentPage.value);
+  await interactStore.delInteracts(deleteIds.value.length ? deleteIds.value : [deleteId.value]);
   // 删除完成之后，清除之前选择的账号ids
   deleteIds.value = [];
   // 取消多选
@@ -168,6 +173,15 @@ const onSubmitDelete = async () => {
 
 .intecact-wrap {
   .layoutStyles();
+
+  .user-info {
+    display: flex;
+    align-items: center;
+
+    .username {
+      margin-left: 10px;
+    }
+  }
 
   .comment {
     display: flex;

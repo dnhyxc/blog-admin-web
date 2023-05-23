@@ -2,7 +2,7 @@
   <div class="comment">
     <el-collapse v-model="activeNames" class="el-collapse">
       <div v-if="isMounted" class="tag-list">
-        <div class="infinite-list-wrapper" style="overflow: auto">
+        <el-scrollbar ref="scrollRef" class="infinite-list-wrapper" style="overflow: auto">
           <div
             v-infinite-scroll="load"
             class="list"
@@ -10,7 +10,7 @@
             infinite-scroll-immediate
             infinite-scroll-distance="5"
           >
-            <el-collapse-item v-for="item in dataSource.list" :key="item.id" :name="item.id">
+            <el-collapse-item v-for="item in dataSource.list" :key="item.id" :name="item.id" class="collapse-item">
               <template #title>
                 <div class="title">{{ item.title }}</div>
               </template>
@@ -25,15 +25,18 @@
           </div>
           <p v-if="loading" class="loading">Loading...</p>
           <p v-if="noMore" class="no-more">没有更多了～～～</p>
-        </div>
+        </el-scrollbar>
       </div>
     </el-collapse>
+    <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollTo" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, computed, onBeforeMount } from 'vue';
 import { commentStore } from '@/store';
+import { scrollTo } from '@/utils';
+import { useScroller } from '@/hooks';
 import { ArticleItem, CommentParams } from '@/typings/comment';
 import Comment from '@/components/Comment/index.vue';
 
@@ -46,6 +49,8 @@ const noMore = computed(() => dataSource.value.list.length >= dataSource.value.t
 const disabled = computed(() => loading.value || noMore.value);
 const isMounted = ref<boolean>(false);
 const pageNo = ref<number>(1);
+
+const { scrollRef, scrollTop } = useScroller();
 
 onBeforeMount(() => {
   commentStore.comments = [];
@@ -133,6 +138,11 @@ const load = async () => {
   if (dataSource.value.list.length < res?.total!) {
     pageNo.value++;
   }
+};
+
+// 滚动到顶部
+const onScrollTo = () => {
+  scrollTo(scrollRef, 0);
 };
 </script>
 
@@ -262,6 +272,10 @@ const load = async () => {
               }
             }
           }
+        }
+
+        .collapse-item {
+          margin-right: 10px;
         }
       }
     }

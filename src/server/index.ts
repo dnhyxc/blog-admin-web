@@ -187,7 +187,19 @@ export const getInteractList = async (params: { pageNo: number; pageSize: number
 };
 
 // 移除留言
-export const removeInteracts = async (ids: string | string[]) => {
-  const res = await post(API.REMOVE_INTERACTS, { ids });
+export const removeInteracts = async (params: { ids: string | string[]; userId: string }) => {
+  const res = await post(API.REMOVE_INTERACTS, params);
+  return res;
+};
+
+// 恢复留言
+export const restoreInteracts = async (params: { ids: string | string[]; userId: string }) => {
+  const res = await post(API.RESTORE_INTERACTS, params);
+  return res;
+};
+
+// 删除留言
+export const delInteracts = async (params: { ids: string | string[]; userId: string }) => {
+  const res = await post(API.DEL_INTERACTS, params);
   return res;
 };

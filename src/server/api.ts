@@ -87,3 +87,9 @@ export const GET_INTERACT_LIST = '/admin/getInteractList';
 
 // 移除留言
 export const REMOVE_INTERACTS = '/admin/removeInteracts';
+
+// 恢复留言
+export const RESTORE_INTERACTS = '/admin/restoreInteracts';
+
+// 删除留言
+export const DEL_INTERACTS = '/admin/delInteracts';
