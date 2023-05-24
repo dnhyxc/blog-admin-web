@@ -1,105 +1,107 @@
 <template>
-  <div v-loading="accountStore.loading" class="article-list-wrap">
-    <el-table
-      ref="multipleTableRef"
-      :data="accountStore.list"
-      style="width: 100%"
-      table-layout="fixed"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="35" />
-      <el-table-column label="用户名" show-overflow-tooltip width="200">
-        <template #default="scope">
-          <div class="username">
-            <div class="img">
-              <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.qd" />
+  <Loading :loading="accountStore.loading" class="home-wrap">
+    <el-scrollbar class="article-list-wrap">
+      <el-table
+        ref="multipleTableRef"
+        :data="accountStore.list"
+        style="width: 100%"
+        table-layout="fixed"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="35" />
+        <el-table-column label="用户名" show-overflow-tooltip width="200">
+          <template #default="scope">
+            <div class="username">
+              <div class="img">
+                <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.qd" />
+              </div>
+              <div class="name" :title="scope.row.username">{{ scope.row.username }}</div>
             </div>
-            <div class="name" :title="scope.row.username">{{ scope.row.username }}</div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column property="job" label="职位">
-        <template #default="scope">
-          <div class="job" :title="scope.row.job">
-            {{ scope.row.job || '-' }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column property="motto" label="座右铭">
-        <template #default="scope">
-          <div class="motto" :title="scope.row.motto">
-            {{ scope.row.motto || '-' }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column property="introduce" label="个人介绍">
-        <template #default="scope">
-          <div class="introduce" :title="scope.row.introduce">
-            <div class="desc">
-              {{ scope.row.introduce || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column property="job" label="职位">
+          <template #default="scope">
+            <div class="job" :title="scope.row.job">
+              {{ scope.row.job || '-' }}
             </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column property="registerTime" label="注册时间">
-        <template #default="scope">
-          <div class="registerTime" :title="formatDate(scope.row.registerTime)">
-            {{ formatDate(scope.row.registerTime) }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column property="isDelete" label="账号状态">
-        <template #default="scope">
-          <div class="status" :title="scope.row.isDelete ? '已作废' : '使用中'">
-            <span v-if="scope.row.isDelete"><span class="status-del" />已作废</span>
-            <span v-else><span class="status-use" />使用中</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" width="175">
-        <template #default="scope">
-          <div class="actions">
-            <el-button link type="primary" @click="onSetAuth(scope.row)">权限设置</el-button>
-            <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onMenageAccount(scope.row)">
-              {{ scope.row.isDelete ? '恢复' : '作废' }}
-            </el-button>
-            <el-button link type="danger" @click="onDeleteAccount(scope.row)">删除</el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="footer">
-      <div class="action-btn">
-        <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
-        <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
-        <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column property="motto" label="座右铭">
+          <template #default="scope">
+            <div class="motto" :title="scope.row.motto">
+              {{ scope.row.motto || '-' }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column property="introduce" label="个人介绍">
+          <template #default="scope">
+            <div class="introduce" :title="scope.row.introduce">
+              <div class="desc">
+                {{ scope.row.introduce || '-' }}
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column property="registerTime" label="注册时间">
+          <template #default="scope">
+            <div class="registerTime" :title="formatDate(scope.row.registerTime)">
+              {{ formatDate(scope.row.registerTime) }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column property="isDelete" label="账号状态">
+          <template #default="scope">
+            <div class="status" :title="scope.row.isDelete ? '已作废' : '使用中'">
+              <span v-if="scope.row.isDelete"><span class="status-del" />已作废</span>
+              <span v-else><span class="status-use" />使用中</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="175">
+          <template #default="scope">
+            <div class="actions">
+              <el-button link type="primary" @click="onSetAuth(scope.row)">权限设置</el-button>
+              <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onMenageAccount(scope.row)">
+                {{ scope.row.isDelete ? '恢复' : '作废' }}
+              </el-button>
+              <el-button link type="danger" @click="onDeleteAccount(scope.row)">删除</el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="footer">
+        <div class="action-btn">
+          <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
+          <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
+          <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+        </div>
+        <el-pagination
+          v-model:current-page="currentPage"
+          :page-size="PAGESIZE"
+          background
+          :disabled="disabled"
+          layout="prev, pager, next"
+          :total="accountStore.total"
+          :hide-on-single-page="accountStore.total <= PAGESIZE"
+          @current-change="onPageChange"
+        />
       </div>
-      <el-pagination
-        v-model:current-page="currentPage"
-        :page-size="PAGESIZE"
-        background
-        :disabled="disabled"
-        layout="prev, pager, next"
-        :total="accountStore.total"
-        :hide-on-single-page="accountStore.total <= PAGESIZE"
-        @current-change="onPageChange"
+      <Modal v-model:visible="visible" :on-submit="onSubmit" title="权限设置">
+        <template #default>
+          <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
+            <el-radio v-if="userStore?.auth === AUTH_CONFIG.SUPER" :label="1">设置为博主</el-radio>
+            <el-radio :label="0">设置为普通用户</el-radio>
+          </el-radio-group>
+        </template>
+      </Modal>
+      <Message
+        v-model:visible="messageVisible"
+        title="账号删除"
+        content="确定删除该账号吗？"
+        :on-submit="onSubmitDelete"
       />
-    </div>
-    <Modal v-model:visible="visible" :on-submit="onSubmit" title="权限设置">
-      <template #default>
-        <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
-          <el-radio v-if="userStore?.auth === AUTH_CONFIG.SUPER" :label="1">设置为博主</el-radio>
-          <el-radio :label="0">设置为普通用户</el-radio>
-        </el-radio-group>
-      </template>
-    </Modal>
-    <Message
-      v-model:visible="messageVisible"
-      title="账号删除"
-      content="确定删除该账号吗？"
-      :on-submit="onSubmitDelete"
-    />
-  </div>
+    </el-scrollbar>
+  </Loading>
 </template>
 
 <script setup lang="ts">
@@ -248,6 +250,7 @@ const onPageChange = (value: number) => {
 
 .article-list-wrap {
   .layoutStyles();
+  overflow-y: hidden;
 
   .username {
     display: flex;

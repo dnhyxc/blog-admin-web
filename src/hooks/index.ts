@@ -9,8 +9,6 @@ export const useWindowScroll = (dom: HTMLDivElement) => {
   };
 
   onMounted(() => {
-    console.log(dom, 'dom');
-
     window.addEventListener('scroll', onScroll, true);
   });
 

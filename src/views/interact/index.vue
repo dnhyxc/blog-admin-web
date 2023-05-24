@@ -37,7 +37,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="105">
+      <el-table-column label="操作" width="105">
         <template #default="scope">
           <div class="actions">
             <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onManageInteract(scope.row)">
@@ -64,14 +64,14 @@
         :hide-on-single-page="interactStore.list.length <= PAGESIZE"
       />
     </div>
-    <Message
-      v-model:visible="messageVisible"
-      title="删除留言"
-      content="确定删除留言吗？"
-      info="删除留言后，该留言将无法恢复！"
-      :on-submit="onSubmitDelete"
-    />
   </el-scrollbar>
+  <Message
+    v-model:visible="messageVisible"
+    title="删除留言"
+    content="确定删除留言吗？"
+    info="删除留言后，该留言将无法恢复！"
+    :on-submit="onSubmitDelete"
+  />
 </template>
 
 <script setup lang="ts">

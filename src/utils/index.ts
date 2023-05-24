@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { EMOJI_TEXTS, EMOJI_URLS } from '@/constant';
 import { normalizeResult } from './result';
 import { decrypt, encrypt } from './crypto';
 import request from './request';
@@ -63,6 +64,42 @@ const scrollTo = (ref: any, position: number, time = 20) => {
     }
   };
   requestAnimationFrame(smoothScroll);
+};
+
+// 处理输入的换行符
+export const replaceCommentContent = (content: string) => {
+  const context = content.replace(/\n/g, '<br/>');
+  return replaceEmojis(context);
+};
+
+// 表情包转换
+export const replaceEmojis = (content: string) => {
+  content = content.replace(/\[[^[^\]]+\]/g, (word) => {
+    const index = EMOJI_TEXTS.indexOf(word.replace('[', '').replace(']', ''));
+    if (index > -1) {
+      return `<img style="vertical-align: middle;width: 32px;height: 32px" src="${
+        // @ts-ignore
+        EMOJI_URLS[index + 1]
+      }" title="${word}"/>`;
+    } else {
+      return word;
+    }
+  });
+  return replacePictures(content);
+};
+
+// 图片转换
+export const replacePictures = (content: string) => {
+  content = content.replace(/<[^<^>]+>/g, (word) => {
+    const index = word.indexOf(',');
+    if (index > -1) {
+      const arr = word.replace('<', '').replace('>', '').split(',');
+      return `<img id="__COMMENT_IMG__" style="border-radius: 5px;width: 100%;max-width: 250px;height:auto;display: block;padding: 5px 0;cursor: pointer;" src="${arr[1]}" title="${arr[0]}"/>`;
+    } else {
+      return word;
+    }
+  });
+  return content;
 };
 
 export {

@@ -156,3 +156,80 @@ export const CREATE_ARTICLE_CONFIG = [
 export const LOADING_SVG = `
 <svg t="1677748747940" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="34693" width="32" height="32"><path d="M512 448c-57.152 0-192-149.952-192-256a192 192 0 0 1 384 0c0 106.048-134.848 256-192 256z m64 64c0-57.152 149.952-192 256-192a192 192 0 0 1 0 384c-106.048 0-256-134.848-256-192zM448 512c0 57.152-149.952 192-256 192a192 192 0 0 1 0-384c106.048 0 256 134.848 256 192z m64 64c57.152 0 192 149.952 192 256a192 192 0 0 1-384 0c0-106.048 134.848-256 192-256z" fill="#57a0ff" p-id="34694"></path></svg>
 `;
+
+// 线上域名
+export const DOMAIN_URL = '43.143.27.249';
+
+// web端域名
+export const WEB_DOMAIN_URL = 'http://43.143.27.249:9216';
+
+// 表情资源路径域名
+export const EMOJI_HOST = `http://${location.hostname === DOMAIN_URL ? DOMAIN_URL : '127.0.0.1:9112'}/image/`;
+
+// 表情图片链接
+export const EMOJI_URLS = {
+  1: `${EMOJI_HOST}24b6f805c6687e5694cbee718.gif`, // weixiao,
+  2: `${EMOJI_HOST}24b6f805c6687e5694cbee703.gif`, // baiyan,
+  4: `${EMOJI_HOST}24b6f805c6687e5694cbee71f.gif`, // ziya,
+  3: `${EMOJI_HOST}24b6f805c6687e5694cbee704.gif`, // bishi,
+  5: `${EMOJI_HOST}24b6f805c6687e5694cbee706.gif`, // fannao,
+  6: `${EMOJI_HOST}24b6f805c6687e5694cbee707.gif`, // fendou,
+  7: `${EMOJI_HOST}24b6f805c6687e5694cbee709.gif`, // haixiu,
+  8: `${EMOJI_HOST}24b6f805c6687e5694cbee708.gif`, // guzhang,
+  9: `${EMOJI_HOST}24b6f805c6687e5694cbee70a.gif`, // haose,
+  11: `${EMOJI_HOST}24b6f805c6687e5694cbee70c.gif`, // huaji,
+  10: `${EMOJI_HOST}24b6f805c6687e5694cbee70b.gif`, // huaixiao,
+  12: `${EMOJI_HOST}24b6f805c6687e5694cbee70d.gif`, // kelian,
+  13: `${EMOJI_HOST}24b6f805c6687e5694cbee70e.gif`, // ku,
+  14: `${EMOJI_HOST}24b6f805c6687e5694cbee70f.gif`, // kun,
+  15: `${EMOJI_HOST}24b6f805c6687e5694cbee710.gif`, // kuxiao,
+  16: `${EMOJI_HOST}24b6f805c6687e5694cbee711.gif`, // liulei,
+  17: `${EMOJI_HOST}24b6f805c6687e5694cbee712.gif`, // shengqi,
+  18: `${EMOJI_HOST}24b6f805c6687e5694cbee713.gif`, // shuai,
+  19: `${EMOJI_HOST}24b6f805c6687e5694cbee714.gif`, // tushe,
+  20: `${EMOJI_HOST}24b6f805c6687e5694cbee715.gif`, // tuxie,
+  21: `${EMOJI_HOST}24b6f805c6687e5694cbee716.gif`, // wabi,
+  22: `${EMOJI_HOST}24b6f805c6687e5694cbee717.gif`, // weiqu,
+  23: `${EMOJI_HOST}24b6f805c6687e5694cbee702.gif`, // azhe,
+  24: `${EMOJI_HOST}24b6f805c6687e5694cbee719.gif`, // wuzui,
+  25: `${EMOJI_HOST}24b6f805c6687e5694cbee71a.gif`, // xia,
+  26: `${EMOJI_HOST}24b6f805c6687e5694cbee71b.gif`, // yun,
+  27: `${EMOJI_HOST}24b6f805c6687e5694cbee71c.gif`, // zaijian,
+  28: `${EMOJI_HOST}24b6f805c6687e5694cbee71d.gif`, // zhayan,
+  29: `${EMOJI_HOST}24b6f805c6687e5694cbee71e.gif`, // zhoumei,
+  30: `${EMOJI_HOST}24b6f805c6687e5694cbee705.gif`, // dabing,
+};
+
+// 表情列表
+export const EMOJI_TEXTS = [
+  '微笑',
+  '白眼',
+  '鄙视',
+  '龇牙',
+  '烦恼',
+  '奋斗',
+  '害羞',
+  '鼓掌',
+  '好色',
+  '坏笑',
+  '滑稽',
+  '可怜',
+  '酷',
+  '困',
+  '哭笑',
+  '流泪',
+  '生气',
+  '衰',
+  '吐舌',
+  '吐血',
+  '挖鼻',
+  '委屈',
+  '啊这',
+  '捂嘴',
+  '吓',
+  '晕',
+  '再见',
+  '眨眼',
+  '皱眉',
+  '大兵',
+];

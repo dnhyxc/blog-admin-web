@@ -1,50 +1,58 @@
 <template>
   <div class="tag-list-wrap">
     <el-tabs type="border-card">
-      <el-tab-pane v-for="data in tabList" :key="data.tabName" :label="data.tabName">
-        <div v-if="isMounted" class="tag-list">
-          <div class="infinite-list-wrapper" style="overflow: auto">
-            <div
-              v-infinite-scroll="load"
-              class="list"
-              :infinite-scroll-disabled="disabled"
-              infinite-scroll-immediate
-              infinite-scroll-distance="2"
-            >
-              <div v-for="(item, index) in data.dataSoure" :key="index" class="card-wrap">
-                <Card class="card">
-                  <template #img>
-                    <div class="img">
-                      <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.qd" />
-                    </div>
-                  </template>
-                  <template #title>
-                    <div class="title">React{{ item }}</div>
-                  </template>
-                  <template #content>
-                    <div class="desc">29 添加 &nbsp; 200 文章</div>
-                  </template>
-                  <template #footer>
-                    <div class="action">
-                      <el-button type="primary" class="add-btn">添加标签</el-button>
-                    </div>
-                  </template>
-                </Card>
+      <el-scrollbar ref="scrollRef">
+        <el-tab-pane v-for="data in tabList" :key="data.tabName" :label="data.tabName">
+          <div class="tag-list">
+            <div class="infinite-list-wrapper">
+              <div
+                v-if="isMounted"
+                v-infinite-scroll="load"
+                class="list"
+                :infinite-scroll-disabled="disabled"
+                infinite-scroll-immediate
+                infinite-scroll-distance="2"
+              >
+                <div v-for="(item, index) in data.dataSoure" :key="index" class="card-wrap">
+                  <Card class="card">
+                    <template #img>
+                      <div class="img">
+                        <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.qd" />
+                      </div>
+                    </template>
+                    <template #title>
+                      <div class="title">React{{ item }}</div>
+                    </template>
+                    <template #content>
+                      <div class="desc">29 添加 &nbsp; 200 文章</div>
+                    </template>
+                    <template #footer>
+                      <div class="action">
+                        <el-button type="primary" class="add-btn">添加标签</el-button>
+                      </div>
+                    </template>
+                  </Card>
+                </div>
               </div>
+              <p v-if="loading" class="loading">Loading...</p>
+              <p v-if="noMore" class="no-more">没有更多了～～～</p>
             </div>
-            <p v-if="loading" class="loading">Loading...</p>
-            <p v-if="noMore" class="no-more">没有更多了～～～</p>
           </div>
-        </div>
-      </el-tab-pane>
+        </el-tab-pane>
+      </el-scrollbar>
     </el-tabs>
+    <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollTo" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
+import { scrollTo } from '@/utils';
+import { useScroller } from '@/hooks';
 import Card from '@/components/Card/index.vue';
 import { IMAGES } from '@/constant';
+
+const { scrollRef, scrollTop } = useScroller();
 
 type countType = number;
 type loadType = boolean;
@@ -78,6 +86,11 @@ const load = () => {
     loading.value = false;
   }, 2000);
 };
+
+// 滚动到顶部
+const onScrollTo = () => {
+  scrollTo(scrollRef, 0);
+};
 </script>
 
 <style lang="less" scoped>
@@ -99,7 +112,13 @@ const load = () => {
 
     .infinite-list-wrapper {
       height: 100%;
-      padding: 10px 20px 0 20px;
+      padding: 5px 20px 0 20px;
+
+      :deep {
+        .el-scrollbar__view {
+          margin-top: 5px;
+        }
+      }
 
       .list {
         margin: auto;
@@ -156,7 +175,7 @@ const load = () => {
     .loading,
     .no-more {
       text-align: center;
-      margin: 10px;
+      margin: 5px;
     }
   }
 }

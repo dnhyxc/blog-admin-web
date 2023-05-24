@@ -1,8 +1,8 @@
 <template>
   <div class="comment">
     <el-collapse v-model="activeNames" class="el-collapse">
-      <div v-if="isMounted" class="tag-list">
-        <el-scrollbar ref="scrollRef" class="infinite-list-wrapper" style="overflow: auto">
+      <el-scrollbar ref="scrollRef" class="tag-list">
+        <div v-if="isMounted" class="infinite-list-wrapper">
           <div
             v-infinite-scroll="load"
             class="list"
@@ -25,8 +25,8 @@
           </div>
           <p v-if="loading" class="loading">Loading...</p>
           <p v-if="noMore" class="no-more">没有更多了～～～</p>
-        </el-scrollbar>
-      </div>
+        </div>
+      </el-scrollbar>
     </el-collapse>
     <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollTo" />
   </div>

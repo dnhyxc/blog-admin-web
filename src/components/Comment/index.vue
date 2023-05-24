@@ -55,7 +55,7 @@
               >
             </div>
           </div>
-          <div class="desc">{{ i.content }}</div>
+          <div class="desc" v-html="replaceCommentContent(i.content!)" />
           <div class="comment-count">
             <span v-if="i.likeCount" class="like-count">点赞 {{ i.likeCount }}</span>
             <span v-if="i.replyList?.length" class="replay-count">评论 {{ i.replyList?.length }}</span>
@@ -110,10 +110,8 @@
                   </el-button>
                 </div>
               </div>
-              <div v-if="j.content" class="desc">{{ j.content }}</div>
-              <div v-if="j.formContent" class="formContent">
-                {{ `“${j.formContent}”` }}
-              </div>
+              <div v-if="j.content" class="desc" v-html="replaceCommentContent(j.content!)" />
+              <div v-if="j.formContent" class="formContent" v-html="replaceCommentContent(j.formContent!)" />
             </div>
           </div>
           <div
@@ -140,7 +138,7 @@
 import { ref } from 'vue';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { IMAGES } from '@/constant';
-import { formatGapTime } from '@/utils';
+import { formatGapTime, replaceCommentContent } from '@/utils';
 import { CommentParams, CommentListParams } from '@/typings/comment';
 import { commentStore } from '@/store';
 import Message from '@/components/Message/index.vue';

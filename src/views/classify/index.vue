@@ -1,8 +1,9 @@
 <template>
   <div class="tag-list-wrap">
-    <div v-if="isMounted" class="tag-list">
-      <div class="infinite-list-wrapper" style="overflow: auto">
+    <div class="tag-list">
+      <el-scrollbar ref="scrollRef" class="infinite-list-wrapper">
         <div
+          v-if="isMounted"
           v-infinite-scroll="load"
           class="list"
           :infinite-scroll-disabled="disabled"
@@ -32,15 +33,20 @@
         </div>
         <p v-if="loading" class="loading">Loading...</p>
         <p v-if="noMore" class="no-more">没有更多了～～～</p>
-      </div>
+      </el-scrollbar>
+      <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollTo" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
+import { scrollTo } from '@/utils';
+import { useScroller } from '@/hooks';
 import Card from '@/components/Card/index.vue';
 import { IMAGES } from '@/constant';
+
+const { scrollRef, scrollTop } = useScroller();
 
 type countType = number;
 type loadType = boolean;
@@ -62,6 +68,11 @@ const load = () => {
     loading.value = false;
   }, 2000);
 };
+
+// 滚动到顶部
+const onScrollTo = () => {
+  scrollTo(scrollRef, 0);
+};
 </script>
 
 <style lang="less" scoped>
@@ -69,7 +80,6 @@ const load = () => {
 
 .tag-list-wrap {
   .layoutStyles();
-  padding-right: 0;
 
   :deep(.el-tabs__content) {
     padding: 10px 0 15px 15px;
@@ -82,6 +92,7 @@ const load = () => {
     .infinite-list-wrapper {
       height: 100%;
       padding: 10px 20px 0 20px;
+      background-color: @fff;
 
       .list {
         margin: auto;
@@ -141,7 +152,7 @@ const load = () => {
     .loading,
     .no-more {
       text-align: center;
-      margin-bottom: 5px;
+      margin-top: 5px;
     }
   }
 }

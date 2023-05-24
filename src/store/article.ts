@@ -22,12 +22,18 @@ export const useArticleStore = defineStore('article', {
   actions: {
     async getArticleList(pageNo: number) {
       try {
+        const { auth, bindAccount, userId } = userStore;
         this.loading = true;
+        if (auth !== 1 && !bindAccount?.length) {
+          ElMessage.info('请先前往账号设置绑定前台账号');
+          return;
+        }
         const res = normalizeResult<ArticleListResult>(
           await Service.getArticleList({
             pageNo,
             pageSize: PAGESIZE,
-            userId: userStore?.userId!,
+            userId: userId!,
+            authorIds: auth !== 1 ? bindAccount! : [],
           }),
         );
         this.loading = false;
