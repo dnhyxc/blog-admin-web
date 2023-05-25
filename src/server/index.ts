@@ -1,6 +1,14 @@
 import { post } from '@/utils/request';
+import { ssnGetItem } from '@/utils'
 import { LoginParams, PageConfigParams, Params, CreateArticleParams, ManageCommentParams } from '@/typings/comment';
 import * as API from './api';
+
+// 处理请求参数，为请求自动加上userId
+const copeParams = (params?: any) => {
+  const userId = JSON.parse(ssnGetItem('userId')!);
+  const data = params?.userId ? params : { ...params, userId };
+  return data;
+};
 
 // 登录
 export const login = async (params: LoginParams) => {
@@ -201,5 +209,29 @@ export const restoreInteracts = async (params: { ids: string | string[]; userId:
 // 删除留言
 export const delInteracts = async (params: { ids: string | string[]; userId: string }) => {
   const res = await post(API.DEL_INTERACTS, params);
+  return res;
+};
+
+// 获取文章分类列表
+export const createClassify = async (classifyName: string) => {
+  const res = await post(API.CREATE_CLASSIFY, copeParams({ classifyName }));
+  return res;
+};
+
+// 更新分类
+export const updateClassify = async (classifyName: string) => {
+  const res = await post(API.UPDATE_CLASSIFY, copeParams({ classifyName }));
+  return res;
+};
+
+// 删除分类
+export const deleteClassifys = async (ids: string | string[]) => {
+  const res = await post(API.DELETE_CLASSIFYS, copeParams({ ids }));
+  return res;
+};
+
+// 获取文章分类列表
+export const getClassifyList = async (params: { pageNo: number; pageSize: number }) => {
+  const res = await post(API.GET_CLASSIFY_LIST, copeParams(params));
   return res;
 };

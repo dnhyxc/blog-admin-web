@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="container">
-    <el-dialog v-model="visible" :title="title" width="500">
+    <el-dialog v-model="visible" :title="title" :width="width">
       <div class="content">
         <slot>请向插槽中插入内容</slot>
       </div>
@@ -30,6 +30,8 @@ interface IProps {
   cancelText?: string;
   onText?: string;
   needFooter?: boolean;
+  width?: number;
+  contentPadding?: string;
 }
 
 interface Emits {
@@ -43,6 +45,8 @@ const props = withDefaults(defineProps<IProps>(), {
   onText: '确定',
   needFooter: true,
   onSubmit: () => {},
+  width: 500,
+  contentPadding: '20px',
 });
 
 const visible = computed({
@@ -76,11 +80,8 @@ const onConfirm = async () => {
 .container {
   :deep {
     .el-dialog__body {
-      padding: 20px;
+      padding: v-bind(contentPadding);
     }
-  }
-  .content {
-    padding: 0 20px;
   }
 }
 </style>

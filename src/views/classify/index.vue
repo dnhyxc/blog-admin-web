@@ -1,5 +1,8 @@
 <template>
   <div class="tag-list-wrap">
+    <div class="create">
+      <div class="create-btn" @click="onCreateClassify">创建分类</div>
+    </div>
     <div class="tag-list">
       <el-scrollbar ref="scrollRef" class="infinite-list-wrapper">
         <div
@@ -35,12 +38,31 @@
         <p v-if="noMore" class="no-more">没有更多了～～～</p>
       </el-scrollbar>
       <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollTo" />
+      <Modal v-model:visible="visible" title="创建分类" :width="350" content-padding="10px">
+        <div class="modal-content">
+          <el-form ref="formRef" :model="classifyForm" label-width="110px" class="form-wrap">
+            <el-form-item
+              label="分类名称"
+              label-width="80px"
+              :prop="classifyForm.classifyName"
+              :rules="{
+                required: true,
+                message: '请输入分类名称',
+              }"
+              class="form-item-custom"
+            >
+              <el-input v-model="classifyForm.classifyName" placeholder="请输入需要绑定的前台账号名称" />
+            </el-form-item>
+          </el-form>
+        </div>
+      </Modal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, reactive } from 'vue';
+import type { FormInstance } from 'element-plus';
 import { scrollTo } from '@/utils';
 import { useScroller } from '@/hooks';
 import Card from '@/components/Card/index.vue';
@@ -56,6 +78,13 @@ const loading = ref<loadType>(false);
 const noMore = computed(() => count.value >= 50);
 const disabled = computed(() => loading.value || noMore.value);
 const isMounted = ref<boolean>(false);
+const visible = ref<boolean>(false);
+const formRef = ref<FormInstance>();
+const classifyForm = reactive<{
+  classifyName: string;
+}>({
+  classifyName: '',
+});
 
 onMounted(() => {
   isMounted.value = true;
@@ -67,6 +96,11 @@ const load = () => {
     count.value += 8;
     loading.value = false;
   }, 2000);
+};
+
+// 创建分类
+const onCreateClassify = () => {
+  visible.value = true;
 };
 
 // 滚动到顶部
@@ -85,9 +119,23 @@ const onScrollTo = () => {
     padding: 10px 0 15px 15px;
   }
 
+  .create {
+    background-color: @fff;
+    padding: 20px 35px 5px;
+
+    .create-btn {
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px @info-light-5;
+      cursor: pointer;
+    }
+  }
+
   .tag-list {
     box-sizing: border-box;
-    height: calc(100vh - 80px);
+    height: calc(100vh - 155px);
 
     .infinite-list-wrapper {
       height: 100%;
@@ -98,7 +146,7 @@ const onScrollTo = () => {
         margin: auto;
         width: auto;
         max-width: 960px;
-        padding: 15px 0 0 15px;
+        padding: 5px 0 0 15px;
         border-radius: 5px;
         background-color: @fff;
 
@@ -154,6 +202,12 @@ const onScrollTo = () => {
       text-align: center;
       margin-top: 5px;
     }
+  }
+
+  .modal-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 

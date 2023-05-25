@@ -70,7 +70,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <Modal v-model:visible="visible" title="权限设置">
+    <Modal v-model:visible="visible" title="账号绑定">
       <ResetBind v-model:visible="visible" />
     </Modal>
   </div>

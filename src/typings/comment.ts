@@ -213,3 +213,17 @@ export interface InteractListRes {
   total: number;
   list: InteractParams[];
 }
+
+export interface ClassifyItem {
+  id: string;
+  classifyName: string;
+  addCount: number;
+  articleCount: number;
+  userCount: number;
+  createTime?: number;
+}
+
+export interface ClassifyList {
+  count: number;
+  list: ClassifyItem[];
+}

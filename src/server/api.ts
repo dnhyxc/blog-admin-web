@@ -93,3 +93,15 @@ export const RESTORE_INTERACTS = '/admin/restoreInteracts';
 
 // 删除留言
 export const DEL_INTERACTS = '/admin/delInteracts';
+
+// 创建分类
+export const CREATE_CLASSIFY = '/api/createClassify';
+
+// 更新分类
+export const UPDATE_CLASSIFY = '/api/updateClassify';
+
+// 删除分类
+export const DELETE_CLASSIFYS = '/api/deleteClassifys';
+
+// 获取分类列表
+export const GET_CLASSIFY_LIST = '/api/getClassifyList';
