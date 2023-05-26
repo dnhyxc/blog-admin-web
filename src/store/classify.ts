@@ -43,7 +43,8 @@ export const useClassifyStore = defineStore('classify', {
       );
       this.loading = false;
       if (res.success) {
-        console.log(res, 'res');
+        this.classifyList = [...this.classifyList, ...res.data.list];
+        this.total = res.data.total;
       } else {
         ElMessage.error(res.message);
       }

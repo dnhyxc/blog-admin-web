@@ -224,6 +224,6 @@ export interface ClassifyItem {
 }
 
 export interface ClassifyList {
-  count: number;
+  total: number;
   list: ClassifyItem[];
 }

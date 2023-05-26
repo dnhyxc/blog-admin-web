@@ -111,8 +111,8 @@ export const useArticleStore = defineStore('article', {
     },
 
     // 删除文章（支持批量删除）
-    async batchDelArticle(articleIds: string[], pageNo: number) {
-      if (!articleIds.length) {
+    async batchDelArticle(params: { articleIds: string[]; pageNo: number; classifys: string[] }) {
+      if (!params.articleIds.length) {
         ElMessage.info('没有可删除的文章');
         return;
       }
@@ -120,13 +120,13 @@ export const useArticleStore = defineStore('article', {
         this.loading = true;
         const res = normalizeResult<number>(
           await Service.batchDelArticle({
-            articleIds,
+            ...params,
             userId: userStore?.userId!,
           }),
         );
         this.loading = false;
         if (res.success) {
-          this.getArticleList(pageNo);
+          this.getArticleList(params.pageNo);
           ElMessage.success(res.message);
         } else {
           ElMessage.error(res.message);

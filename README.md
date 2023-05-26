@@ -50,3 +50,9 @@ yarn add vue-baberrage
   "dev": "cross-env NODE_ENV=development vite --host=0.0.0.0",
 },
 ```
+
+### implements与extends的定位
+
+implements：实现，一个新的类，从父类或者接口实现所有的属性和方法，同时可以重写属性和方法，包含一些新的功能。
+
+extends：继承，一个新的接口或者类，从父类或者接口继承所有的属性和方法，不可以重写属性，但可以重写方法。

@@ -13,7 +13,7 @@
           infinite-scroll-immediate
           infinite-scroll-distance="2"
         >
-          <div v-for="(item, index) in count" :key="index" class="card-wrap">
+          <div v-for="item in classifyStore.classifyList" :key="item.id" class="card-wrap">
             <Card class="card">
               <template #img>
                 <div class="img">
@@ -21,10 +21,10 @@
                 </div>
               </template>
               <template #title>
-                <div class="title">React{{ item }}</div>
+                <div class="title">{{ item.classifyName }}</div>
               </template>
               <template #content>
-                <div class="desc">29 添加 &nbsp; 200 文章</div>
+                <div class="desc">{{ item.addCount }} 添加 &nbsp; {{ item.articleCount }} 文章</div>
               </template>
               <template #footer>
                 <div class="action">

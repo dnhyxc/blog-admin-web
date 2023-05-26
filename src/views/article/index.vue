@@ -37,7 +37,7 @@
             <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onManageArticle(scope.row)">
               {{ scope.row.isDelete ? '上架' : '下架' }}
             </el-button>
-            <el-button link type="danger" @click="onDelete(scope.row.id)">删除</el-button>
+            <el-button link type="danger" @click="onDelete(scope.row)">删除</el-button>
           </div>
         </template>
       </el-table-column>
@@ -85,7 +85,9 @@ const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
 const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
 const deleteId = ref<string>(''); // 选中需要删除的文章id
+const classify = ref<string>(''); // 选中删除文章的分类
 const deleteIds = ref<string[]>([]); // 批量删除ids
+const classifys = ref<string[]>([]); // 批量删除文章的分类
 
 const router = useRouter();
 
@@ -169,8 +171,10 @@ const onRemove = (id: string) => {
 };
 
 // 删除
-const onDelete = (id: string) => {
+const onDelete = (item: ArticleItem) => {
+  const { classify: _classify, id } = item;
   deleteId.value = id;
+  classify.value = _classify;
   messageVisible.value = true;
 };
 
@@ -192,16 +196,27 @@ const onRestoreAll = () => {
 
 // 多选删除
 const onDeleteAll = () => {
-  const ids = multipleSelection.value.map((j) => j.id) || [];
+  const ids: string[] = [];
+  const classifyList: string[] = [];
+  multipleSelection.value.forEach((j) => {
+    ids.push(j.id);
+    classifyList.push(j.classify);
+  });
   deleteIds.value = ids;
+  classifys.value = classifyList;
   messageVisible.value = true;
 };
 
 // 二次确认删除
 const onSubmitDelete = async () => {
-  await articleStore.batchDelArticle(deleteIds.value.length ? deleteIds.value : [deleteId.value], currentPage.value);
-  // 删除完成之后，清除之前选择的账号ids
+  await articleStore.batchDelArticle({
+    articleIds: deleteIds.value.length ? deleteIds.value : [deleteId.value],
+    pageNo: currentPage.value,
+    classifys: deleteIds.value.length ? classifys.value : [classify.value],
+  });
+  // 删除完成之后，清除之前选择的账号ids及classifys
   deleteIds.value = [];
+  classifys.value = [];
   // 取消多选
   multipleTableRef.value!.clearSelection();
 };
