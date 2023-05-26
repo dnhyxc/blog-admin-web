@@ -11,6 +11,7 @@ import { useMessageStore } from './message';
 import { useCreateStore } from './create';
 import { useCommentStore } from './comment';
 import { useInteractStore } from './interact';
+import { useClassifyStore } from './classify';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -25,6 +26,7 @@ const messageStore = useMessageStore();
 const createStore = useCreateStore();
 const commentStore = useCommentStore();
 const interactStore = useInteractStore();
+const classifyStore = useClassifyStore();
 
 export {
   userStore,
@@ -40,4 +42,5 @@ export {
   createStore,
   commentStore,
   interactStore,
+  classifyStore,
 };

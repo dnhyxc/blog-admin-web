@@ -38,18 +38,18 @@
         <p v-if="noMore" class="no-more">没有更多了～～～</p>
       </el-scrollbar>
       <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollTo" />
-      <Modal v-model:visible="visible" title="创建分类" :width="350" content-padding="10px">
+      <Modal v-model:visible="visible" title="创建分类" :width="450" content-padding="10px" :on-submit="onSubmit">
         <div class="modal-content">
-          <el-form ref="formRef" :model="classifyForm" label-width="110px" class="form-wrap">
+          <el-form ref="formRef" :model="classifyForm" label-width="110px" class="form-wrap" @submit.native.prevent>
             <el-form-item
               label="分类名称"
               label-width="80px"
-              :prop="classifyForm.classifyName"
               :rules="{
                 required: true,
                 message: '请输入分类名称',
               }"
               class="form-item-custom"
+              @keyup.enter="onSubmit"
             >
               <el-input v-model="classifyForm.classifyName" placeholder="请输入需要绑定的前台账号名称" />
             </el-form-item>
@@ -65,6 +65,7 @@ import { computed, ref, onMounted, reactive } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { scrollTo } from '@/utils';
 import { useScroller } from '@/hooks';
+import { classifyStore } from '@/store';
 import Card from '@/components/Card/index.vue';
 import { IMAGES } from '@/constant';
 
@@ -88,19 +89,29 @@ const classifyForm = reactive<{
 
 onMounted(() => {
   isMounted.value = true;
+  classifyStore.getClassifyList();
 });
 
 const load = () => {
-  loading.value = true;
-  setTimeout(() => {
-    count.value += 8;
-    loading.value = false;
-  }, 2000);
+  classifyStore.getClassifyList();
 };
 
 // 创建分类
 const onCreateClassify = () => {
   visible.value = true;
+};
+
+// 提交
+const onSubmit = () => {
+  if (!formRef.value) return;
+  formRef.value.validate(async (valid) => {
+    if (valid) {
+      console.log(classifyForm.classifyName);
+      classifyStore.createClassify(classifyForm.classifyName);
+    } else {
+      return false;
+    }
+  });
 };
 
 // 滚动到顶部
@@ -208,6 +219,11 @@ const onScrollTo = () => {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 20px;
+
+    .form-wrap {
+      width: 100%;
+    }
   }
 }
 

@@ -1,11 +1,11 @@
 import { post } from '@/utils/request';
-import { ssnGetItem } from '@/utils'
+import { ssnGetItem } from '@/utils';
 import { LoginParams, PageConfigParams, Params, CreateArticleParams, ManageCommentParams } from '@/typings/comment';
 import * as API from './api';
 
 // 处理请求参数，为请求自动加上userId
 const copeParams = (params?: any) => {
-  const userId = JSON.parse(ssnGetItem('userId')!);
+  const userId = ssnGetItem('userId');
   const data = params?.userId ? params : { ...params, userId };
   return data;
 };

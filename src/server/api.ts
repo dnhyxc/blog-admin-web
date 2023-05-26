@@ -95,13 +95,13 @@ export const RESTORE_INTERACTS = '/admin/restoreInteracts';
 export const DEL_INTERACTS = '/admin/delInteracts';
 
 // 创建分类
-export const CREATE_CLASSIFY = '/api/createClassify';
+export const CREATE_CLASSIFY = '/admin/createClassify';
 
 // 更新分类
-export const UPDATE_CLASSIFY = '/api/updateClassify';
+export const UPDATE_CLASSIFY = '/admin/updateClassify';
 
 // 删除分类
-export const DELETE_CLASSIFYS = '/api/deleteClassifys';
+export const DELETE_CLASSIFYS = '/admin/deleteClassifys';
 
 // 获取分类列表
-export const GET_CLASSIFY_LIST = '/api/getClassifyList';
+export const GET_CLASSIFY_LIST = '/admin/getClassifyList';

@@ -5,41 +5,47 @@ import { normalizeResult } from '@/utils';
 import { ClassifyList, ClassifyItem } from '@/typings/comment';
 import { PAGESIZE } from '@/constant';
 
-interface IProps extends ClassifyItem {
+interface IProps {
   pageNo: number;
   pageSize: number;
+  total: number;
+  loading: boolean;
+  classifyList: ClassifyItem[];
 }
 
 export const useClassifyStore = defineStore('classify', {
   state: (): IProps => ({
-    id: '',
-    classifyName: '',
-    addCount: 0,
-    articleCount: 0,
-    userCount: 0,
-    createTime: 0,
-    pageNo: 1,
+    pageNo: 0,
     pageSize: PAGESIZE,
+    classifyList: [],
+    loading: false,
+    total: 0,
   }),
   actions: {
     // 创建分类
     async createClassify(classifyName: string) {
       const res = normalizeResult<ClassifyItem>(await Service.createClassify(classifyName));
       if (res.success) {
+        ElMessage.success(res.message);
         console.log(res, 'res');
+      } else {
+        ElMessage.error(res.message);
       }
-      ElMessage(res.message);
     },
 
     // 获取分类
     async getClassifyList() {
-      const res = normalizeResult<ClassifyItem>(
+      if (this.classifyList.length !== 0 && this.classifyList.length >= this.total) return;
+      this.pageNo = this.pageNo + 1;
+      this.loading = true;
+      const res = normalizeResult<ClassifyList>(
         await Service.getClassifyList({ pageNo: this.pageNo, pageSize: this.pageSize }),
       );
+      this.loading = false;
       if (res.success) {
         console.log(res, 'res');
       } else {
-        ElMessage(res.message);
+        ElMessage.error(res.message);
       }
     },
 
@@ -48,8 +54,9 @@ export const useClassifyStore = defineStore('classify', {
       const res = normalizeResult<ClassifyList>(await Service.updateClassify(classifyName));
       if (res.success) {
         console.log(res, 'res');
+        ElMessage.success(res.message);
       } else {
-        ElMessage(res.message);
+        ElMessage.error(res.message);
       }
     },
 
@@ -58,8 +65,9 @@ export const useClassifyStore = defineStore('classify', {
       const res = normalizeResult<ClassifyList>(await Service.deleteClassifys(ids));
       if (res.success) {
         console.log(res, 'res');
+        ElMessage.success(res.message);
       } else {
-        ElMessage(res.message);
+        ElMessage.error(res.message);
       }
     },
   },
