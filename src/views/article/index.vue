@@ -75,9 +75,8 @@ import { ElTable } from 'element-plus';
 import { PAGESIZE } from '@/constant';
 import { formatDate } from '@/utils';
 import { ArticleItem } from '@/typings/comment';
-import { articleStore, userStore, createStore } from '@/store';
+import { articleStore, createStore } from '@/store';
 import Message from '@/components/Message/index.vue';
-import { sendMessage } from '@/socket';
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();
 const multipleSelection = ref<ArticleItem[]>([]);
@@ -153,7 +152,6 @@ const onManageArticle = (item: ArticleItem) => {
   } else {
     onRemove(id);
   }
-  sendMessage(JSON.stringify({ action: 'push', data: '来了老弟', userId: userStore?.userId! }));
 };
 
 // 上架

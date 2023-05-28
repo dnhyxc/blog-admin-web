@@ -230,6 +230,12 @@ export const deleteClassifys = async (ids: string | string[]) => {
   return res;
 };
 
+// 添加分类
+export const addClassify = async (params: { id: string; bindUsers: string[]; type: string }) => {
+  const res = await post(API.ADD_CLASSIFY, copeParams(params));
+  return res;
+};
+
 // 获取文章分类列表
 export const getClassifyList = async (params: { pageNo: number; pageSize: number }) => {
   const res = await post(API.GET_CLASSIFY_LIST, copeParams(params));

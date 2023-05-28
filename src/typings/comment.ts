@@ -221,6 +221,9 @@ export interface ClassifyItem {
   articleCount: number;
   userCount: number;
   createTime?: number;
+  addUserIds?: string[];
+  userIds?: string[];
+  articleIds?: string[];
 }
 
 export interface ClassifyList {

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ElMessage } from 'element-plus';
+import { userStore } from '@/store';
 import * as Service from '@/server';
 import { normalizeResult } from '@/utils';
 import { ClassifyList, ClassifyItem } from '@/typings/comment';
@@ -52,7 +53,7 @@ export const useClassifyStore = defineStore('classify', {
 
     // 更新分类
     async updateClassify(classifyName: string) {
-      const res = normalizeResult<ClassifyList>(await Service.updateClassify(classifyName));
+      const res = normalizeResult<ClassifyItem>(await Service.updateClassify(classifyName));
       if (res.success) {
         console.log(res, 'res');
         ElMessage.success(res.message);
@@ -61,15 +62,45 @@ export const useClassifyStore = defineStore('classify', {
       }
     },
 
+    // 添加分类
+    async addClassify(id: string, type: string) {
+      const res = normalizeResult<ClassifyItem>(
+        await Service.addClassify({ id, bindUsers: userStore.bindAccount || [], type }),
+      );
+      if (res.success) {
+        this.classifyList.forEach((i) => {
+          if (i.id === id) {
+            if (type === 'add') {
+              i.addUserIds = (i.addUserIds ? [...i.addUserIds, userStore.userId] : [...i.addUserIds!]) as string[];
+              i.userCount = new Set([...i.userIds!, ...userStore.bindAccount!]).size;
+            } else {
+              i.addUserIds = i.addUserIds?.filter((i) => i !== userStore.userId);
+              i.userCount -= userStore.bindAccount?.length!;
+            }
+          }
+        });
+        ElMessage.success(res.message);
+      } else {
+        ElMessage.error(res.message);
+      }
+    },
+
     // 删除分类
     async deleteClassify(ids: string | string[]) {
-      const res = normalizeResult<ClassifyList>(await Service.deleteClassifys(ids));
+      const res = normalizeResult<ClassifyItem>(await Service.deleteClassifys(ids));
       if (res.success) {
         console.log(res, 'res');
         ElMessage.success(res.message);
       } else {
         ElMessage.error(res.message);
       }
+    },
+
+    // 清除数据
+    clearClassifyList() {
+      this.pageNo = 0;
+      this.total = 0;
+      this.classifyList = [];
     },
   },
 });

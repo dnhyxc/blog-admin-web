@@ -103,5 +103,8 @@ export const UPDATE_CLASSIFY = '/admin/updateClassify';
 // 删除分类
 export const DELETE_CLASSIFYS = '/admin/deleteClassifys';
 
+// 添加分类
+export const ADD_CLASSIFY = '/admin/addClassify';
+
 // 获取分类列表
 export const GET_CLASSIFY_LIST = '/admin/getClassifyList';

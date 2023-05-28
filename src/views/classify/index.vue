@@ -1,9 +1,9 @@
 <template>
   <div class="tag-list-wrap">
-    <div class="create">
-      <div class="create-btn" @click="onCreateClassify">创建分类</div>
+    <div v-if="userStore?.auth === 1" class="create">
+      <div class="create-btn" @click="onCreateClassify">创建新分类</div>
     </div>
-    <div class="tag-list">
+    <div :class="`tag-list ${userStore?.auth !== 1 && 'notAuth'}`">
       <el-scrollbar ref="scrollRef" class="infinite-list-wrapper">
         <div
           v-if="isMounted"
@@ -21,20 +21,25 @@
                 </div>
               </template>
               <template #title>
-                <div class="title">{{ item.classifyName }}</div>
+                <div class="title">{{ item.classifyName || '-' }}</div>
               </template>
               <template #content>
-                <div class="desc">{{ item.addCount }} 添加 &nbsp; {{ item.articleCount }} 文章</div>
+                <div class="desc">{{ item.userCount }} 添加 &nbsp; {{ item.articleCount }} 文章</div>
               </template>
               <template #footer>
                 <div class="action">
-                  <el-button type="primary" class="add-btn">添加标签</el-button>
+                  <el-button
+                    :type="!isAdded(item) ? 'primary' : 'warning'"
+                    class="add-btn"
+                    @click.stop="onAddOrRemoveClassify(item.id, isAdded(item))"
+                    >{{ isAdded(item) ? '移除分类' : '添加分类' }}</el-button
+                  >
                 </div>
               </template>
             </Card>
           </div>
         </div>
-        <p v-if="loading" class="loading">Loading...</p>
+        <p v-if="classifyStore.loading" class="loading">Loading...</p>
         <p v-if="noMore" class="no-more">没有更多了～～～</p>
       </el-scrollbar>
       <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollTo" />
@@ -61,23 +66,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, reactive } from 'vue';
+import { computed, ref, onMounted, reactive, onUnmounted } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { scrollTo } from '@/utils';
 import { useScroller } from '@/hooks';
-import { classifyStore } from '@/store';
+import { classifyStore, userStore } from '@/store';
+import { ClassifyItem } from '@/typings/comment';
 import Card from '@/components/Card/index.vue';
 import { IMAGES } from '@/constant';
 
 const { scrollRef, scrollTop } = useScroller();
 
-type countType = number;
-type loadType = boolean;
-
-const count = ref<countType>(20);
-const loading = ref<loadType>(false);
-const noMore = computed(() => count.value >= 50);
-const disabled = computed(() => loading.value || noMore.value);
+const noMore = computed(() => {
+  const { classifyList, total } = classifyStore;
+  return classifyList.length >= total && classifyList.length;
+});
+const disabled = computed(() => classifyStore.loading || noMore.value);
 const isMounted = ref<boolean>(false);
 const visible = ref<boolean>(false);
 const formRef = ref<FormInstance>();
@@ -92,8 +96,17 @@ onMounted(() => {
   classifyStore.getClassifyList();
 });
 
+onUnmounted(() => {
+  classifyStore.clearClassifyList();
+});
+
 const load = () => {
   classifyStore.getClassifyList();
+};
+
+// 判断是否添加
+const isAdded = (item: ClassifyItem) => {
+  return item?.addUserIds?.includes(userStore?.userId!);
 };
 
 // 创建分类
@@ -106,12 +119,24 @@ const onSubmit = () => {
   if (!formRef.value) return;
   formRef.value.validate(async (valid) => {
     if (valid) {
-      console.log(classifyForm.classifyName);
-      classifyStore.createClassify(classifyForm.classifyName);
+      await classifyStore.createClassify(classifyForm.classifyName);
+      visible.value = false;
+      formRef.value?.resetFields();
+      classifyStore.clearClassifyList();
+      classifyStore.getClassifyList();
     } else {
       return false;
     }
   });
+};
+
+// 分类添加或移除
+const onAddOrRemoveClassify = async (id: string, type: boolean | undefined) => {
+  if (type) {
+    await classifyStore.addClassify(id, 'remove');
+  } else {
+    await classifyStore.addClassify(id, 'add');
+  }
 };
 
 // 滚动到顶部
@@ -140,6 +165,8 @@ const onScrollTo = () => {
       line-height: 50px;
       border-radius: 5px;
       box-shadow: 0 0 10px @info-light-5;
+      max-width: 945px;
+      margin: auto;
       cursor: pointer;
     }
   }
@@ -213,6 +240,10 @@ const onScrollTo = () => {
       text-align: center;
       margin-top: 5px;
     }
+  }
+
+  .notAuth {
+    height: calc(100vh - 80px);
   }
 
   .modal-content {
