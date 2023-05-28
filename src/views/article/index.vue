@@ -106,7 +106,6 @@ const handleSelectionChange = (val: ArticleItem[]) => {
 
 // 去详情
 const toDetail = (id: string) => {
-  console.log(id, 'toDetail');
   router.push(`/detail/${id}`);
 };
 
