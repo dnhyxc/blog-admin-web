@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Params, UserListRes } from '@/typings/comment';
+import { Params, UserListRes, UserInfoParams } from '@/typings/comment';
 import * as Service from '@/server';
 import { normalizeResult } from '@/utils';
 import { ElMessage } from 'element-plus';
@@ -8,6 +8,9 @@ import { userStore } from '@/store';
 
 interface IParams extends UserListRes {
   loading: boolean;
+  pageNo: number;
+  pageSize: number;
+  userList: UserInfoParams[];
 }
 
 export const useAccountStore = defineStore('account', {
@@ -15,9 +18,37 @@ export const useAccountStore = defineStore('account', {
     list: [],
     total: 0,
     loading: false,
+    pageNo: 0,
+    pageSize: PAGESIZE,
+    userList: [],
   }),
 
   actions: {
+    // 滚动获取用户列表
+    async getUserListByScroll(keyword: string) {
+      if (this.userList.length !== 0 && this.userList.length >= this.total) return;
+      this.pageNo = this.pageNo + 1;
+      this.loading = true;
+
+      const params: Params = {
+        pageNo: this.pageNo,
+        pageSize: this.pageSize,
+      };
+
+      if (keyword) {
+        params.keyword = keyword;
+      }
+
+      const res = normalizeResult<UserListRes>(await Service.getAccountList(params));
+      this.loading = false;
+      if (res.success) {
+        this.userList = [...this.userList, ...res.data.list];
+        this.total = res.data.total;
+      } else {
+        ElMessage.error(res.message);
+      }
+    },
+
     // 获取账号列表
     async getAccountList(params: Params) {
       try {
@@ -111,6 +142,20 @@ export const useAccountStore = defineStore('account', {
       } catch (error) {
         throw error;
       }
+    },
+
+    // 搜索时重新更新用户列表
+    updateUserList(keyword: string) {
+      const findUser = this.userList.filter((i) => i.username.includes(keyword));
+      console.log(findUser, 'findUser');
+
+      this.userList = findUser;
+    },
+
+    clearUserListInfo() {
+      this.pageNo = 0;
+      this.userList = [];
+      this.total = 0;
     },
   },
 });

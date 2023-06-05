@@ -17,6 +17,7 @@
           <Tickets v-if="menu.key === 'interact'" />
           <setting v-if="menu.key === 'pageSet'" />
           <Position v-if="menu.key === 'create'" />
+          <Notification v-if="menu.key === 'tools'" />
         </el-icon>
         <div class="item" :to="menu.path">{{ menu.name }}</div>
       </el-menu-item>
@@ -36,6 +37,7 @@ import {
   Position,
   User,
   Tickets,
+  Notification,
 } from '@element-plus/icons-vue';
 import { computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';

@@ -93,6 +93,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/interact/index.vue'),
       },
       {
+        path: '/tools',
+        name: 'tools',
+        meta: {
+          title: '工具管理',
+          keepAlive: true,
+          requireAuth: true,
+        },
+        component: () => import('@/views/tools/index.vue'),
+      },
+      {
         path: '/create',
         name: 'create',
         meta: {

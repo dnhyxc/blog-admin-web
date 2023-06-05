@@ -77,6 +77,7 @@ export interface Params {
   pageSize: number;
   userId?: string;
   authorIds?: string[];
+  keyword?: string;
 }
 
 // 主题设置参数

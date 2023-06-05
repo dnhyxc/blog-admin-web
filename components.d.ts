@@ -61,6 +61,7 @@ declare module '@vue/runtime-core' {
     Rotation: typeof import('./src/components/Rotation/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelectUser: typeof import('./src/components/SelectUser/index.vue')['default']
     Toc: typeof import('./src/components/Toc/index.vue')['default']
     TopMenu: typeof import('./src/components/TopMenu/index.vue')['default']
     ToTopIcon: typeof import('./src/components/ToTopIcon/index.vue')['default']

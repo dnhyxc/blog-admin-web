@@ -71,6 +71,12 @@ export const MENULIST: MenuListParams<typeof Grid>[] = [
     icon: Tickets,
   },
   {
+    name: '工具管理',
+    key: 'tools',
+    path: '/tools',
+    icon: Tickets,
+  },
+  {
     name: '主题设置',
     key: 'pageSet',
     path: '/pageSet',
