@@ -17,8 +17,9 @@ import GIRL from '@/assets/img/girl.png';
 import PAGE_ICON from '@/assets/svg/pageIcon.svg';
 import PUSH_ICON from '@/assets/svg/push.svg';
 import { MenuListParams } from '@/typings/comment';
+import TOOL_SVG from '@/assets/svg/tool.svg';
 
-export { QD, SEA, SSM, GIRL };
+export { QD, SEA, SSM, GIRL, TOOL_SVG };
 
 // 左侧菜单配置
 export const MENULIST: MenuListParams<typeof Grid>[] = [

@@ -124,6 +124,14 @@ export const md5HashName = (file: File) => {
   });
 };
 
+// 校验是否是正常的链接
+export const checkHref = (url: string) => {
+  const Expression =
+    /(https?:\/\/)?(([0-9a-z.]+\.[a-z]+)|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]+)?(\/[0-9a-z%/.\-_]*)?(\?[0-9a-z=&%_-]*)?(#[0-9a-z=&%_-]*)?/gi;
+  const objExp = new RegExp(Expression);
+  return objExp.test(url);
+};
+
 export {
   request,
   normalizeResult,

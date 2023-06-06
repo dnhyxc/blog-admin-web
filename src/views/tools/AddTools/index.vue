@@ -6,19 +6,8 @@
 -->
 <template>
   <div class="add-tools-wrap">
-    <el-form ref="formRef" :model="addToolsForm" class="form-wrap">
-      <el-form-item
-        prop="tooUrl"
-        label="工具图标"
-        :rules="[
-          {
-            required: true,
-            message: '请上传工具图标',
-            trigger: 'blur',
-          },
-        ]"
-        class="form-item"
-      >
+    <el-form ref="formRef" :rules="rules" label-width="78px" :model="addToolsForm" class="form-wrap">
+      <el-form-item prop="tooUrl" label="工具图标" class="form-item">
         <el-upload
           class="avatar-uploader"
           :action="UPLOAD"
@@ -38,25 +27,13 @@
           {
             required: true,
             message: '请输入工具名称',
-            trigger: 'blur',
           },
         ]"
         class="form-item"
       >
         <el-input v-model="addToolsForm.toolName" placeholder="请输入工具名称" />
       </el-form-item>
-      <el-form-item
-        prop="toolHref"
-        label="工具链接"
-        :rules="[
-          {
-            required: true,
-            message: '请输入工具链接',
-            trigger: 'blur',
-          },
-        ]"
-        class="form-item"
-      >
+      <el-form-item prop="toolHref" label="工具链接" class="form-item">
         <el-input v-model="addToolsForm.toolHref" placeholder="请输入工具链接" />
       </el-form-item>
     </el-form>
@@ -65,12 +42,13 @@
 
 <script setup lang="ts">
 import { reactive, ref, watchEffect, watch } from 'vue';
-import type { FormInstance, UploadProps } from 'element-plus';
 import { ElMessage } from 'element-plus';
+import type { FormInstance, UploadProps, FormRules } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
 import { UPLOAD } from '@/server/api';
 import { uploadStore } from '@/store';
 import { FILE_TYPE, FILE_UPLOAD_MSG } from '@/constant';
+import { checkHref } from '@/utils';
 import { ToolsParams } from '@/typings/comment';
 
 interface IProps {
@@ -89,6 +67,20 @@ const addToolsForm = reactive<ToolsParams>({
 });
 const toolUrl = ref<string>('');
 
+const validateHref = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('用户名不能为空'));
+  } else if (!checkHref(value)) {
+    callback(new Error('请输入正确的链接'));
+  } else {
+    callback();
+  }
+};
+
+const rules = reactive<FormRules>({
+  toolHref: [{ validator: validateHref, trigger: 'blur', required: true }],
+});
+
 watchEffect(() => {
   const { selectedItem } = props;
   if (selectedItem?.toolName) {
@@ -98,6 +90,9 @@ watchEffect(() => {
     addToolsForm.powerUsers = selectedItem?.powerUsers;
     toolUrl.value = selectedItem?.toolUrl || '';
   }
+
+  const url = 'http://43.143.27.249:9216/home';
+  console.log(checkHref(url), 'checkUrl');
 });
 
 watch(

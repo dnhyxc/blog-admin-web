@@ -22,7 +22,7 @@
           <div class="user-info">
             <el-image
               style="width: 50px; height: 50px; min-width: 50px; border-radius: 5px"
-              :src="scope.row.toolUrl"
+              :src="scope.row.toolUrl || TOOL_SVG"
               fit="cover"
             />
             <span class="username">{{ scope.row.toolName }}</span>
@@ -100,7 +100,7 @@ import { ElTable } from 'element-plus';
 import type { FormInstance } from 'element-plus';
 import { toolsStore, accountStore } from '@/store';
 import { formatDate } from '@/utils';
-import { PAGESIZE } from '@/constant';
+import { PAGESIZE, TOOL_SVG } from '@/constant';
 import { ToolsParams, UserInfoParams } from '@/typings/comment';
 import Message from '@/components/Message/index.vue';
 import AddTools from './AddTools/index.vue';
@@ -225,18 +225,24 @@ const onAddedTools = async () => {
     ...addToolsForm,
     toolUrl,
   };
-  if (selectedItem.value?.id) {
-    await toolsStore.updateTools({
-      ...params,
-      id: selectId.value,
-    });
-  } else {
-    await toolsStore.addTools(params);
-  }
-  formRef?.resetFields();
-  clearToolUrl?.();
-  addVisible.value = false;
-  selectedItem.value = {};
+  formRef?.validate(async (valid) => {
+    if (valid) {
+      if (selectedItem.value?.id) {
+        await toolsStore.updateTools({
+          ...params,
+          id: selectId.value,
+        });
+      } else {
+        await toolsStore.addTools(params);
+      }
+      formRef?.resetFields();
+      clearToolUrl?.();
+      addVisible.value = false;
+      selectedItem.value = {};
+    } else {
+      return false;
+    }
+  });
 };
 </script>
 
@@ -245,6 +251,12 @@ const onAddedTools = async () => {
 
 .tools-wrap {
   .layoutStyles();
+
+  :deep {
+    .el-image__error {
+      font-size: 12px;
+    }
+  }
 
   .action-list {
     display: flex;
