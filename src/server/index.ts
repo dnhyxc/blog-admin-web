@@ -1,6 +1,13 @@
 import { post } from '@/utils/request';
 import { ssnGetItem } from '@/utils';
-import { LoginParams, PageConfigParams, Params, CreateArticleParams, ManageCommentParams } from '@/typings/comment';
+import {
+  LoginParams,
+  PageConfigParams,
+  Params,
+  CreateArticleParams,
+  ManageCommentParams,
+  ToolsParams,
+} from '@/typings/comment';
 import * as API from './api';
 
 // 处理请求参数，为请求自动加上userId
@@ -8,6 +15,18 @@ const copeParams = (params?: any) => {
   const userId = ssnGetItem('userId');
   const data = params?.userId ? params : { ...params, userId };
   return data;
+};
+
+// 自定义文件上传路径
+export const uploadFile = async (params?: any) => {
+  const res = await post(API.UPLOAD, params);
+  return res;
+};
+
+// 删除文件
+export const removeFile = async (url: string) => {
+  const res = await post(API.REMOVE_FILE, copeParams({ url }));
+  return res;
 };
 
 // 登录
@@ -239,5 +258,29 @@ export const addClassify = async (params: { id: string; bindUsers: string[]; typ
 // 获取文章分类列表
 export const getClassifyList = async (params: { pageNo: number; pageSize: number }) => {
   const res = await post(API.GET_CLASSIFY_LIST, copeParams(params));
+  return res;
+};
+
+// 添加工具
+export const addTools = async (params: ToolsParams) => {
+  const res = await post(API.ADD_TOOLS, copeParams(params));
+  return res;
+};
+
+// 获取工具列表
+export const getToolList = async (params: { pageNo: number; pageSize: number }) => {
+  const res = await post(API.GET_TOOL_LIST, copeParams(params));
+  return res;
+};
+
+// 更新工具
+export const updateTools = async (params: ToolsParams) => {
+  const res = await post(API.UPDATE_TOOLS, copeParams(params));
+  return res;
+};
+
+// 删除
+export const deleteTools = async (ids: string | string[]) => {
+  const res = await post(API.DELETE_TOOLS, copeParams({ ids }));
   return res;
 };

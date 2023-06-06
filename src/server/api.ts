@@ -1,3 +1,7 @@
+// 上传文件
+export const UPLOAD = '/admin/upload';
+// 删除文件
+export const REMOVE_FILE = '/admin/removeFile';
 // 登录
 export const LOGIN = '/admin/login';
 
@@ -108,3 +112,15 @@ export const ADD_CLASSIFY = '/admin/addClassify';
 
 // 获取分类列表
 export const GET_CLASSIFY_LIST = '/admin/getClassifyList';
+
+// 添加工具
+export const ADD_TOOLS = '/admin/addTools';
+
+// 获取工具列表
+export const GET_TOOL_LIST = '/admin/getToolList';
+
+// 更新工具
+export const UPDATE_TOOLS = '/admin/updateTools';
+
+// 删除工具
+export const DELETE_TOOLS = '/admin/deleteTools';

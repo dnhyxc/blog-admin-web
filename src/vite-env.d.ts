@@ -16,3 +16,5 @@ declare module '@kangc/v-md-editor/lib/preview-html';
 declare module '@kangc/v-md-editor';
 
 declare module 'classname';
+
+declare module 'spark-md5';

@@ -8,15 +8,23 @@
   <el-scrollbar class="tools-wrap">
     <div class="action-list">
       <el-button type="primary" @click="onAddTool">添加工具</el-button>
-      <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量设置</el-button>
       <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
     </div>
-    <el-table ref="multipleTableRef" :data="data" style="width: 100%" @selection-change="handleSelectionChange">
+    <el-table
+      ref="multipleTableRef"
+      :data="toolsStore.list"
+      style="width: 100%"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" />
-      <el-table-column label="工具名称" show-overflow-tooltip width="150">
+      <el-table-column label="工具名称" show-overflow-tooltip width="250">
         <template #default="scope">
           <div class="user-info">
-            <el-image style="width: 50px; height: 50px; border-radius: 5px" :src="scope.row.toolUrl" fit="cover" />
+            <el-image
+              style="width: 50px; height: 50px; min-width: 50px; border-radius: 5px"
+              :src="scope.row.toolUrl"
+              fit="cover"
+            />
             <span class="username">{{ scope.row.toolName }}</span>
           </div>
         </template>
@@ -26,7 +34,7 @@
           <div class="tool-herf">{{ scope.row.toolHref }}</div>
         </template>
       </el-table-column>
-      <el-table-column property="createTime" label="发表时间" show-overflow-tooltip width="180">
+      <el-table-column property="createTime" label="添加时间" show-overflow-tooltip width="180">
         <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
       </el-table-column>
       <el-table-column property="powerUsers" label="权限范围" show-overflow-tooltip width="350">
@@ -39,32 +47,33 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="160">
+      <el-table-column label="操作" width="175">
         <template #default="scope">
           <div class="actions">
             <el-button link type="primary" @click="onSetPower(scope.row)">权限设置</el-button>
-            <el-button link type="primary" @click="onDelete(scope.row.id)">删除工具</el-button>
+            <el-button link type="primary" @click="onEditTool(scope.row)">编辑</el-button>
+            <el-button link type="danger" @click="onDelete(scope.row.id)">删除</el-button>
           </div>
         </template>
       </el-table-column>
     </el-table>
     <div class="footer">
       <el-pagination
-        v-model:current-page="currentPage"
+        v-model:current-page="toolsStore.pageNo"
         :page-size="PAGESIZE"
         background
         :disabled="disabled"
         layout="prev, pager, next"
-        :total="interactStore.total"
-        :hide-on-single-page="interactStore.list.length <= PAGESIZE"
+        :total="toolsStore.total"
+        :hide-on-single-page="toolsStore.list.length <= PAGESIZE"
       />
     </div>
   </el-scrollbar>
   <Message
     v-model:visible="messageVisible"
-    title="删除留言"
-    content="确定删除留言吗？"
-    info="删除留言后，该留言将无法恢复！"
+    title="删除工具"
+    content="确定删除工具吗？"
+    info="删除后，该工具将无法恢复！"
     :on-submit="onSubmitDelete"
   />
   <Modal v-model:visible="visible" title="选择用户" :width="550" content-padding="0" :on-submit="onSelectedUsers">
@@ -72,20 +81,39 @@
       <SelectUser ref="selectUserRef" :selected-users="selectedUsers" :visible="visible" />
     </div>
   </Modal>
+  <Modal
+    v-model:visible="addVisible"
+    title="添加工具"
+    :width="550"
+    content-padding="20px 20px 0"
+    :on-submit="onAddedTools"
+  >
+    <div class="add-tools-modal-content">
+      <AddTools ref="addToolsRef" :add-visible="addVisible" :selected-item="selectedItem" />
+    </div>
+  </Modal>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, watch, onUnmounted } from 'vue';
 import { ElTable } from 'element-plus';
-import { interactStore, accountStore } from '@/store';
+import type { FormInstance } from 'element-plus';
+import { toolsStore, accountStore } from '@/store';
 import { formatDate } from '@/utils';
 import { PAGESIZE } from '@/constant';
+import { ToolsParams, UserInfoParams } from '@/typings/comment';
 import Message from '@/components/Message/index.vue';
+import AddTools from './AddTools/index.vue';
+
+type ExportParams = { formRef: FormInstance; addToolsForm: ToolsParams; toolUrl: string; clearToolUrl: Function };
 
 const selectUserRef = ref<HTMLElement | null>(null);
+const addToolsRef = ref<HTMLElement | null>(null);
+// 选人组件控制状态
 const visible = ref<boolean>(false);
+const addVisible = ref<boolean>(false);
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();
-const multipleSelection = ref<any[]>([]);
+const multipleSelection = ref<ToolsParams[]>([]);
 const currentPage = ref<number>(1);
 const disabled = ref<boolean>(false);
 const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
@@ -93,83 +121,19 @@ const deleteId = ref<string>(''); // 选中需要删除的文章id
 const deleteIds = ref<string[]>([]); // 批量删除ids
 // 选择的对应列表的权限用户列表
 const selectedUsers = ref<{ username: string; id: string }[]>();
-
-const data = [
-  {
-    toolName: '墨客',
-    toolHref: 'http://43.143.27.249:9216',
-    toolUrl: 'http://localhost:9112/image/9c1a6a6a5d690b347f29e60e57a1e993.jpg',
-    powerUsers: [
-      {
-        username: '夏陌',
-        id: '6449d137e5fe6b620b205192',
-      },
-      {
-        username: '墨客',
-        id: '6447c43efad309875e3c1bb5',
-      },
-      {
-        username: '春风吹拂',
-        id: '6432bdf2c96690db3679ffd0',
-      },
-      {
-        username: 'xixi',
-        id: '642f043db47853baa1c9f85e',
-      },
-      {
-        username: '遇见晨曦',
-        id: '642d7f4c94e40ab9d12405b6',
-      },
-    ],
-    id: 1,
-  },
-  {
-    toolName: 'GitHub',
-    toolHref: 'http://43.143.27.249:9216',
-    toolUrl: 'http://localhost:9112/image/9c1a6a6a5d690b347f29e60e57a1e993.jpg',
-    powerUsers: [
-      {
-        username: '夏陌',
-        id: '6449d137e5fe6b620b205192',
-      },
-      {
-        username: '墨客',
-        id: '6447c43efad309875e3c1bb5',
-      },
-      {
-        username: '春风吹拂',
-        id: '6432bdf2c96690db3679ffd0',
-      },
-    ],
-    id: 2,
-  },
-  {
-    toolName: 'Electron',
-    toolHref: 'http://43.143.27.249:9216',
-    toolUrl: 'http://localhost:9112/image/9c1a6a6a5d690b347f29e60e57a1e993.jpg',
-    powerUsers: [
-      {
-        username: '夏陌',
-        id: '6449d137e5fe6b620b205192',
-      },
-      {
-        username: '墨客',
-        id: '6447c43efad309875e3c1bb5',
-      },
-    ],
-    id: 3,
-  },
-  {
-    toolName: 'Electron',
-    toolHref: 'http://43.143.27.249:9216',
-    toolUrl: 'http://localhost:9112/image/9c1a6a6a5d690b347f29e60e57a1e993.jpg',
-    powerUsers: [],
-    id: 4,
-  },
-];
+// 选中列表 item id
+const selectId = ref<string>('');
+// 选中的对应列表数据
+const selectedItem = ref<ToolsParams>({
+  toolHref: '',
+  toolName: '',
+  toolUrl: '',
+  powerUsers: [],
+  id: '',
+});
 
 onMounted(() => {
-  interactStore.getInteractList();
+  toolsStore.getToolList();
 });
 
 // 页面销毁时，清空选人组件用户列表
@@ -179,15 +143,14 @@ onUnmounted(() => {
 
 // 监听分页变化，实时获取对应页数的工具列表
 watch(currentPage, (newVal, oldVal) => {
-  interactStore.pageNo = newVal;
-  interactStore.getInteractList();
+  toolsStore.pageNo = newVal;
+  toolsStore.getToolList();
 });
 
 // 监听选人组件是否关闭
 watch(visible, (newVal) => {
   if (!newVal) {
-    const { onRemoveAll, selectedUsers } = selectUserRef.value;
-    console.log(selectedUsers, 'selectedUsers');
+    const { onRemoveAll } = selectUserRef.value as any;
     onRemoveAll?.();
   }
 });
@@ -198,13 +161,18 @@ const handleSelectionChange = (val: any[]) => {
 };
 
 // 设置权限
-const onSetPower = (item: any) => {
-  console.log(item, 'item');
-
+const onSetPower = (item: ToolsParams) => {
   visible.value = true;
-  const { isDelete, id, powerUsers } = item;
-  console.log(isDelete, id, 'isDelete, id ', powerUsers);
+  const { id, powerUsers } = item;
+  selectId.value = id!;
   selectedUsers.value = powerUsers;
+};
+
+// 编辑工具
+const onEditTool = (item: ToolsParams) => {
+  selectId.value = item.id!;
+  selectedItem.value = item;
+  addVisible.value = true;
 };
 
 // 删除
@@ -213,40 +181,62 @@ const onDelete = (id: string) => {
   messageVisible.value = true;
 };
 
-// 多选上架
-const onRestoreAll = () => {
-  const ids = multipleSelection.value.filter((j) => j.isDelete).map((i) => i.id) || [];
-  interactStore.restoreInteracts(ids);
-  // 取消多选
-  multipleTableRef.value!.clearSelection();
-};
-
 // 多选删除
 const onDeleteAll = () => {
-  const ids = multipleSelection.value.map((j) => j.id) || [];
+  const ids = multipleSelection.value.map((j) => j.id!) || [];
   deleteIds.value = ids;
   messageVisible.value = true;
 };
 
 // 二次确认删除
 const onSubmitDelete = async () => {
-  await interactStore.delInteracts(deleteIds.value.length ? deleteIds.value : [deleteId.value]);
+  await toolsStore.deleteTools(deleteIds.value.length ? deleteIds.value : [deleteId.value]);
   // 删除完成之后，清除之前选择的账号ids
   deleteIds.value = [];
   // 取消多选
   multipleTableRef.value!.clearSelection();
 };
 
-// 添加工具
-const onAddTool = () => {
-  console.log('添加工具');
-};
-
 // 完成选人
 const onSelectedUsers = () => {
   visible.value = false;
-  const { selectedUsers } = selectUserRef.value;
-  console.log(selectedUsers, 'selectedUsers》》》》设置权限');
+  const { selectedUsers } = selectUserRef.value as any;
+  const params = selectedUsers.map((i: UserInfoParams) => {
+    return {
+      id: i.id,
+      username: i.username,
+    };
+  });
+  toolsStore.updateTools({
+    powerUsers: params,
+    id: selectId.value,
+  });
+};
+
+// 添加工具
+const onAddTool = () => {
+  addVisible.value = true;
+};
+
+// 添加工具
+const onAddedTools = async () => {
+  const { formRef, addToolsForm, clearToolUrl, toolUrl } = addToolsRef.value as unknown as ExportParams;
+  const params = {
+    ...addToolsForm,
+    toolUrl,
+  };
+  if (selectedItem.value?.id) {
+    await toolsStore.updateTools({
+      ...params,
+      id: selectId.value,
+    });
+  } else {
+    await toolsStore.addTools(params);
+  }
+  formRef?.resetFields();
+  clearToolUrl?.();
+  addVisible.value = false;
+  selectedItem.value = {};
 };
 </script>
 
@@ -271,6 +261,7 @@ const onSelectedUsers = () => {
 
     .username {
       margin-left: 10px;
+      .ellipsis();
     }
   }
 

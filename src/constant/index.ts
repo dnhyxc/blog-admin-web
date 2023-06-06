@@ -239,3 +239,8 @@ export const EMOJI_TEXTS = [
   '皱眉',
   '大兵',
 ];
+
+// 允许上传的文件类型
+export const FILE_TYPE = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp', 'image/svg+xml'];
+// 上传文件提示
+export const FILE_UPLOAD_MSG = '请上传 png、jpg、jpeg、gif、webp、svg 格式的图片';

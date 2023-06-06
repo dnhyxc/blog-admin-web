@@ -231,3 +231,16 @@ export interface ClassifyList {
   total: number;
   list: ClassifyItem[];
 }
+
+export interface ToolsParams {
+  toolName?: string;
+  toolHref?: string;
+  toolUrl?: string;
+  powerUsers?: { username: string; id: string }[];
+  id?: string;
+}
+
+export interface ToolListRes {
+  list: ToolsParams[];
+  total: number;
+}
