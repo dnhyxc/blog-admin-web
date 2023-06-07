@@ -90,9 +90,6 @@ watchEffect(() => {
     addToolsForm.powerUsers = selectedItem?.powerUsers;
     toolUrl.value = selectedItem?.toolUrl || '';
   }
-
-  const url = 'http://43.143.27.249:9216/home';
-  console.log(checkHref(url), 'checkUrl');
 });
 
 watch(
@@ -112,6 +109,11 @@ watch(
 const onUpload = async (event: { file: Blob }) => {
   // 不需要进行裁剪
   const res = await uploadStore.uploadFile(event.file as File);
+
+  console.log(import.meta.env.DEV, 'import. meta.env.DEV');
+  console.log(import.meta.env.HELLO, 'import. meta.env.DEV');
+  console.log(import.meta.env.VITE_HELLO, 'import. meta.env.DEV');
+
   if (res) {
     // 删除上一次上传的图标
     if (toolUrl.value !== res) {
