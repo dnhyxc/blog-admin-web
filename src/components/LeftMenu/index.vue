@@ -41,7 +41,7 @@ import {
 } from '@element-plus/icons-vue';
 import { computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { MENULIST, AUTH_CONFIG, IMAGES } from '@/constant';
+import { MENULIST, AUTH_CONFIG, IMAGES, SUPER_ADMIN_POWER_PAGES } from '@/constant';
 import { MenuListParams } from '@/typings/comment';
 import { userStore } from '@/store';
 
@@ -57,7 +57,7 @@ const menuList = computed(() => {
       if (userStore.auth === AUTH_CONFIG.ADMIN) {
         return i.key !== 'users' && i.key !== 'account';
       }
-      return i.key !== 'users' && i.key !== 'account' && i.key !== 'home' && i.key !== 'tools';
+      return !SUPER_ADMIN_POWER_PAGES.includes(i.key);
     });
     return menus;
   }

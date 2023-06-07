@@ -202,7 +202,12 @@ export const restoreComment = async (params: ManageCommentParams) => {
 };
 
 // 获取评论列表
-export const getArticlesComments = async (params: { pageNo: number; pageSize: number; userId: string }) => {
+export const getArticlesComments = async (params: {
+  pageNo: number;
+  pageSize: number;
+  userId: string;
+  bindUsers: string[];
+}) => {
   const res = await post(API.GET_ARTICLES_COMMENTS, params);
   return res;
 };

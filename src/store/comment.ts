@@ -31,7 +31,12 @@ export const useCommentStore = defineStore('comment', {
       this.loading = true;
       try {
         const res = normalizeResult<{ list: ArticleItem[]; total: number }>(
-          await Service.getArticlesComments({ ...params, pageSize: PAGESIZE, userId: userStore?.userId! }),
+          await Service.getArticlesComments({
+            ...params,
+            pageSize: PAGESIZE,
+            userId: userStore?.userId!,
+            bindUsers: userStore.auth === 1 ? [] : userStore.bindAccount!,
+          }),
         );
         this.loading = false;
         if (res.success) {

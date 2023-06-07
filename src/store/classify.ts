@@ -28,7 +28,6 @@ export const useClassifyStore = defineStore('classify', {
       const res = normalizeResult<ClassifyItem>(await Service.createClassify(classifyName));
       if (res.success) {
         ElMessage.success(res.message);
-        console.log(res, 'res');
       } else {
         ElMessage.error(res.message);
       }

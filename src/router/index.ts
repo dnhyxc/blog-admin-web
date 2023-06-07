@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useUserStore } from '@/store/user';
-import { AUTH_CONFIG } from '@/constant';
+import { AUTH_CONFIG, SUPER_ADMIN_POWER_PAGES } from '@/constant';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -199,7 +199,7 @@ router.beforeEach((to, from, next) => {
     if (userStore.auth === AUTH_CONFIG.SUPER) {
       next();
     } else {
-      if (to.name === 'users' || to.name === 'account' || to.name === 'home' || to.name === 'tools') {
+      if (SUPER_ADMIN_POWER_PAGES.includes(to.name as string)) {
         if (userStore.auth === AUTH_CONFIG.ADMIN) {
           if (to.name !== 'home') {
             router.push('/home');
