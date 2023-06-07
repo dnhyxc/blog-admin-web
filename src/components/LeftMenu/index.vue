@@ -57,7 +57,7 @@ const menuList = computed(() => {
       if (userStore.auth === AUTH_CONFIG.ADMIN) {
         return i.key !== 'users' && i.key !== 'account';
       }
-      return i.key !== 'users' && i.key !== 'account' && i.key !== 'home';
+      return i.key !== 'users' && i.key !== 'account' && i.key !== 'home' && i.key !== 'tools';
     });
     return menus;
   }
