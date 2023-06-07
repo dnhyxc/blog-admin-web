@@ -47,7 +47,7 @@ import type { FormInstance, UploadProps, FormRules } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
 import { UPLOAD } from '@/server/api';
 import { uploadStore } from '@/store';
-import { FILE_TYPE, FILE_UPLOAD_MSG } from '@/constant';
+import { FILE_TYPE, FILE_UPLOAD_MSG, WEB_MAIN_URL } from '@/constant';
 import { checkHref } from '@/utils';
 import { ToolsParams } from '@/typings/comment';
 
@@ -110,15 +110,18 @@ const onUpload = async (event: { file: Blob }) => {
   // 不需要进行裁剪
   const res = await uploadStore.uploadFile(event.file as File);
 
-  console.log(import.meta.env.DEV, 'import. meta.env.DEV');
-  console.log(import.meta.env.HELLO, 'import. meta.env.DEV');
-  console.log(import.meta.env.VITE_HELLO, 'import. meta.env.DEV');
-
-  if (res) {
+  if (!import.meta.env.DEV) {
+    // 更换域名
+    const url = res?.replace(location.origin, WEB_MAIN_URL);
+    if (toolUrl.value !== url) {
+      toolUrl.value && (await uploadStore.removeFile(toolUrl.value));
+      toolUrl.value = url || '';
+    }
+  } else {
     // 删除上一次上传的图标
     if (toolUrl.value !== res) {
       toolUrl.value && (await uploadStore.removeFile(toolUrl.value));
-      toolUrl.value = res;
+      toolUrl.value = res || '';
     }
   }
 };

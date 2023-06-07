@@ -167,6 +167,9 @@ export const LOADING_SVG = `
 // 线上域名
 export const DOMAIN_URL = '43.143.27.249';
 
+// 主域名
+export const WEB_MAIN_URL = 'http://43.143.27.249';
+
 // web端域名
 export const WEB_DOMAIN_URL = 'http://43.143.27.249:9216';
 
