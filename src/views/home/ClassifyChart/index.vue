@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="classify-chart">
-    <Content>
+    <Content v-if="homeStore.classifyList">
       <template #title>
         <div class="title">分类统计</div>
       </template>
@@ -24,6 +24,7 @@ import { TooltipComponent, TooltipComponentOption, LegendComponent, LegendCompon
 import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+import { homeStore } from '@/store';
 import Content from '@/components/Content/index.vue';
 
 // 饼图配置
@@ -41,14 +42,17 @@ const getClassifyChart = () => {
   const myChart = echarts.init(chartDom);
 
   const option: EChartsOption = {
-    tooltip: {
-      trigger: 'item',
-    },
+    // 鼠标 hover tip 提示
+    // tooltip: {
+    //   trigger: 'item',
+    //   formatter: '{b}:{c} 篇 ({d}%)',
+    // },
     // 图例
     legend: {
       top: '20',
       left: 'center',
       padding: 0,
+      type: 'scroll',
     },
     // 饼图设置
     series: [
@@ -66,6 +70,7 @@ const getClassifyChart = () => {
         label: {
           show: false,
           position: 'center',
+          formatter: '{b}:{c} 篇 ({d}%)',
         },
         emphasis: {
           label: {
@@ -75,17 +80,9 @@ const getClassifyChart = () => {
           },
         },
         labelLine: {
-          show: false,
+          show: true,
         },
-        data: [
-          { value: 1048, name: '前端' },
-          { value: 735, name: '后端' },
-          { value: 580, name: '架构' },
-          { value: 484, name: '设计模式' },
-          { value: 300, name: '算法' },
-          { value: 300, name: '前端框架' },
-          { value: 300, name: '项目部署' },
-        ],
+        data: homeStore.classifyList,
       },
     ],
   };

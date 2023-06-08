@@ -35,6 +35,7 @@ import {
 import { LineChart, LineSeriesOption } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+import { homeStore } from '@/store';
 import Content from '@/components/Content/index.vue';
 
 echarts.use([
@@ -81,7 +82,7 @@ const getArticleChart = () => {
       },
     },
     legend: {
-      data: ['Line 1', 'Line 2', 'Line 3', 'Line 4', 'Line 5'],
+      data: homeStore.articleStatisticYears,
     },
     // 下载按钮设置
     // toolbox: {
@@ -99,7 +100,7 @@ const getArticleChart = () => {
       {
         type: 'category',
         boundaryGap: false,
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
       },
     ],
     yAxis: [
@@ -107,9 +108,10 @@ const getArticleChart = () => {
         type: 'value',
       },
     ],
-    series: [
-      {
-        name: 'Line 1',
+
+    series: homeStore.articleStatisticYears.map((i) => {
+      return {
+        name: i,
         type: 'line',
         stack: 'Total',
         smooth: true,
@@ -133,63 +135,9 @@ const getArticleChart = () => {
         emphasis: {
           focus: 'series',
         },
-        data: [140, 232, 101, 264, 90, 340, 250],
-      },
-      {
-        name: 'Line 2',
-        type: 'line',
-        stack: 'Total',
-        smooth: true,
-        lineStyle: {
-          width: 0,
-        },
-        showSymbol: false,
-        areaStyle: {
-          opacity: 0.8,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: 'rgb(0, 221, 255)',
-            },
-            {
-              offset: 1,
-              color: 'rgb(77, 119, 255)',
-            },
-          ]),
-        },
-        emphasis: {
-          focus: 'series',
-        },
-        data: [120, 282, 111, 234, 220, 340, 310],
-      },
-      {
-        name: 'Line 3',
-        type: 'line',
-        stack: 'Total',
-        smooth: true,
-        lineStyle: {
-          width: 0,
-        },
-        showSymbol: false,
-        areaStyle: {
-          opacity: 0.8,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: 'rgb(55, 162, 255)',
-            },
-            {
-              offset: 1,
-              color: 'rgb(116, 21, 219)',
-            },
-          ]),
-        },
-        emphasis: {
-          focus: 'series',
-        },
-        data: [320, 132, 201, 334, 190, 130, 220],
-      },
-    ],
+        data: homeStore.articleStatisticData[i].map((i: any) => i.count),
+      };
+    }),
   };
 
   option && myChart.setOption(option);

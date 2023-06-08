@@ -6,15 +6,27 @@ import { decrypt, encrypt } from './crypto';
 import request from './request';
 import { locSetItem, locGetItem, locRemoveItem, ssnGetItem, ssnSetItem, ssnRemoveItem } from './storage';
 
+export {
+  request,
+  normalizeResult,
+  decrypt,
+  encrypt,
+  locSetItem,
+  locGetItem,
+  locRemoveItem,
+  ssnGetItem,
+  ssnSetItem,
+  ssnRemoveItem,
+};
 // 格式化时间
-const formatDate = (date: number, format = 'YYYY/MM/DD HH:mm:ss') => {
+export const formatDate = (date: number, format = 'YYYY/MM/DD HH:mm:ss') => {
   if (!date) return;
 
   return moment(date).format(format);
 };
 
 // 转化距离当前时间的间隔时长
-const formatGapTime = (date: number) => {
+export const formatGapTime = (date: number) => {
   const ms = Date.now() - date;
   const seconds = Math.round(ms / 1000);
   const minutes = Math.round(ms / 60000);
@@ -40,7 +52,7 @@ const formatGapTime = (date: number) => {
 };
 
 // 滚动到某位置
-const scrollTo = (ref: any, position: number, time = 20) => {
+export const scrollTo = (ref: any, position: number, time = 20) => {
   // el-scrollbar 容器
   const el = ref.value?.wrapRef as HTMLDivElement;
   // 使用requestAnimationFrame，如果没有则使用setTimeOut
@@ -132,18 +144,69 @@ export const checkHref = (url: string) => {
   return objExp.test(url);
 };
 
-export {
-  request,
-  normalizeResult,
-  decrypt,
-  encrypt,
-  formatDate,
-  locSetItem,
-  locGetItem,
-  locRemoveItem,
-  ssnGetItem,
-  ssnSetItem,
-  ssnRemoveItem,
-  formatGapTime,
-  scrollTo,
+// 处理文章统计数据
+export const manageArticleStatistics = (data: any) => {
+  // 定义空的新数据对象
+  const newData = {} as any;
+  const yearList: string[] = [];
+
+  // 遍历排序后的原始数据，根据年份构建新的数据对象
+  for (let i = 0; i < data.length; i++) {
+    const item = data[i];
+    if (!newData[item.year]) {
+      newData[item.year] = [];
+    }
+    if (!yearList.includes(item.year)) {
+      yearList.push(item.year);
+    }
+    newData[item.year].push(item);
+  }
+
+  // 对每个年份的对象按照 month 从小到大进行排序
+  for (const year in newData) {
+    newData[year].sort(function (a: any, b: any) {
+      return parseInt(a.month) - parseInt(b.month);
+    });
+  }
+
+  // 获取所有年份
+  const years = Object.keys(newData);
+
+  // 遍历每个年份
+  for (let i = 0; i < years.length; i++) {
+    const year = years[i];
+    const months = newData[year];
+
+    // 生成一个包含所有月份的数组
+    const allMonths = Array.from({ length: 12 }, (_, idx) => idx + 1);
+
+    // 遍历每个月份
+    for (let j = 0; j < allMonths.length; j++) {
+      const month = allMonths[j].toString().padStart(2, '0');
+
+      // 判断该月份是否存在于原始数据中
+      const existingMonth = months.find((m: any) => m.month === month);
+      if (!existingMonth) {
+        // 如果不存在，则将其添加到该年份的数组中
+        newData[year].push({
+          count: 0,
+          year,
+          month,
+        });
+      }
+    }
+
+    // 将该年份的月份按照月份排序
+    newData[year].sort((a: any, b: any) => parseInt(a.month) - parseInt(b.month));
+  }
+
+  yearList.sort((a: any, b: any) => a - b);
+
+  console.log(newData, 'newData');
+  console.log(yearList, 'yearList');
+
+  return {
+    dataSource: newData,
+    years: yearList,
+  };
 };

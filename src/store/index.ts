@@ -14,6 +14,7 @@ import { useInteractStore } from './interact';
 import { useClassifyStore } from './classify';
 import { useUploadStore } from './upload';
 import { useToolsStore } from './tools';
+import { useHomeStore } from './home';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -31,6 +32,7 @@ const interactStore = useInteractStore();
 const classifyStore = useClassifyStore();
 const uploadStore = useUploadStore();
 const toolsStore = useToolsStore();
+const homeStore = useHomeStore();
 
 export {
   userStore,
@@ -49,4 +51,5 @@ export {
   classifyStore,
   uploadStore,
   toolsStore,
+  homeStore,
 };

@@ -289,3 +289,15 @@ export const deleteTools = async (ids: string | string[]) => {
   const res = await post(API.DELETE_TOOLS, copeParams({ ids }));
   return res;
 };
+
+// 文章统计
+export const getArticlesStatistics = async () => {
+  const res = await post(API.GET_ARTICLES_STATISTICS, copeParams({}));
+  return res;
+};
+
+// 分类统计
+export const getTagList = async (type: string) => {
+  const res = await post(API.GET_TAG_LIST, copeParams({ type }));
+  return res;
+};

@@ -16,7 +16,7 @@
       <el-table-column label="用户名称" show-overflow-tooltip width="150">
         <template #default="scope">
           <div class="user-info">
-            <el-image style="width: 50px; height: 50px; border-radius: 5px" :src="scope.row.avatar" fit="cover" />
+            <el-image :src="scope.row.avatar" fit="cover" class="el-image-prev" />
             <span class="username">{{ scope.row.username }}</span>
           </div>
         </template>
@@ -174,9 +174,21 @@ const onSubmitDelete = async () => {
 .intecact-wrap {
   .layoutStyles();
 
+  :deep {
+    .el-image__error {
+      font-size: 12px;
+    }
+  }
+
   .user-info {
     display: flex;
     align-items: center;
+
+    .el-image-prev {
+      width: 50px;
+      height: 50px;
+      border-radius: 5px;
+    }
 
     .username {
       margin-left: 10px;

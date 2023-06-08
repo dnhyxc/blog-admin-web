@@ -124,3 +124,9 @@ export const UPDATE_TOOLS = '/admin/updateTools';
 
 // 删除工具
 export const DELETE_TOOLS = '/admin/deleteTools';
+
+// 文章统计
+export const GET_ARTICLES_STATISTICS = '/admin/getArticlesStatistics';
+
+// 分类统计
+export const GET_TAG_LIST = '/admin/getTagList';

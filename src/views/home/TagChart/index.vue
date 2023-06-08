@@ -1,5 +1,5 @@
 <!--
- * 标签统计图
+ * 前台用户统计图
  * @author: dnhyxc
  * @since: 2022-12-25
  * index.vue
@@ -8,7 +8,7 @@
   <div class="tag-chart-wrap">
     <Content>
       <template #title>
-        <div class="title">标签统计</div>
+        <div class="title">用户统计</div>
       </template>
       <template #content>
         <div id="tag-chart" style="width: 100%; height: 100%"></div>
