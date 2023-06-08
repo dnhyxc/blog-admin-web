@@ -31,7 +31,7 @@
       </el-table-column>
       <el-table-column property="toolHref" label="工具链接">
         <template #default="scope">
-          <div class="tool-herf">{{ scope.row.toolHref }}</div>
+          <a :href="scope.row.toolHref" class="tool-herf" target="_blank">{{ scope.row.toolHref }}</a>
         </template>
       </el-table-column>
       <el-table-column property="createTime" label="添加时间" show-overflow-tooltip width="180">
@@ -281,6 +281,7 @@ const onAddedTools = async () => {
     display: flex;
     align-items: center;
     min-height: 80px;
+    color: @primary;
   }
 
   .tool-users {
