@@ -6,10 +6,12 @@
           <div class="title">作者人数</div>
         </template>
         <template #content>
-          <div class="content">5</div>
+          <div class="content">{{ homeStore.authors?.length }}</div>
         </template>
         <template #footer>
-          <div class="footer">贡献文章最多的作者《dnhyxc》</div>
+          <div v-if="homeStore.authors?.length > 0" class="footer">
+            贡献文章最多的作者<span class="mack">《{{ homeStore.authors?.[0].authorName }}》</span>
+          </div>
         </template>
       </Card>
       <Card>
@@ -17,11 +19,11 @@
           <div class="title">文章总数</div>
         </template>
         <template #content>
-          <div class="content">56</div>
+          <div class="content">{{ homeStore.articleTotalCount }}</div>
         </template>
         <template #footer>
           <div class="footer">
-            最受欢迎的文章《我的县长父亲》最受欢迎的文章《我的县长父亲》最受欢迎的文章《我的县长父亲》最受欢迎的文章《我的县长父亲》
+            最受欢迎的文章<span class="mack">《{{ homeStore.popularArticle?.title }}》</span>
           </div>
         </template>
       </Card>
@@ -30,10 +32,13 @@
           <div class="title">标签总数</div>
         </template>
         <template #content>
-          <div class="content">16</div>
+          <div class="content">{{ homeStore.tagTotal }}</div>
         </template>
         <template #footer>
-          <div class="footer">使用最多的标签《JavaScript》</div>
+          <div class="footer">
+            使用最多的标签<span class="mack">《{{ homeStore.tagMaxItem?.name }}》</span>，共
+            {{ homeStore.tagMaxItem?.value }} 篇文章
+          </div>
         </template>
       </Card>
       <Card>
@@ -41,16 +46,19 @@
           <div class="title">分类总数</div>
         </template>
         <template #content>
-          <div class="content">32</div>
+          <div class="content">{{ homeStore.classifyTotal }}</div>
         </template>
         <template #footer>
-          <div class="footer">使用最多的分类《前端》</div>
+          <div class="footer">
+            使用最多的分类<span class="mack">《{{ homeStore.classifyMaxItem?.name }}》</span>，共
+            {{ homeStore.classifyMaxItem?.value }} 篇文章
+          </div>
         </template>
       </Card>
     </div>
     <div
       v-if="
-        homeStore.classifyList?.length > 0 && homeStore.articleStatisticData && homeStore.registerStatistic?.length > 0
+        homeStore.articleStatisticData && homeStore.classifyList?.length > 0 && homeStore.registerStatistic?.length > 0
       "
       class="echarts-list"
     >
@@ -59,12 +67,12 @@
       <RegisterChart class="right" />
     </div>
     <div class="list-container">
-      <AuthorList class="list-content"></AuthorList>
-      <Timeline class="list-content"></Timeline>
-      <Blogger class="list-content"></Blogger>
+      <AuthorList class="list-content" />
+      <Timeline class="list-content" />
+      <Blogger class="list-content" />
     </div>
     <div class="hot-article-list">
-      <HotArticle></HotArticle>
+      <HotArticle />
     </div>
   </div>
 </template>
@@ -82,9 +90,13 @@ import Blogger from './Blogger/index.vue';
 import HotArticle from './HotArticle/index.vue';
 
 onMounted(() => {
-  homeStore.getTagList();
-  homeStore.getArticlesStatistics();
-  homeStore.getRegisterStatistics();
+  Promise.all([
+    homeStore.getClassifyList(),
+    homeStore.getArticlesStatistics(),
+    homeStore.getRegisterStatistics(),
+    homeStore.getAuhthorList(),
+    homeStore.getTagList(),
+  ]);
 });
 </script>
 
@@ -102,6 +114,10 @@ onMounted(() => {
 
     .title {
       font-size: 18px;
+    }
+
+    .mack {
+      font-weight: 700;
     }
 
     .content {

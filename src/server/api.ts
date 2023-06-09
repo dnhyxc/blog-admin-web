@@ -133,3 +133,6 @@ export const GET_REGISTER_STATISTICS = '/admin/getRegisterStatistics';
 
 // 分类统计
 export const GET_TAG_LIST = '/admin/getTagList';
+
+// 获取作者列表
+export const GET_AUHTHOR_LIST = '/admin/getAuhthorList';

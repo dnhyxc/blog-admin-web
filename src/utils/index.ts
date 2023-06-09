@@ -1,6 +1,7 @@
 import moment from 'moment';
 import SparkMD5 from 'spark-md5';
 import { EMOJI_TEXTS, EMOJI_URLS } from '@/constant';
+import { ArticleStatistic, ArticleStatisticData, ArticleInfo } from '@/typings/comment';
 import { normalizeResult } from './result';
 import { decrypt, encrypt } from './crypto';
 import request from './request';
@@ -145,9 +146,9 @@ export const checkHref = (url: string) => {
 };
 
 // 处理文章统计数据
-export const manageArticleStatistics = (data: any) => {
+export const manageArticleStatistics = (data: ArticleStatistic[]) => {
   // 定义空的新数据对象
-  const newData = {} as any;
+  const newData: ArticleStatisticData = {};
   const yearList: string[] = [];
 
   // 遍历排序后的原始数据，根据年份构建新的数据对象
@@ -164,7 +165,7 @@ export const manageArticleStatistics = (data: any) => {
 
   // 对每个年份的对象按照 month 从小到大进行排序
   for (const year in newData) {
-    newData[year].sort(function (a: any, b: any) {
+    newData[year].sort(function (a, b) {
       return parseInt(a.month) - parseInt(b.month);
     });
   }
@@ -185,7 +186,7 @@ export const manageArticleStatistics = (data: any) => {
       const month = allMonths[j].toString().padStart(2, '0');
 
       // 判断该月份是否存在于原始数据中
-      const existingMonth = months.find((m: any) => m.month === month);
+      const existingMonth = months.find((m) => m.month === month);
       if (!existingMonth) {
         // 如果不存在，则将其添加到该年份的数组中
         newData[year].push({
@@ -197,11 +198,31 @@ export const manageArticleStatistics = (data: any) => {
     }
 
     // 将该年份的月份按照月份排序
-    newData[year].sort((a: any, b: any) => parseInt(a.month) - parseInt(b.month));
+    newData[year].sort((a, b) => parseInt(a.month) - parseInt(b.month));
+  }
+
+  let maxReadCount = -Infinity;
+  let maxArticle: ArticleInfo = { title: '', readCount: 0 };
+  data.forEach((month) => {
+    month.articleInfo.forEach((article) => {
+      if (article.readCount && article.readCount > maxReadCount) {
+        maxReadCount = article.readCount;
+        maxArticle = article;
+      }
+    });
+  });
+
+  let totalCount = 0;
+  for (const year in newData) {
+    for (let i = 0; i < newData[year].length; i++) {
+      totalCount += newData[year][i].count;
+    }
   }
 
   return {
     dataSource: newData,
     years: yearList,
+    maxArticle,
+    totalCount,
   };
 };

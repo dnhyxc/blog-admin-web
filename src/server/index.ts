@@ -307,3 +307,9 @@ export const getRegisterStatistics = async () => {
   const res = await post(API.GET_REGISTER_STATISTICS, copeParams({}));
   return res;
 };
+
+// 作者列表
+export const getAuhthorList = async () => {
+  const res = await post(API.GET_AUHTHOR_LIST, copeParams({}));
+  return res;
+};

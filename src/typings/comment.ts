@@ -244,3 +244,34 @@ export interface ToolListRes {
   list: ToolsParams[];
   total: number;
 }
+
+// 文章统计接口
+export interface ArticleStatistic {
+  count: number;
+  articleInfo: [
+    {
+      title: string;
+      readCount: number;
+    },
+  ];
+  year: string;
+  month: string;
+}
+
+export interface ArticleInfo {
+  title: string;
+  readCount: number;
+}
+
+interface MonthCount {
+  count: number;
+  year: string;
+  month: string;
+  articleInfo?: ArticleInfo[];
+}
+
+interface YearData {
+  [index: string]: MonthCount[];
+}
+
+export type ArticleStatisticData = YearData;
