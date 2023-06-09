@@ -200,11 +200,6 @@ export const manageArticleStatistics = (data: any) => {
     newData[year].sort((a: any, b: any) => parseInt(a.month) - parseInt(b.month));
   }
 
-  yearList.sort((a: any, b: any) => a - b);
-
-  console.log(newData, 'newData');
-  console.log(yearList, 'yearList');
-
   return {
     dataSource: newData,
     years: yearList,

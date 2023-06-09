@@ -8,6 +8,7 @@ interface IParams {
   loading: boolean;
   articleStatisticData: any;
   articleStatisticYears: string[];
+  registerStatistic: { count: number; month: string }[];
   classifyList: { value: number; name: string }[];
 }
 
@@ -20,6 +21,8 @@ export const useHomeStore = defineStore('home', {
     articleStatisticYears: [],
     // 分类统计
     classifyList: [],
+    // 当前年用户注册情况统计
+    registerStatistic: [],
   }),
 
   actions: {
@@ -34,6 +37,24 @@ export const useHomeStore = defineStore('home', {
           const { years, dataSource } = manageArticleStatistics(res.data);
           this.articleStatisticData = dataSource;
           this.articleStatisticYears = years;
+        } else {
+          ElMessage.error(res.message);
+        }
+      } catch (error) {
+        return false;
+      }
+    },
+
+    // 用户当前年注册情况统计
+    async getRegisterStatistics() {
+      if (!userStore?.userId) return;
+      try {
+        this.loading = true;
+        const res = normalizeResult<{ count: number; month: string }[]>(await Service.getRegisterStatistics());
+        this.loading = false;
+        if (res.success) {
+          console.log(res.data, 'dataaaaaaaaaaaaaaaaaaaaa');
+          this.registerStatistic = res.data;
         } else {
           ElMessage.error(res.message);
         }

@@ -48,10 +48,15 @@
         </template>
       </Card>
     </div>
-    <div v-if="homeStore.classifyList?.length > 0 && homeStore.articleStatisticData" class="echarts-list">
+    <div
+      v-if="
+        homeStore.classifyList?.length > 0 && homeStore.articleStatisticData && homeStore.registerStatistic?.length > 0
+      "
+      class="echarts-list"
+    >
       <ClassifyChart class="left" />
       <ArticleChart class="center" />
-      <TagChart class="right" />
+      <RegisterChart class="right" />
     </div>
     <div class="list-container">
       <AuthorList class="list-content"></AuthorList>
@@ -70,7 +75,7 @@ import { homeStore } from '@/store';
 import Card from '@/components/Card/index.vue';
 import ClassifyChart from './ClassifyChart/index.vue';
 import ArticleChart from './ArticleChart/index.vue';
-import TagChart from './TagChart/index.vue';
+import RegisterChart from './RegisterChart/index.vue';
 import AuthorList from './AuthorList/index.vue';
 import Timeline from './Timeline/index.vue';
 import Blogger from './Blogger/index.vue';
@@ -79,6 +84,7 @@ import HotArticle from './HotArticle/index.vue';
 onMounted(() => {
   homeStore.getTagList();
   homeStore.getArticlesStatistics();
+  homeStore.getRegisterStatistics();
 });
 </script>
 

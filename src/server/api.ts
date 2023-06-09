@@ -128,5 +128,8 @@ export const DELETE_TOOLS = '/admin/deleteTools';
 // 文章统计
 export const GET_ARTICLES_STATISTICS = '/admin/getArticlesStatistics';
 
+// 用户注册统计
+export const GET_REGISTER_STATISTICS = '/admin/getRegisterStatistics';
+
 // 分类统计
 export const GET_TAG_LIST = '/admin/getTagList';

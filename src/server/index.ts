@@ -301,3 +301,9 @@ export const getTagList = async (type: string) => {
   const res = await post(API.GET_TAG_LIST, copeParams({ type }));
   return res;
 };
+
+// 用户注册情况统计
+export const getRegisterStatistics = async () => {
+  const res = await post(API.GET_REGISTER_STATISTICS, copeParams({}));
+  return res;
+};

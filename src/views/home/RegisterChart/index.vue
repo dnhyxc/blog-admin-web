@@ -5,10 +5,10 @@
  * index.vue
 -->
 <template>
-  <div class="tag-chart-wrap">
+  <div class="register-chart-wrap">
     <Content>
       <template #title>
-        <div class="title">用户统计</div>
+        <div class="title">用户注册统计</div>
       </template>
       <template #content>
         <div id="tag-chart" style="width: 100%; height: 100%"></div>
@@ -23,6 +23,7 @@ import * as echarts from 'echarts/core';
 import { TooltipComponent, TooltipComponentOption, GridComponent, GridComponentOption } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
+import { homeStore } from '@/store';
 import Content from '@/components/Content/index.vue';
 
 echarts.use([TooltipComponent, GridComponent, BarChart, CanvasRenderer]);
@@ -44,6 +45,7 @@ const getTagChart = () => {
       axisPointer: {
         type: 'shadow',
       },
+      formatter: '{b}: 用户注册量 {c} 人',
     },
     grid: {
       left: '3%',
@@ -54,7 +56,7 @@ const getTagChart = () => {
     xAxis: [
       {
         type: 'category',
-        data: ['JavaScript', 'React', 'Vue', 'Node', 'MongoDB', 'Webpack', 'Vite', 'Next.js'],
+        data: homeStore.registerStatistic?.map((i) => i.month),
         axisTick: {
           alignWithLabel: true,
         },
@@ -67,10 +69,10 @@ const getTagChart = () => {
     ],
     series: [
       {
-        name: 'Direct',
+        name: '用户注册量',
         type: 'bar',
         barWidth: '60%',
-        data: [10, 52, 200, 334, 390, 330, 220, 110],
+        data: homeStore.registerStatistic?.map((i) => i.count),
       },
     ],
   };
@@ -82,7 +84,7 @@ const getTagChart = () => {
 <style scoped lang="less">
 @import '@/styles/index.less';
 
-.tag-chart-wrap {
+.register-chart-wrap {
   width: 100%;
   height: 100%;
 
