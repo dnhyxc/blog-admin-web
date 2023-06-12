@@ -44,6 +44,15 @@ export interface registerRes {
   mainCover?: string;
 }
 
+export interface AuthorArticleInfo {
+  newArticle?: {
+    title: string;
+    id: string;
+    coverImage: string;
+  };
+  articleTotal?: number;
+}
+
 // 用户信息
 export interface UserInfoParams {
   id: string;
@@ -63,6 +72,11 @@ export interface UserInfoParams {
   bindUserIds?: string[];
   isDelete?: boolean;
   auth?: number;
+}
+
+export interface AuthorInfoEndArticleInfo {
+  authorInfo: UserInfoParams;
+  articleInfo: AuthorArticleInfo;
 }
 
 // 用户列表相应参数

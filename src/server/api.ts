@@ -136,3 +136,6 @@ export const GET_TAG_LIST = '/admin/getTagList';
 
 // 获取作者列表
 export const GET_AUHTHOR_LIST = '/admin/getAuhthorList';
+
+// 获取博主信息
+export const GET_AUTHOR_INFO = '/admin/getAuthorInfo';

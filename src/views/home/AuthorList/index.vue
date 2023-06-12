@@ -7,7 +7,7 @@
 <template>
   <div class="wrap">
     <div class="header">作者列表</div>
-    <div class="infinite-list-wrapper" style="overflow: auto">
+    <div v-if="isMounted" class="infinite-list-wrapper" style="overflow: auto">
       <!-- infinite-scroll-distance="1" 表示触发加载的距离阈值，单位为px。可解决只加载一次或几次后，滚动加载失效的问题 -->
       <div
         v-infinite-scroll="load"
@@ -16,47 +16,48 @@
         infinite-scroll-immediate
         infinite-scroll-distance="1"
       >
-        <List v-for="i in count" :key="i" class="list-item">
+        <List v-for="i in accountStore.userList" :key="i.id" class="list-item">
           <template #left>
-            <el-avatar class="avatar" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+            <Image :url="i.headUrl || SSM" :transition-img="SSM" class="avatar-image" />
           </template>
           <template #title>
             <div class="title">
-              <div>{{ i }}</div>
-              <div>right</div>
+              <div class="username">{{ i.username }}</div>
+              <div class="time">{{ formatDate(i.registerTime!, 'YYYY/MM/DD') }}</div>
             </div>
           </template>
           <template #content>
             <div class="content">
-              <div class="desc">desc</div>
+              <div class="desc" :title="i.introduce">{{ i.introduce || '该用户暂无简介' }}</div>
             </div>
           </template>
         </List>
       </div>
-      <p v-if="loading" class="loading">Loading...</p>
+      <p v-if="accountStore.loading" class="loading">Loading...</p>
       <p v-if="noMore" class="no-more">没有更多了～～～</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { accountStore } from '@/store';
+import { SSM } from '@/constant';
+import { formatDate } from '@/utils';
 import List from '@/components/List/index.vue';
 
-type countType = number;
-type loadType = boolean;
+const isMounted = ref<boolean>(false);
+const noMore = computed(() => accountStore.userList?.length >= accountStore.total);
+const disabled = computed(() => accountStore.loading || noMore.value);
 
-const count = ref<countType>(10);
-const loading = ref<loadType>(false);
-const noMore = computed(() => count.value >= 30);
-const disabled = computed(() => loading.value || noMore.value);
+onMounted(() => {
+  isMounted.value = true;
+  accountStore.getUserListByScroll();
+});
 
+// 滚动加载数据
 const load = () => {
-  loading.value = true;
-  setTimeout(() => {
-    count.value += 2;
-    loading.value = false;
-  }, 2000);
+  accountStore.getUserListByScroll();
 };
 </script>
 
@@ -92,18 +93,36 @@ const load = () => {
         display: flex;
         align-items: center;
         justify-content: center;
+
+        .avatar-image {
+          width: 45px;
+          height: 45px;
+          border-radius: 45px;
+          margin-right: 10px;
+
+          :deep {
+            .image-item {
+              border-radius: 45px;
+            }
+          }
+        }
       }
 
-      .avatar {
-        margin-right: 10px;
-      }
       .title {
         display: flex;
         justify-content: space-between;
+
+        .username {
+          flex: 1;
+          .ellipsisMore(1);
+          margin-right: 10px;
+        }
       }
 
       .content {
         text-align: left;
+        .ellipsisMore(2);
+        margin-top: 5px;
       }
     }
   }

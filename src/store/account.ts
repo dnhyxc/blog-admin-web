@@ -25,7 +25,7 @@ export const useAccountStore = defineStore('account', {
 
   actions: {
     // 滚动获取用户列表
-    async getUserListByScroll(keyword: string) {
+    async getUserListByScroll(keyword?: string) {
       if (this.userList.length !== 0 && this.userList.length >= this.total) return;
       this.pageNo = this.pageNo + 1;
       this.loading = true;

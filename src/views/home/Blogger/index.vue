@@ -9,52 +9,47 @@
     <div class="top">
       <div class="desc">
         <div class="text">
-          我希望有个如你一般的人。如山间清爽的风，如古城温暖的光，由清晨到傍晚，由山野到书房，只要最后是你，就好。
+          {{ userStore.authorInfoEndArticleInfo?.authorInfo?.introduce }}
         </div>
       </div>
       <div class="info">
         <div class="left">
-          <el-avatar
-            class="avatar"
-            :size="45"
-            fit="fill"
-            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          <Image
+            :url="userStore.authorInfoEndArticleInfo?.authorInfo?.headUrl || SEA"
+            :transition-img="SEA"
+            class="avatar-image"
           />
         </div>
         <div class="right">
-          <div class="title">dnhyxc</div>
-          <div class="content">行到水穷处，坐看云起时！</div>
+          <div class="title">{{ userStore.authorInfoEndArticleInfo?.authorInfo?.username }}</div>
+          <div class="content">{{ userStore.authorInfoEndArticleInfo?.authorInfo?.motto }}</div>
         </div>
       </div>
     </div>
     <div class="bottom">
+      <div class="right">
+        <Image
+          :url="userStore.authorInfoEndArticleInfo?.authorInfo?.headUrl || SEA"
+          :transition-img="SEA"
+          class="image"
+        />
+      </div>
       <div class="left">
         <div class="header">博主发表的文章数量</div>
-        <div class="number">55</div>
+        <div class="number">{{ userStore.authorInfoEndArticleInfo?.articleInfo?.articleTotal }}</div>
         <div class="article-info">
           <span class="lately-article">最近发表：</span>
-          <span class="title">《我的县长父亲》</span>
+          <span class="title">《 {{ userStore.authorInfoEndArticleInfo?.articleInfo?.newArticle?.title }}》</span>
         </div>
-      </div>
-      <div class="right">
-        <el-image
-          style="width: 100%; height: calc(100% - 20px)"
-          src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-          fit="cover"
-          class="image"
-        >
-          <template #error>
-            <div class="image-slot">
-              <el-icon><icon-picture /></el-icon>
-            </div>
-          </template>
-        </el-image>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { userStore } from '@/store';
+import { SEA } from '@/constant';
+</script>
 
 <style scoped lang="less">
 @import '@/styles/index.less';
@@ -69,7 +64,7 @@
   border-radius: 5px;
 
   .top {
-    flex: 1;
+    height: 50%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -117,6 +112,18 @@
       align-items: center;
       padding: 0 10px;
 
+      .avatar-image {
+        width: 45px;
+        height: 45px;
+        border-radius: 45px;
+
+        :deep {
+          .image-item {
+            border-radius: 45px;
+          }
+        }
+      }
+
       .right {
         flex: 1;
         margin-left: 20px;
@@ -133,20 +140,19 @@
   }
 
   .bottom {
-    flex: 1;
+    height: 50%;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     background-color: @fff;
     border-radius: 5px;
 
     .left {
-      flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      margin-right: 10px;
-      padding-left: 10px;
+      padding: 10px 0;
 
       .header {
         font-size: 18px;
@@ -155,18 +161,25 @@
       .number {
         font-size: 32px;
         font-weight: 700;
-        margin: 20px 0;
+        margin: 10px 0;
       }
     }
 
     .right {
-      flex: 0.8;
       display: flex;
       align-items: center;
+      height: 50%;
 
       .image {
         border-radius: 5px;
-        margin-right: 10px;
+        height: 100%;
+
+        :deep {
+          .image-item {
+            border-radius: 5px;
+            display: block;
+          }
+        }
       }
     }
   }

@@ -78,8 +78,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { homeStore } from '@/store';
+import { onMounted, onUnmounted } from 'vue';
+import { homeStore, accountStore, userStore } from '@/store';
 import Card from '@/components/Card/index.vue';
 import ClassifyChart from './ClassifyChart/index.vue';
 import ArticleChart from './ArticleChart/index.vue';
@@ -97,6 +97,11 @@ onMounted(() => {
     homeStore.getAuhthorList(),
     homeStore.getTagList(),
   ]);
+  userStore.getAuthorInfo();
+});
+
+onUnmounted(() => {
+  accountStore.clearUserListInfo();
 });
 </script>
 

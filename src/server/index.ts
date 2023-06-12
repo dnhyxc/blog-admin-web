@@ -60,7 +60,7 @@ export const verify = async () => {
 };
 
 // 获取用户信息
-export const getUserInfo = async (params: { userId: string }) => {
+export const getUserInfo = async (params: { userId: string; auth?: number }) => {
   try {
     const res = await post(API.GET_USER_INFO, params);
     return res;
@@ -311,5 +311,11 @@ export const getRegisterStatistics = async () => {
 // 作者列表
 export const getAuhthorList = async () => {
   const res = await post(API.GET_AUHTHOR_LIST, copeParams({}));
+  return res;
+};
+
+// 获取博主信息
+export const getAuthorInfo = async () => {
+  const res = await post(API.GET_AUTHOR_INFO, copeParams({}));
   return res;
 };

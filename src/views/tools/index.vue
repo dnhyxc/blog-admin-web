@@ -17,7 +17,7 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" />
-      <el-table-column label="工具名称" show-overflow-tooltip width="250">
+      <el-table-column label="工具名称" show-overflow-tooltip width="220">
         <template #default="scope">
           <div class="user-info">
             <el-image

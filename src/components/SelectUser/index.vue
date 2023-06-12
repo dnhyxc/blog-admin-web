@@ -55,8 +55,6 @@ import { Close } from '@element-plus/icons-vue';
 import { accountStore } from '@/store';
 import { UserInfoParams } from '@/typings/comment';
 
-type loadType = boolean;
-type countType = number;
 interface IProps {
   selectedUsers?: UserInfoParams[];
   visible?: boolean;
@@ -66,10 +64,8 @@ const props = defineProps<IProps>();
 
 const keyword = ref<string>('');
 const isMounted = ref<boolean>(false);
-const count = ref<countType>(20);
-const loading = ref<loadType>(false);
-const noMore = computed(() => count.value >= 50);
-const disabled = computed(() => loading.value || noMore.value);
+const noMore = computed(() => accountStore.userList?.length >= accountStore.total);
+const disabled = computed(() => accountStore.loading || noMore.value);
 // 选择的用户
 const selectedUsers = ref<any>(props.selectedUsers || []);
 
@@ -101,8 +97,7 @@ const onEnter = () => {
 
 // 选择用户
 const onSelectUser = (item: UserInfoParams) => {
-  console.log(item, '选择用户');
-  const find = selectedUsers.value.find((i) => i.id === item.id);
+  const find = selectedUsers.value.find((i: any) => i.id === item.id);
   if (!find) {
     selectedUsers.value = [...selectedUsers.value, item];
   }
@@ -111,7 +106,7 @@ const onSelectUser = (item: UserInfoParams) => {
 // 移除用户
 const onRemoveUser = (item: UserInfoParams) => {
   console.log(item, 'item');
-  selectedUsers.value = selectedUsers.value.filter((i) => i.id !== item.id);
+  selectedUsers.value = selectedUsers.value.filter((i: any) => i.id !== item.id);
 };
 
 // 移除所有

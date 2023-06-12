@@ -7,8 +7,6 @@ export const useAuthStore = defineStore('auth', {
   }),
   actions: {
     setAuth(params: AuthParams) {
-      console.log(params, 'params');
-
       this.redirectUrl = params.redirectUrl;
     },
   },

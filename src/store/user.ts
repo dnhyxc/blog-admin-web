@@ -1,11 +1,17 @@
 import { defineStore } from 'pinia';
-import { LoginParams, UserLoginParams, UserInfoParams } from '@/typings/comment';
+import {
+  LoginParams,
+  UserLoginParams,
+  UserInfoParams,
+  AuthorInfoEndArticleInfo,
+} from '@/typings/comment';
 import * as Service from '@/server';
 import { normalizeResult, encrypt, ssnSetItem, ssnGetItem, ssnRemoveItem } from '@/utils';
 import { ElMessage } from 'element-plus';
 
 interface IProps extends UserLoginParams {
   userInfo: UserInfoParams;
+  authorInfoEndArticleInfo: AuthorInfoEndArticleInfo;
   bindAccount: string[] | null | undefined;
   bindUserInfo: { username: string; userId: string }[];
 }
@@ -20,6 +26,10 @@ export const useUserStore = defineStore('user', {
     bindAccount: JSON.parse(ssnGetItem('bindAccount')!),
     bindUserInfo: JSON.parse(ssnGetItem('bindUserInfo')!),
     userInfo: { id: '', username: '' },
+    authorInfoEndArticleInfo: {
+      authorInfo: {} as UserInfoParams,
+      articleInfo: {},
+    },
   }),
 
   actions: {
@@ -90,6 +100,19 @@ export const useUserStore = defineStore('user', {
           this.userInfo = res.data;
           this.bindAccount = res.data.bindUserIds;
           ssnSetItem('bindAccount', JSON.stringify(res.data.bindUserIds));
+        }
+        return res.data.bindUserIds;
+      } catch (error) {
+        throw error;
+      }
+    },
+
+    // 获取博主信息
+    async getAuthorInfo(auth?: number) {
+      try {
+        const res = normalizeResult<AuthorInfoEndArticleInfo>(await Service.getAuthorInfo());
+        if (res.success) {
+          this.authorInfoEndArticleInfo = res.data;
         }
         return res.data.bindUserIds;
       } catch (error) {

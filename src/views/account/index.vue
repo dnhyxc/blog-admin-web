@@ -13,7 +13,7 @@
           <template #default="scope">
             <div class="username">
               <div class="img">
-                <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.qd" />
+                <el-avatar class="avatar" :size="50" fit="fill" :src="scope.row.headUrl" />
               </div>
               <div class="name" :title="scope.row.username">{{ scope.row.username }}</div>
             </div>
@@ -107,7 +107,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { ElTable } from 'element-plus';
-import { PAGESIZE, IMAGES, AUTH_CONFIG } from '@/constant';
+import { PAGESIZE, AUTH_CONFIG } from '@/constant';
 import { accountStore, userStore } from '@/store';
 import { formatDate } from '@/utils';
 import Modal from '@/components/Modal/index.vue';
