@@ -70,7 +70,11 @@ export const useClassifyStore = defineStore('classify', {
         this.classifyList.forEach((i) => {
           if (i.id === id) {
             if (type === 'add') {
-              i.addUserIds = (i.addUserIds ? [...i.addUserIds, userStore.userId] : [...i.addUserIds!]) as string[];
+              if (Array.isArray(i.addUserIds)) {
+                i.addUserIds = (
+                  i.addUserIds ? [...i.addUserIds, userStore.userId] : i.addUserIds ? [...i.addUserIds] : []
+                ) as string[];
+              }
               i.userCount = new Set([...i.userIds!, ...userStore.bindAccount!]).size;
             } else {
               i.addUserIds = i.addUserIds?.filter((i) => i !== userStore.userId);

@@ -10,6 +10,7 @@ export interface MenuListParams<T> {
 export interface LoginParams {
   username: string;
   password: string;
+  confirmPwd?: string;
 }
 
 // 用户信息属性声明

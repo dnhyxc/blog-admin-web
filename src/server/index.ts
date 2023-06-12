@@ -1,4 +1,4 @@
-import { post } from '@/utils/request';
+import { post, put } from '@/utils/request';
 import { ssnGetItem } from '@/utils';
 import {
   LoginParams,
@@ -47,6 +47,12 @@ export const register = async (params: LoginParams) => {
   } catch (error) {
     throw error;
   }
+};
+
+// 重置密码
+export const resetPassword = async (params: { username: string; password: string }) => {
+  const res = await put(API.RESET_PASSWORD, params);
+  return res;
 };
 
 // 校验token是否过期
@@ -317,5 +323,11 @@ export const getAuhthorList = async () => {
 // 获取博主信息
 export const getAuthorInfo = async () => {
   const res = await post(API.GET_AUTHOR_INFO, copeParams({}));
+  return res;
+};
+
+// 获取最受欢迎的文章
+export const getPopularArticles = async () => {
+  const res = await post(API.GET_POPULAR_ARTICLES, copeParams({}));
   return res;
 };

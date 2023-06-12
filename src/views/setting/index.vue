@@ -6,70 +6,68 @@
 -->
 <template>
   <div class="setting-wrap">
-    <div class="content">
-      <div class="header">账号设置</div>
-      <el-form ref="formRef" :model="bindedUserForm" label-width="110px" class="form-wrap">
-        <el-form-item
-          prop="username"
-          label="用户头像"
-          :rules="[
-            {
-              required: true,
-              message: '请输入需要更改的名称',
-              trigger: 'blur',
-            },
-          ]"
-          class="form-item"
+    <div class="header">账号设置</div>
+    <el-form ref="formRef" :model="bindedUserForm" label-width="110px" class="form-wrap">
+      <el-form-item
+        prop="username"
+        label="用户头像"
+        :rules="[
+          {
+            required: true,
+            message: '请输入需要更改的名称',
+            trigger: 'blur',
+          },
+        ]"
+        class="form-item"
+      >
+        <el-upload
+          class="avatar-uploader"
+          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
         >
-          <el-upload
-            class="avatar-uploader"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-          </el-upload>
-        </el-form-item>
+          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+          <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+        </el-upload>
+      </el-form-item>
+      <el-form-item
+        prop="username"
+        label="用户名称"
+        :rules="[
+          {
+            required: true,
+            message: '请输入需要更改的名称',
+            trigger: 'blur',
+          },
+        ]"
+        class="form-item"
+      >
+        <el-input v-model="bindedUserForm.username" placeholder="请输入需要更改的名称" />
+      </el-form-item>
+      <div class="bind-wrap">
         <el-form-item
-          prop="username"
-          label="用户名称"
-          :rules="[
-            {
-              required: true,
-              message: '请输入需要更改的名称',
-              trigger: 'blur',
-            },
-          ]"
-          class="form-item"
+          v-for="(domain, index) in bindedUserForm.domains"
+          :key="domain.key"
+          :label="'绑定账号名 ' + (index + 1)"
+          :prop="'domains.' + index + '.value'"
+          :rules="{
+            required: true,
+            message: '请输入需要绑定的前台账号名称',
+            trigger: 'blur',
+          }"
+          class="form-item-custom"
         >
-          <el-input v-model="bindedUserForm.username" placeholder="请输入需要更改的名称" />
+          <el-input v-model="domain.value" disabled placeholder="请输入需要绑定的前台账号名称" />
         </el-form-item>
-        <div class="bind-wrap">
-          <el-form-item
-            v-for="(domain, index) in bindedUserForm.domains"
-            :key="domain.key"
-            :label="'绑定账号名 ' + (index + 1)"
-            :prop="'domains.' + index + '.value'"
-            :rules="{
-              required: true,
-              message: '请输入需要绑定的前台账号名称',
-              trigger: 'blur',
-            }"
-            class="form-item-custom"
-          >
-            <el-input v-model="domain.value" disabled placeholder="请输入需要绑定的前台账号名称" />
-          </el-form-item>
-          <el-button class="del-btn" type="primary" link @click.prevent="onResetBind">重新设置绑定账号</el-button>
+        <el-button class="del-btn" type="primary" link @click.prevent="onResetBind">重新设置绑定账号</el-button>
+      </div>
+      <el-form-item class="form-item-action">
+        <div class="actions">
+          <el-button type="primary" class="action-btn" @click="submitForm(formRef)">确定修改</el-button>
         </div>
-        <el-form-item class="form-item-action">
-          <div class="actions">
-            <el-button type="primary" class="action-btn" @click="submitForm(formRef)">确定修改</el-button>
-          </div>
-        </el-form-item>
-      </el-form>
-    </div>
+      </el-form-item>
+    </el-form>
     <Modal v-model:visible="visible" title="账号绑定">
       <ResetBind v-model:visible="visible" />
     </Modal>
@@ -161,13 +159,90 @@ const submitForm = (formEl: FormInstance | undefined) => {
 @import '@/styles/index.less';
 
 .setting-wrap {
+  .layoutStyles();
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: @fff;
   background-color: @fff;
-  box-sizing: border-box;
+  width: calc(100% - 10px);
+
+  .header {
+    width: 500px;
+    height: 50px;
+    line-height: 50px;
+    margin-bottom: 30px;
+    padding: 15px 110px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: @000;
+    box-sizing: border-box;
+  }
+
+  .avatar-uploader {
+    display: flex;
+    justify-content: center;
+
+    :deep {
+      .el-upload {
+        border: 1px dashed @border-color;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .el-icon.avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 125px;
+        height: 125px;
+        text-align: center;
+      }
+    }
+
+    .avatar {
+      width: 125px;
+      height: 125px;
+      display: block;
+    }
+  }
+
+  .form-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 500px;
+
+    .form-item,
+    .form-item-custom,
+    .form-item-action {
+      margin-bottom: 30px;
+      padding-right: 50px;
+    }
+
+    .form-item-action {
+      .actions {
+        display: flex;
+        width: 100%;
+        text-align: right;
+
+        .action-btn {
+          flex: 1;
+        }
+      }
+    }
+
+    .bind-wrap {
+      position: relative;
+
+      .del-btn {
+        position: absolute;
+        width: auto;
+        bottom: 36px;
+        right: -78px;
+      }
+    }
+  }
 
   .content {
     display: flex;
@@ -179,82 +254,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
     border-radius: 5px;
     box-shadow: 0 0 10px rgb(255 255 255 / 20%);
     backdrop-filter: blur(1px);
-
-    .avatar-uploader {
-      display: flex;
-      justify-content: center;
-
-      :deep {
-        .el-upload {
-          border: 1px dashed @border-color;
-          border-radius: 6px;
-          cursor: pointer;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .el-icon.avatar-uploader-icon {
-          font-size: 28px;
-          color: #8c939d;
-          width: 125px;
-          height: 125px;
-          text-align: center;
-        }
-      }
-
-      .avatar {
-        width: 125px;
-        height: 125px;
-        display: block;
-      }
-    }
-
-    .header {
-      height: 50px;
-      line-height: 50px;
-      margin-bottom: 30px;
-      padding: 0 80px;
-      font-size: 20px;
-      font-weight: 700;
-      color: @000;
-    }
-
-    .form-wrap {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      width: 500px;
-
-      .form-item,
-      .form-item-custom,
-      .form-item-action {
-        margin-bottom: 30px;
-        padding-right: 50px;
-      }
-
-      .form-item-action {
-        .actions {
-          display: flex;
-          width: 100%;
-          text-align: right;
-
-          .action-btn {
-            flex: 1;
-          }
-        }
-      }
-
-      .bind-wrap {
-        position: relative;
-
-        .del-btn {
-          position: absolute;
-          width: auto;
-          bottom: 36px;
-          right: -78px;
-        }
-      }
-    }
   }
 }
 </style>

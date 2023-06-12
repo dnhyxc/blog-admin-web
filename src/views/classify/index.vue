@@ -15,11 +15,6 @@
         >
           <div v-for="item in classifyStore.classifyList" :key="item.id" class="card-wrap">
             <Card class="card">
-              <template #img>
-                <div class="img">
-                  <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.qd" />
-                </div>
-              </template>
               <template #title>
                 <div class="title">{{ item.classifyName || '-' }}</div>
               </template>
@@ -73,7 +68,6 @@ import { useScroller } from '@/hooks';
 import { classifyStore, userStore } from '@/store';
 import { ClassifyItem } from '@/typings/comment';
 import Card from '@/components/Card/index.vue';
-import { IMAGES } from '@/constant';
 
 const { scrollRef, scrollTop } = useScroller();
 
@@ -200,17 +194,8 @@ const onScrollTo = () => {
             align-items: center;
             background-image: none;
             width: calc(100% - 15px);
-            height: 218px;
+            height: 160px;
             margin-bottom: 15px;
-
-            .img {
-              width: 50px;
-              height: 50px;
-              line-height: 50px;
-              border-radius: 50px;
-              text-align: center;
-              margin-bottom: 18px;
-            }
 
             .title {
               margin-bottom: 5px;

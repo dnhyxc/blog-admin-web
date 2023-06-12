@@ -2,22 +2,16 @@
   <div class="hot-article-wrap">
     <div class="header">热门文章</div>
     <div class="card-list">
-      <Card v-for="item in [1, 2]" :key="item" class="card">
+      <Card v-for="item in homeStore.popularArticleList" :key="item" class="card">
         <template #img>
           <div class="img">
-            <el-image
-              class="el-image"
-              src="https://pic1.zhimg.com/80/v2-7f05d7f37056b61086790a2ffbb5b335_720w.webp?source=1940ef5c"
-              fit="cover"
-            />
+            <Image :url="item.coverImage || SSM" :transition-img="SSM" class="el-image" />
           </div>
         </template>
-        <template #title>
-          <div class="title">React + Webpack 项目搭建</div>
-        </template>
-        <template #content>
+        <template #article-info>
+          <div class="title">{{ item.title }}</div>
           <div class="content">
-            看完本篇文章，你将了解服务器环境搭建，前后端项目独立部署，以及使用同一个 nginx 部署多个前端项目
+            {{ item.abstract }}
           </div>
         </template>
       </Card>
@@ -26,6 +20,8 @@
 </template>
 
 <script setup lang="ts">
+import { homeStore } from '@/store';
+import { SSM } from '@/constant';
 import Card from '@/components/Card/index.vue';
 </script>
 
@@ -61,8 +57,13 @@ import Card from '@/components/Card/index.vue';
         .el-image {
           width: 100%;
           height: 100%;
-          border-top-left-radius: 5px;
-          border-top-right-radius: 5px;
+
+          :deep {
+            .image-item {
+              border-top-left-radius: 5px;
+              border-top-right-radius: 5px;
+            }
+          }
         }
       }
 
@@ -74,6 +75,7 @@ import Card from '@/components/Card/index.vue';
       }
 
       .content {
+        flex: 1;
         padding: 5px 10px 10px 10px;
         font-size: 13px;
         background-color: @info-light-9;

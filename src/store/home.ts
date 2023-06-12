@@ -3,7 +3,7 @@ import { ElMessage } from 'element-plus';
 import * as Service from '@/server';
 import { normalizeResult, manageArticleStatistics } from '@/utils';
 import { userStore } from '@/store';
-import { ArticleStatistic, ArticleStatisticData, ArticleInfo } from '@/typings/comment';
+import { ArticleStatistic, ArticleStatisticData, ArticleInfo, ArticleItem } from '@/typings/comment';
 
 interface IParams {
   loading: boolean;
@@ -19,6 +19,8 @@ interface IParams {
   authorTotal: number;
   popularArticle: ArticleInfo | null;
   articleTotalCount: number;
+  tagList: { value: number; name: string }[];
+  popularArticleList: ArticleItem[];
 }
 
 export const useHomeStore = defineStore('home', {
@@ -47,6 +49,10 @@ export const useHomeStore = defineStore('home', {
     tagTotal: 0,
     // 使用最多的标签
     tagMaxItem: {},
+    // 标签列表
+    tagList: [],
+    // 最受欢迎的文章列表
+    popularArticleList: [],
   }),
 
   actions: {
@@ -117,6 +123,7 @@ export const useHomeStore = defineStore('home', {
         const res = normalizeResult<{ value: number; name: string }[]>(await Service.getTagList(type || 'tag'));
         this.loading = false;
         if (res.success) {
+          this.tagList = res.data;
           this.tagTotal = res.data.length;
           this.tagMaxItem = res.data.reduce((max, cur) => (cur.value > max.value ? cur : max), {
             value: -Infinity,
@@ -140,6 +147,23 @@ export const useHomeStore = defineStore('home', {
           this.authors = res.data;
           const total = res.data.reduce((acc, cur) => acc + cur.count, 0);
           this.authorTotal = total;
+        } else {
+          ElMessage.error(res.message);
+        }
+      } catch (error) {
+        return false;
+      }
+    },
+
+    // 作者人数
+    async getPopularArticles() {
+      if (!userStore?.userId) return;
+      try {
+        this.loading = true;
+        const res = normalizeResult<ArticleItem[]>(await Service.getPopularArticles());
+        this.loading = false;
+        if (res.success) {
+          this.popularArticleList = res.data;
         } else {
           ElMessage.error(res.message);
         }

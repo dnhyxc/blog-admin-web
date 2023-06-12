@@ -1,10 +1,5 @@
 import { defineStore } from 'pinia';
-import {
-  LoginParams,
-  UserLoginParams,
-  UserInfoParams,
-  AuthorInfoEndArticleInfo,
-} from '@/typings/comment';
+import { LoginParams, UserLoginParams, UserInfoParams, AuthorInfoEndArticleInfo } from '@/typings/comment';
 import * as Service from '@/server';
 import { normalizeResult, encrypt, ssnSetItem, ssnGetItem, ssnRemoveItem } from '@/utils';
 import { ElMessage } from 'element-plus';
@@ -59,7 +54,7 @@ export const useUserStore = defineStore('user', {
     async onLogin(data: LoginParams) {
       try {
         // 密码加密传到后端
-        const password = encrypt(data.password);
+        const password = encrypt(data.confirmPwd || data.password);
         const res = normalizeResult<UserLoginParams>(
           await Service.login({
             username: data.username,
@@ -79,10 +74,10 @@ export const useUserStore = defineStore('user', {
           ssnSetItem('username', username!);
           ssnSetItem('auth', JSON.stringify(auth!));
           ssnSetItem('bindAccount', JSON.stringify(bindUserIds!));
+          return res;
         } else {
           ElMessage.error(res.message);
         }
-        return res;
       } catch (error) {
         throw error;
       }
@@ -130,6 +125,33 @@ export const useUserStore = defineStore('user', {
         }
       } catch (error) {
         throw error;
+      }
+    },
+
+    // 重置密码
+    async onResetPwd(params: LoginParams) {
+      if (!params.confirmPwd) {
+        ElMessage.warning('请输入二次确认密码');
+        return;
+      }
+      const res = normalizeResult<UserInfoParams>(
+        await Service.resetPassword({ ...params, password: encrypt(params.confirmPwd) }),
+      );
+      // 重置成功后直接登录
+      if (res.success) {
+        const loginInfo = await this.onLogin(params);
+        ElMessage({
+          message: res.message,
+          type: 'success',
+          offset: 80,
+        });
+        return loginInfo;
+      } else {
+        ElMessage({
+          message: res.message,
+          type: 'error',
+          offset: 80,
+        });
       }
     },
 

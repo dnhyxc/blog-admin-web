@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted, shallowRef } from 'vue';
 import * as echarts from 'echarts/core';
 import { TooltipComponent, TooltipComponentOption, GridComponent, GridComponentOption } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
@@ -30,14 +30,27 @@ echarts.use([TooltipComponent, GridComponent, BarChart, CanvasRenderer]);
 
 type EChartsOption = echarts.ComposeOption<TooltipComponentOption | GridComponentOption | BarSeriesOption>;
 
+// 使用shallowRef，不将chart属性设置为响应式，防止报错
+const myChart = shallowRef();
+
 onMounted(() => {
   getTagChart();
+  window.addEventListener('resize', onResizeChart, false);
 });
+
+onUnmounted(() => {
+  window.removeEventListener('resize', onResizeChart, false);
+});
+
+// 刷新
+const onResizeChart = () => {
+  myChart.value?.resize();
+};
 
 // tag 树状图处理
 const getTagChart = () => {
   const chartDom = document.getElementById('tag-chart')!;
-  const myChart = echarts.init(chartDom);
+  myChart.value = echarts.init(chartDom);
 
   const option: EChartsOption = {
     tooltip: {
@@ -77,7 +90,7 @@ const getTagChart = () => {
     ],
   };
 
-  option && myChart.setOption(option);
+  option && myChart.value?.setOption(option);
 };
 </script>
 

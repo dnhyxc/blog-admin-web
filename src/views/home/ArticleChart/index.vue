@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted, shallowRef } from 'vue';
 import * as echarts from 'echarts/core';
 import {
   TitleComponent,
@@ -58,14 +58,27 @@ type EChartsOption = echarts.ComposeOption<
   | LineSeriesOption
 >;
 
+// 使用shallowRef，不将chart属性设置为响应式，防止报错
+const myChart = shallowRef();
+
 onMounted(() => {
   getArticleChart();
+  window.addEventListener('resize', onResizeChart, false);
 });
+
+onUnmounted(() => {
+  window.removeEventListener('resize', onResizeChart, false);
+});
+
+// 刷新
+const onResizeChart = () => {
+  myChart.value?.resize();
+};
 
 // 文章统计折线图处理
 const getArticleChart = () => {
   const chartDom = document.getElementById('article_chart')!;
-  const myChart = echarts.init(chartDom);
+  myChart.value = echarts.init(chartDom);
 
   const option: EChartsOption = {
     color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
@@ -135,12 +148,12 @@ const getArticleChart = () => {
         emphasis: {
           focus: 'series',
         },
-        data: homeStore.articleStatisticData[i].map((i: any) => i.count),
+        data: homeStore.articleStatisticData?.[i].map((i: any) => i.count),
       };
     }),
   };
 
-  option && myChart.setOption(option);
+  option && myChart.value.setOption(option);
 };
 </script>
 

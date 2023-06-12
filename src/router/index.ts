@@ -42,16 +42,16 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('@/views/classify/index.vue'),
       },
-      {
-        path: '/tag',
-        name: 'tag',
-        meta: {
-          title: '标签管理',
-          keepAlive: true,
-          requireAuth: true,
-        },
-        component: () => import('@/views/tag/index.vue'),
-      },
+      // {
+      //   path: '/tag',
+      //   name: 'tag',
+      //   meta: {
+      //     title: '标签管理',
+      //     keepAlive: true,
+      //     requireAuth: true,
+      //   },
+      //   component: () => import('@/views/tag/index.vue'),
+      // },
       {
         path: '/account',
         name: 'account',

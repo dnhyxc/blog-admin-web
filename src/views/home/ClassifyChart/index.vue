@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted, shallowRef } from 'vue';
 import * as echarts from 'echarts/core';
 import { TooltipComponent, TooltipComponentOption, LegendComponent, LegendComponentOption } from 'echarts/components';
 import { PieChart, PieSeriesOption } from 'echarts/charts';
@@ -31,15 +31,28 @@ import Content from '@/components/Content/index.vue';
 echarts.use([TooltipComponent, LegendComponent, PieChart, CanvasRenderer, LabelLayout]);
 type EChartsOption = echarts.ComposeOption<TooltipComponentOption | LegendComponentOption | PieSeriesOption>;
 
+// 使用shallowRef，不将chart属性设置为响应式，防止报错
+const myChart = shallowRef();
+
 // onMounted声明周期函数
 onMounted(() => {
   getClassifyChart();
+  window.addEventListener('resize', onResizeChart, false);
 });
+
+onUnmounted(() => {
+  window.removeEventListener('resize', onResizeChart, false);
+});
+
+// 刷新
+const onResizeChart = () => {
+  myChart.value?.resize();
+};
 
 // 分类统计图处理
 const getClassifyChart = () => {
   const chartDom = document.getElementById('classify_chart')!;
-  const myChart = echarts.init(chartDom);
+  myChart.value = echarts.init(chartDom);
 
   const option: EChartsOption = {
     // 鼠标 hover tip 提示
@@ -87,7 +100,7 @@ const getClassifyChart = () => {
     ],
   };
 
-  option && myChart.setOption(option);
+  option && myChart.value?.setOption(option);
 };
 </script>
 

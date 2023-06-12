@@ -5,6 +5,9 @@ export const REMOVE_FILE = '/admin/removeFile';
 // 登录
 export const LOGIN = '/admin/login';
 
+// 重置密码
+export const RESET_PASSWORD = '/admin/resetPassword';
+
 // 用户注册
 export const REGISTER = '/admin/register';
 
@@ -139,3 +142,6 @@ export const GET_AUHTHOR_LIST = '/admin/getAuhthorList';
 
 // 获取博主信息
 export const GET_AUTHOR_INFO = '/admin/getAuthorInfo';
+
+// 获取最受欢迎的文章
+export const GET_POPULAR_ARTICLES = '/admin/getPopularArticles';

@@ -4,8 +4,9 @@
     :style="width ? { width: `${width}px`, height: `${height}px`, flex: 'none' } : { height: `${height}px` }"
   >
     <slot name="img"></slot>
-    <slot name="title">title</slot>
-    <slot name="content">content</slot>
+    <slot name="title"></slot>
+    <slot name="content"></slot>
+    <slot name="article-info"></slot>
     <slot name="footer"></slot>
   </div>
 </template>
@@ -39,6 +40,12 @@ defineProps<IProps>();
 
   &:last-child {
     margin-right: 0;
+  }
+
+  .article-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>

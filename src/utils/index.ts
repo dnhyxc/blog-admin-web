@@ -226,3 +226,90 @@ export const manageArticleStatistics = (data: ArticleStatistic[]) => {
     totalCount,
   };
 };
+
+// 账号校验
+export const verifyUsername = (value: string) => {
+  const usrRegex = /^((?!\\|\/|\(|\)|\+|-|=|~|～|`|!|！|:|\*|\?|<|>|\||'|%|#|&|\$|\^|&|\*).){1,20}$/;
+  if (usrRegex.test(value)) {
+    return {
+      msg: '',
+      status: true,
+    };
+  }
+  if (value.length < 1) {
+    return {
+      msg: '用户名不能少于1位',
+      status: false,
+    };
+  }
+  if (value.length > 15) {
+    return {
+      msg: '用户名不能大于15位',
+      status: false,
+    };
+  }
+  return {
+    msg: '用户名不能包含特殊字符',
+    status: false,
+  };
+};
+
+// 密码校验
+export const verifyPassword = (value: string) => {
+  const pwdRegex = /(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,20}/;
+  if (value.length > 20) {
+    return {
+      msg: '密码不能不大于20位',
+      status: false,
+    };
+  }
+  if (value.length < 8) {
+    return {
+      msg: '密码不能少于8位',
+      status: false,
+    };
+  }
+  if (pwdRegex.test(value)) {
+    return {
+      msg: '',
+      status: true,
+    };
+  }
+  return {
+    msg: '必须包含字母、数字、特称字符',
+    status: false,
+  };
+};
+
+// 密码校验
+export const verifyResetPassword = (value: string, newPwd: string) => {
+  const pwdRegex = /(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,20}/;
+  if (value.length > 20) {
+    return {
+      msg: '密码不能不大于20位',
+      status: false,
+    };
+  }
+  if (value.length < 8) {
+    return {
+      msg: '密码不能少于8位',
+      status: false,
+    };
+  }
+  if (value !== newPwd) {
+    return {
+      msg: '两次输入的密码不一致',
+      status: false,
+    };
+  }
+  if (pwdRegex.test(value)) {
+    return {
+      msg: '',
+      status: true,
+    };
+  }
+  return {
+    msg: '必须包含字母、数字、特称字符',
+    status: false,
+  };
+};

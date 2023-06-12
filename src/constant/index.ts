@@ -2,7 +2,7 @@ import {
   Document,
   Grid,
   Setting,
-  Discount,
+  // Discount,
   Menu,
   Postcard,
   ChatLineSquare,
@@ -41,12 +41,12 @@ export const MENULIST: MenuListParams<typeof Grid>[] = [
     path: '/classify',
     icon: Menu,
   },
-  {
-    name: '标签管理',
-    key: 'tag',
-    path: '/tag',
-    icon: Discount,
-  },
+  // {
+  //   name: '标签管理',
+  //   key: 'tag',
+  //   path: '/tag',
+  //   icon: Discount,
+  // },
   {
     name: '账号管理',
     key: 'account',

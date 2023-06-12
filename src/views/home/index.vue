@@ -68,7 +68,7 @@
     </div>
     <div class="list-container">
       <AuthorList class="list-content" />
-      <Timeline class="list-content" />
+      <TagList class="list-content" />
       <Blogger class="list-content" />
     </div>
     <div class="hot-article-list">
@@ -85,7 +85,7 @@ import ClassifyChart from './ClassifyChart/index.vue';
 import ArticleChart from './ArticleChart/index.vue';
 import RegisterChart from './RegisterChart/index.vue';
 import AuthorList from './AuthorList/index.vue';
-import Timeline from './Timeline/index.vue';
+import TagList from './TagList/index.vue';
 import Blogger from './Blogger/index.vue';
 import HotArticle from './HotArticle/index.vue';
 
@@ -98,6 +98,7 @@ onMounted(() => {
     homeStore.getTagList(),
   ]);
   userStore.getAuthorInfo();
+  homeStore.getPopularArticles();
 });
 
 onUnmounted(() => {

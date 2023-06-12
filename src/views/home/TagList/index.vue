@@ -6,59 +6,30 @@
 -->
 <template>
   <div class="wrap">
-    <div class="header">作者列表</div>
-    <div v-if="isMounted" class="infinite-list-wrapper" style="overflow: auto">
+    <div class="header">标签列表</div>
+    <div class="infinite-list-wrapper" style="overflow: auto">
       <!-- infinite-scroll-distance="1" 表示触发加载的距离阈值，单位为px。可解决只加载一次或几次后，滚动加载失效的问题 -->
-      <div
-        v-infinite-scroll="load"
-        class="list"
-        :infinite-scroll-disabled="disabled"
-        infinite-scroll-immediate
-        infinite-scroll-distance="1"
-      >
-        <List v-for="i in accountStore.userList" :key="i.id" class="list-item">
-          <template #left>
-            <Image :url="i.headUrl || SSM" :transition-img="SSM" class="avatar-image" />
-          </template>
+      <div class="list">
+        <List v-for="(i, index) in homeStore.tagList" :key="index" class="list-item">
           <template #title>
             <div class="title">
-              <div class="username">{{ i.username }}</div>
-              <div class="time">{{ formatDate(i.registerTime!, 'YYYY/MM/DD') }}</div>
+              <div class="username">{{ i.name }}</div>
             </div>
           </template>
           <template #content>
             <div class="content">
-              <div class="desc" :title="i.introduce">{{ i.introduce || '该用户暂无简介' }}</div>
+              <div class="desc">包含（{{ i.value }}）篇文章</div>
             </div>
           </template>
         </List>
       </div>
-      <p v-if="accountStore.loading" class="loading">Loading...</p>
-      <p v-if="noMore" class="no-more">没有更多了～～～</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { accountStore } from '@/store';
-import { SSM } from '@/constant';
-import { formatDate } from '@/utils';
+import { homeStore } from '@/store';
 import List from '@/components/List/index.vue';
-
-const isMounted = ref<boolean>(false);
-const noMore = computed(() => accountStore.userList?.length >= accountStore.total);
-const disabled = computed(() => accountStore.loading || noMore.value);
-
-onMounted(() => {
-  isMounted.value = true;
-  accountStore.getUserListByScroll();
-});
-
-// 滚动加载数据
-const load = () => {
-  accountStore.getUserListByScroll();
-};
 </script>
 
 <style scoped lang="less">
