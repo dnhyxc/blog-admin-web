@@ -39,7 +39,9 @@
         <div class="number">{{ userStore.authorInfoEndArticleInfo?.articleInfo?.articleTotal }}</div>
         <div class="article-info">
           <span class="lately-article">最近发表：</span>
-          <span class="title">《 {{ userStore.authorInfoEndArticleInfo?.articleInfo?.newArticle?.title }}》</span>
+          <span class="title" @click="toDetail">
+            {{ userStore.authorInfoEndArticleInfo?.articleInfo?.newArticle?.title }}
+          </span>
         </div>
       </div>
     </div>
@@ -47,8 +49,15 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { userStore } from '@/store';
 import { SEA } from '@/constant';
+
+const router = useRouter();
+
+const toDetail = () => {
+  router.push(`/detail/${userStore.authorInfoEndArticleInfo?.articleInfo?.newArticle?.id}`);
+};
 </script>
 
 <style scoped lang="less">
@@ -162,6 +171,13 @@ import { SEA } from '@/constant';
         font-size: 32px;
         font-weight: 700;
         margin: 10px 0;
+      }
+
+      .title {
+        color: @primary;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 700;
       }
     }
 

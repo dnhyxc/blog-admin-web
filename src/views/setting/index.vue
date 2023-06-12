@@ -22,12 +22,13 @@
       >
         <el-upload
           class="avatar-uploader"
-          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
           :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
+          :action="UPLOAD"
+          headers=""
+          :before-upload="beforeUpload"
+          :http-request="onUpload"
         >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+          <img v-if="avatarUrl" :src="avatarUrl" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
         </el-upload>
       </el-form-item>
@@ -81,8 +82,10 @@ import { ElMessage } from 'element-plus';
 import type { FormInstance, UploadProps } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
 import Modal from '@/components/Modal/index.vue';
+import { settingStore, userStore, uploadStore } from '@/store';
+import { FILE_TYPE, FILE_UPLOAD_MSG, WEB_MAIN_URL } from '@/constant';
+import { UPLOAD } from '@/server/api';
 import ResetBind from './ResetBind.vue';
-import { settingStore, userStore } from '@/store';
 
 interface DomainItem {
   key: string;
@@ -100,7 +103,7 @@ const bindedUserForm = reactive<{
   bindAccount: '',
   username: '',
 });
-const imageUrl = ref('');
+const avatarUrl = ref<string>('');
 
 const router = useRouter();
 
@@ -118,21 +121,36 @@ onMounted(async () => {
   bindedUserForm.username = userStore?.username!;
 });
 
-// 上传检测
-const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  if (rawFile.type !== 'image/jpeg') {
-    ElMessage.error('Avatar picture must be JPG format!');
+// 自定义上传
+const onUpload = async (event: { file: Blob }) => {
+  // 不需要进行裁剪
+  const res = await uploadStore.uploadFile(event.file as File);
+
+  if (!import.meta.env.DEV) {
+    // 更换域名
+    const url = res?.replace(location.origin, WEB_MAIN_URL);
+    if (avatarUrl.value !== url) {
+      avatarUrl.value && (await uploadStore.removeFile(avatarUrl.value));
+      avatarUrl.value = url || '';
+    }
+  } else {
+    // 删除上一次上传的图标
+    if (avatarUrl.value !== res) {
+      avatarUrl.value && (await uploadStore.removeFile(avatarUrl.value));
+      avatarUrl.value = res || '';
+    }
+  }
+};
+
+const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  if (!FILE_TYPE.includes(rawFile.type)) {
+    ElMessage.error(FILE_UPLOAD_MSG);
     return false;
-  } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error('Avatar picture size can not exceed 2MB!');
+  } else if (rawFile.size / 1024 / 1024 > 20) {
+    ElMessage.error('图片不能超过20M');
     return false;
   }
   return true;
-};
-
-// 头像上传成功回调
-const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
-  imageUrl.value = URL.createObjectURL(uploadFile.raw!);
 };
 
 // 重新设置绑定账号
@@ -145,13 +163,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid) => {
     if (valid) {
-      console.log(bindedUserForm, 'success submit!');
+      console.log(bindedUserForm, 'success submit!', avatarUrl.value);
     } else {
       console.log(bindedUserForm, 'error submit!');
       return false;
     }
   });
-  router.push('/home');
+  // router.push('/home');
 };
 </script>
 

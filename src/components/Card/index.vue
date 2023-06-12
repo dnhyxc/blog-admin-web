@@ -2,6 +2,7 @@
   <div
     :class="classname(className, 'card-wrap')"
     :style="width ? { width: `${width}px`, height: `${height}px`, flex: 'none' } : { height: `${height}px` }"
+    @click="onClick"
   >
     <slot name="img"></slot>
     <slot name="title"></slot>
@@ -18,9 +19,14 @@ interface IProps {
   className?: string;
   width?: number;
   height?: number;
+  onClick?: Function;
 }
 
-defineProps<IProps>();
+const props = defineProps<IProps>();
+
+const onClick = () => {
+  props?.onClick?.();
+};
 </script>
 
 <style lang="less" scoped>

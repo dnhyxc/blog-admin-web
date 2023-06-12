@@ -216,6 +216,22 @@ const onBackLogin = () => {
   color: @fff;
   background-color: @login-bg-color;
 
+  :deep {
+    .el-input {
+      input {
+        background: transparent;
+        appearance: none;
+        color: @000;
+        caret-color: @000;
+        &:-webkit-autofill {
+          color: @000;
+          box-shadow: 0 0 0 1000px @fff inset !important;
+          -webkit-text-fill-color: @000 !important;
+        }
+      }
+    }
+  }
+
   &::before {
     content: '';
     position: absolute;
@@ -269,7 +285,7 @@ const onBackLogin = () => {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        width: 500px;
+        width: 450px;
 
         .form-item {
           margin-bottom: 30px;

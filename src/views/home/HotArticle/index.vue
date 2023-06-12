@@ -2,7 +2,12 @@
   <div class="hot-article-wrap">
     <div class="header">热门文章</div>
     <div class="card-list">
-      <Card v-for="item in homeStore.popularArticleList" :key="item" class="card">
+      <Card
+        v-for="item in homeStore.popularArticleList"
+        :key="item.id"
+        class="card"
+        :on-click="() => toDetail(item.id)"
+      >
         <template #img>
           <div class="img">
             <Image :url="item.coverImage || SSM" :transition-img="SSM" class="el-image" />
@@ -20,9 +25,17 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { homeStore } from '@/store';
 import { SSM } from '@/constant';
 import Card from '@/components/Card/index.vue';
+
+const router = useRouter();
+
+const toDetail = (id: string) => {
+  console.log(id, 'id');
+  router.push(`/detail/${id}`);
+};
 </script>
 
 <style lang="less" scoped>
@@ -49,6 +62,7 @@ import Card from '@/components/Card/index.vue';
       background-image: none;
       box-shadow: none;
       margin-right: 0;
+      cursor: pointer;
 
       .img {
         width: 100%;

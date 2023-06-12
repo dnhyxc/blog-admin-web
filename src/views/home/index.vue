@@ -10,7 +10,7 @@
         </template>
         <template #footer>
           <div v-if="homeStore.authors?.length > 0" class="footer">
-            贡献文章最多的作者<span class="mack">《{{ homeStore.authors?.[0].authorName }}》</span>
+            贡献文章最多的作者<span class="mack">{{ homeStore.authors?.[0].authorName }}</span>
           </div>
         </template>
       </Card>
@@ -23,7 +23,7 @@
         </template>
         <template #footer>
           <div class="footer">
-            最受欢迎的文章<span class="mack">《{{ homeStore.popularArticle?.title }}》</span>
+            最受欢迎的文章<span class="mack">{{ homeStore.popularArticle?.title }}</span>
           </div>
         </template>
       </Card>
@@ -36,7 +36,7 @@
         </template>
         <template #footer>
           <div class="footer">
-            使用最多的标签<span class="mack">《{{ homeStore.tagMaxItem?.name }}》</span>，共
+            使用最多的标签<span class="mack">{{ homeStore.tagMaxItem?.name }}</span> ，共
             {{ homeStore.tagMaxItem?.value }} 篇文章
           </div>
         </template>
@@ -50,7 +50,7 @@
         </template>
         <template #footer>
           <div class="footer">
-            使用最多的分类<span class="mack">《{{ homeStore.classifyMaxItem?.name }}》</span>，共
+            使用最多的分类<span class="mack">{{ homeStore.classifyMaxItem?.name }} </span>， 共
             {{ homeStore.classifyMaxItem?.value }} 篇文章
           </div>
         </template>
@@ -124,6 +124,8 @@ onUnmounted(() => {
 
     .mack {
       font-weight: 700;
+      margin-left: 5px;
+      color: @primary;
     }
 
     .content {

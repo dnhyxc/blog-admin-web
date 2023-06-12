@@ -33,8 +33,8 @@
           </template>
         </List>
       </div>
-      <p v-if="accountStore.loading" class="loading">Loading...</p>
-      <p v-if="noMore" class="no-more">没有更多了～～～</p>
+      <div v-if="accountStore.loading" class="loading">Loading...</div>
+      <div v-if="noMore" class="no-more">没有更多了～～～</div>
     </div>
   </div>
 </template>
@@ -134,6 +134,7 @@ const load = () => {
   .loading,
   .no-more {
     text-align: center;
+    padding: 15px 0 5px;
   }
 }
 </style>

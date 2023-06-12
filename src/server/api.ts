@@ -20,6 +20,9 @@ export const GET_USER_LIST = '/admin/getUserList';
 // 批量作废、恢复用户
 export const UPDATE_USERS = '/admin/updateUsers';
 
+// 更新用户信息
+export const UPDATE_USER_INFO = '/admin/updateUserInfo';
+
 // 批量删除用户
 export const BATCH_DELETE_USER = '/admin/batchDeleteUser';
 

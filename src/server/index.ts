@@ -87,6 +87,12 @@ export const deleteUsers = async (params: { userIds: string[]; type: number }) =
   return res;
 };
 
+// 更新用户信息
+export const updateUserInfo = async (params: { username: string; headUrl: string }) => {
+  const res = await post(API.UPDATE_USER_INFO, params);
+  return res;
+};
+
 // 批量作废、恢复后台账号 type: 0 恢复，1 删除
 export const manageAdminUsers = async (params: { userIds: string[]; type: number }) => {
   const res = await post(API.MANAGE_ADMIN_USERS, params);

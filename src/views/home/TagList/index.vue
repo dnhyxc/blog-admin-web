@@ -22,6 +22,7 @@
             </div>
           </template>
         </List>
+        <div class="no-more">没有更多了～～～</div>
       </div>
     </div>
   </div>
@@ -102,9 +103,9 @@ import List from '@/components/List/index.vue';
     }
   }
 
-  .loading,
   .no-more {
     text-align: center;
+    padding: 15px 0 5px;
   }
 }
 </style>
