@@ -13,14 +13,13 @@ import {
 import QD from '@/assets/img/qd.jpg';
 import SEA from '@/assets/img/sea.jpg';
 import SSM from '@/assets/img/ssm.jpg';
-import GIRL from '@/assets/img/girl.png';
 import PAGE_ICON from '@/assets/svg/pageIcon.svg';
 import PUSH_ICON from '@/assets/svg/push.svg';
 import { MenuListParams } from '@/typings/comment';
 import TOOL_SVG from '@/assets/svg/tool.svg';
 import SEA_SVG from '@/assets/svg/sea.svg';
 
-export { QD, SEA, SSM, GIRL, TOOL_SVG, SEA_SVG };
+export { QD, SEA, SSM, TOOL_SVG, SEA_SVG };
 
 // 左侧菜单配置
 export const MENULIST: MenuListParams<typeof Grid>[] = [
@@ -105,7 +104,6 @@ export const IMAGES = {
   qd: QD,
   sea: SEA,
   ssm: SSM,
-  girl: GIRL,
   pageIcon: PAGE_ICON,
   push: PUSH_ICON,
 };

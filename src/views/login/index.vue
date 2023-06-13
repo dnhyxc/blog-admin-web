@@ -232,27 +232,12 @@ const onBackLogin = () => {
     }
   }
 
-  &::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-position: center;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    z-index: -1;
-  }
-
   .content {
     display: flex;
     justify-content: center;
     box-sizing: border-box;
     height: 500px;
     border-radius: 5px;
-    backdrop-filter: blur(1px);
     box-shadow: 0 0 10px #ccc;
     background-image: url('@/assets/img/ssm2.jpg');
     background-size: cover;
