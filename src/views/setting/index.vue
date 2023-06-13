@@ -77,7 +77,6 @@
 
 <script setup lang="ts">
 import { reactive, ref, onMounted, watchEffect } from 'vue';
-import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, UploadProps } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
@@ -103,9 +102,7 @@ const bindedUserForm = reactive<{
   bindAccount: '',
   username: '',
 });
-const avatarUrl = ref<string>('');
-
-const router = useRouter();
+const avatarUrl = ref<string>(userStore.headUrl || '');
 
 watchEffect(async () => {
   if (!visible.value) {
@@ -163,13 +160,14 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid) => {
     if (valid) {
-      console.log(bindedUserForm, 'success submit!', avatarUrl.value);
+      await settingStore.updateUserInfo({
+        username: bindedUserForm.username,
+        headUrl: avatarUrl.value,
+      });
     } else {
-      console.log(bindedUserForm, 'error submit!');
       return false;
     }
   });
-  // router.push('/home');
 };
 </script>
 

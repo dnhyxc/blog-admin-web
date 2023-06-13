@@ -17,6 +17,7 @@ export interface LoginParams {
 export interface UserLoginParams {
   token: string | null;
   username: string | null;
+  headUrl: string | null;
   userId: string | null;
   auth: number | null;
   registerTime: number;

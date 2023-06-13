@@ -2,23 +2,16 @@
   <div class="page-header">
     <div class="left">
       <span class="back" @click="onClick">
-        <el-icon> <ArrowLeft /> </el-icon>
+        <el-icon><ArrowLeft /></el-icon>
       </span>
       <span class="title"> {{ route.meta.title }} </span>
     </div>
     <div class="right">
-      <div v-if="messageStore.count" class="bell-wrap">
-        <el-badge :value="messageStore.count" :max="99" class="item">
-          <el-icon class="bell-icon"><BellFilled /></el-icon>
-        </el-badge>
-      </div>
-      <div v-else class="bell-wrap-no-msg">
-        <el-icon class="bell-icon"><BellFilled /></el-icon>
-      </div>
+      <div v-if="userStore.username" class="username">{{ userStore.username }}</div>
       <slot></slot>
       <Popover :width="120">
         <template #click>
-          <el-avatar class="avatar" :src="IMAGES.sea" />
+          <Image :url="userStore.headUrl || IMAGES.sea" :transition-img="IMAGES.sea" class="avatar" />
         </template>
         <template #content>
           <div class="set-item" @click="onSetting">
@@ -37,9 +30,9 @@
 
 <script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router';
-import { ArrowLeft, Setting, SwitchButton, BellFilled } from '@element-plus/icons-vue';
+import { ArrowLeft, Setting, SwitchButton } from '@element-plus/icons-vue';
 import Popover from '@/components/Popover/index.vue';
-import { userStore, messageStore } from '@/store';
+import { userStore } from '@/store';
 import { IMAGES } from '@/constant';
 
 const route = useRoute();
@@ -105,32 +98,22 @@ const onLogout = () => {
     justify-content: flex-end;
     align-items: center;
 
-    .bell-wrap {
-      display: flex;
-      align-items: center;
-      margin-right: 15px;
-      padding-top: 7px;
-      cursor: pointer;
-      .bell-icon {
-        font-size: 18px;
-        color: @primary;
-      }
-    }
-
-    .bell-wrap-no-msg {
-      display: flex;
-      align-items: center;
-      margin-right: 15px;
-      cursor: pointer;
-      .bell-icon {
-        font-size: 18px;
-        color: @primary;
-      }
+    .username {
+      font-size: 16px;
+      font-weight: 700;
     }
 
     .avatar {
       margin-left: 15px;
+      width: 40px;
+      height: 40px;
       cursor: pointer;
+
+      :deep {
+        .image-item {
+          border-radius: 10px;
+        }
+      }
     }
   }
 }

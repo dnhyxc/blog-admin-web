@@ -3,6 +3,7 @@ import { ElMessage } from 'element-plus';
 import * as Service from '@/server';
 import { normalizeResult } from '@/utils';
 import { userStore } from '@/store';
+import { UserInfoParams } from '@/typings/comment';
 
 interface bindUserInfoPrams {
   username: string;
@@ -45,6 +46,21 @@ export const useSettingStore = defineStore('setting', {
         }
       } catch (error) {
         return false;
+      }
+    },
+
+    // 修改用户信息
+    async updateUserInfo(params: { username: string; headUrl: string }) {
+      this.loading = true;
+      const res = normalizeResult<UserInfoParams>(await Service.updateUserInfo(params));
+      if (res.success) {
+        ElMessage.success(res.message);
+        userStore.updateUserInfo({
+          username: res.data.username,
+          headUrl: res.data.headUrl,
+        } as UserInfoParams);
+      } else {
+        ElMessage.error(res.message);
       }
     },
 

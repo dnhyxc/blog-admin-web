@@ -89,7 +89,7 @@ export const deleteUsers = async (params: { userIds: string[]; type: number }) =
 
 // 更新用户信息
 export const updateUserInfo = async (params: { username: string; headUrl: string }) => {
-  const res = await post(API.UPDATE_USER_INFO, params);
+  const res = await post(API.UPDATE_USER_INFO, copeParams(params));
   return res;
 };
 

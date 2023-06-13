@@ -1,8 +1,8 @@
 <template>
   <div class="menu-wrap">
     <div class="title">
-      <img :src="IMAGES.pageIcon" alt="" class="icon" />
-      <span>后台管理</span>
+      <img :src="SEA_SVG" alt="" class="icon" />
+      <span>墨客管理</span>
     </div>
     <el-menu :default-active="route.name" class="el-menu">
       <el-menu-item v-for="menu in menuList" :key="menu.key" :index="menu.key" class="menuList" @click="onClick(menu)">
@@ -41,7 +41,7 @@ import {
 } from '@element-plus/icons-vue';
 import { computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { MENULIST, AUTH_CONFIG, IMAGES, SUPER_ADMIN_POWER_PAGES } from '@/constant';
+import { MENULIST, AUTH_CONFIG, SUPER_ADMIN_POWER_PAGES, SEA_SVG } from '@/constant';
 import { MenuListParams } from '@/typings/comment';
 import { userStore } from '@/store';
 

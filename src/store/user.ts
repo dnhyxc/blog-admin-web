@@ -16,6 +16,7 @@ export const useUserStore = defineStore('user', {
     token: ssnGetItem('token'),
     userId: ssnGetItem('userId'),
     username: ssnGetItem('username'),
+    headUrl: ssnGetItem('headUrl'),
     auth: Number(ssnGetItem('auth')), // 管理员权限
     registerTime: 0, // 注册时间
     bindAccount: JSON.parse(ssnGetItem('bindAccount')!),
@@ -62,16 +63,18 @@ export const useUserStore = defineStore('user', {
           }),
         );
         if (res.success) {
-          const { token, userId, username, auth, registerTime, bindUserIds } = res.data;
+          const { token, userId, username, headUrl, auth, registerTime, bindUserIds } = res.data;
           this.token = token;
           this.userId = userId;
           this.username = username;
+          this.headUrl = headUrl;
           this.auth = auth;
           this.registerTime = registerTime;
           this.bindAccount = bindUserIds;
           ssnSetItem('token', token!);
           ssnSetItem('userId', userId!);
           ssnSetItem('username', username!);
+          headUrl && ssnSetItem('headUrl', headUrl);
           ssnSetItem('auth', JSON.stringify(auth!));
           ssnSetItem('bindAccount', JSON.stringify(bindUserIds!));
           return res;
@@ -160,6 +163,7 @@ export const useUserStore = defineStore('user', {
       this.token = '';
       this.userId = '';
       this.username = '';
+      this.headUrl = '';
       this.auth = 0;
       this.registerTime = 0;
       ssnRemoveItem('token');
@@ -167,6 +171,15 @@ export const useUserStore = defineStore('user', {
       ssnRemoveItem('username');
       ssnRemoveItem('auth');
       ssnRemoveItem('bindAccount');
+    },
+
+    // 更新用户信息
+    updateUserInfo(params: UserInfoParams) {
+      const { username, headUrl } = params;
+      this.username = username;
+      this.headUrl = headUrl!;
+      username && ssnSetItem('username', username);
+      headUrl && ssnSetItem('headUrl', headUrl);
     },
   },
 });

@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="title" @click="toHome">
-      <img :src="IMAGES.pageIcon" alt="" class="icon" />
-      后台管理
+      <img :src="SEA_SVG" alt="" class="icon" />
+      墨客管理
     </div>
     <div v-if="htmlWidth <= 1150" class="menuList">
       <el-dropdown trigger="click" @visible-change="onVisibleChange">
@@ -34,6 +34,8 @@
           <ChatLineSquare v-if="menu.key === 'comment'" />
           <setting v-if="menu.key === 'pageSet'" />
           <Position v-if="menu.key === 'create'" />
+          <Tickets v-if="menu.key === 'interact'" />
+          <Notification v-if="menu.key === 'tools'" />
         </el-icon>
         <span class="link-name">{{ menu.name }}</span>
       </router-link>
@@ -54,10 +56,12 @@ import {
   User,
   ArrowDownBold,
   ArrowUpBold,
+  Tickets,
+  Notification,
 } from '@element-plus/icons-vue';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { MENULIST, AUTH_CONFIG, IMAGES } from '@/constant';
+import { MENULIST, AUTH_CONFIG, SEA_SVG } from '@/constant';
 import { MenuListParams } from '@/typings/comment';
 import { userStore } from '@/store';
 

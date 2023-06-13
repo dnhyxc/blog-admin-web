@@ -65,7 +65,7 @@ const getClassifyChart = () => {
       top: '20',
       left: 'center',
       padding: 0,
-      type: 'scroll',
+      type: 'scroll', // 设置图例滚动
     },
     // 饼图设置
     series: [

@@ -96,6 +96,7 @@ const getArticleChart = () => {
     },
     legend: {
       data: homeStore.articleStatisticYears,
+      type: 'scroll', // 设置图例滚动
     },
     // 下载按钮设置
     // toolbox: {
