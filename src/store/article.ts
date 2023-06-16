@@ -4,7 +4,7 @@ import * as Service from '@/server';
 import { PAGESIZE } from '@/constant';
 import { ArticleListResult } from '@/typings/comment';
 import { normalizeResult } from '@/utils';
-import { userStore } from '@/store';
+import { userStore, uploadStore } from '@/store';
 
 interface IProps extends ArticleListResult {
   loading: boolean;
@@ -111,7 +111,14 @@ export const useArticleStore = defineStore('article', {
     },
 
     // 删除文章（支持批量删除）
-    async batchDelArticle(params: { articleIds: string[]; pageNo: number; classifys: string[] }) {
+    async batchDelArticle(params: {
+      articleIds: string[];
+      pageNo: number;
+      classifys: string[];
+      coverImages: string[];
+    }) {
+      console.log(params.coverImages, 'coverImages');
+
       if (!params.articleIds.length) {
         ElMessage.info('没有可删除的文章');
         return;
@@ -126,6 +133,7 @@ export const useArticleStore = defineStore('article', {
         );
         this.loading = false;
         if (res.success) {
+          await uploadStore.removeFile(params.coverImages);
           this.getArticleList(params.pageNo);
           ElMessage.success(res.message);
         } else {

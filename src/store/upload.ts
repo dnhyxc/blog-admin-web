@@ -34,7 +34,7 @@ export const useUploadStore = defineStore('upload', {
     },
 
     // 删除文件
-    async removeFile(url: string) {
+    async removeFile(url: string | string[]) {
       // 检验是否有userId，如果没有禁止发送请求
       if (!userStore.userId) return;
       normalizeResult<{ filePath: string }>(await Service.removeFile(url));

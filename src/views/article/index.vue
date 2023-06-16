@@ -73,7 +73,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElTable } from 'element-plus';
 import { PAGESIZE } from '@/constant';
-import { formatDate } from '@/utils';
+import { formatDate, checkUrl } from '@/utils';
 import { ArticleItem } from '@/typings/comment';
 import { articleStore, createStore } from '@/store';
 import Message from '@/components/Message/index.vue';
@@ -87,6 +87,7 @@ const deleteId = ref<string>(''); // 选中需要删除的文章id
 const classify = ref<string>(''); // 选中删除文章的分类
 const deleteIds = ref<string[]>([]); // 批量删除ids
 const classifys = ref<string[]>([]); // 批量删除文章的分类
+const coverImages = ref<string[]>([]);
 
 const router = useRouter();
 
@@ -169,7 +170,10 @@ const onRemove = (id: string) => {
 
 // 删除
 const onDelete = (item: ArticleItem) => {
-  const { classify: _classify, id } = item;
+  const { classify: _classify, id, coverImage } = item;
+  if (coverImage && !coverImages.value.includes(coverImage) && checkUrl(coverImage)) {
+    coverImages.value.push(coverImage);
+  }
   deleteId.value = id;
   classify.value = _classify;
   messageVisible.value = true;
@@ -198,6 +202,9 @@ const onDeleteAll = () => {
   multipleSelection.value.forEach((j) => {
     ids.push(j.id);
     classifyList.push(j.classify);
+    if (j.coverImage && !coverImages.value.includes(j.coverImage) && checkUrl(j.coverImage)) {
+      coverImages.value.push(j.coverImage);
+    }
   });
   deleteIds.value = ids;
   classifys.value = classifyList;
@@ -210,10 +217,13 @@ const onSubmitDelete = async () => {
     articleIds: deleteIds.value.length ? deleteIds.value : [deleteId.value],
     pageNo: currentPage.value,
     classifys: deleteIds.value.length ? classifys.value : [classify.value],
+    coverImages: coverImages.value,
   });
   // 删除完成之后，清除之前选择的账号ids及classifys
   deleteIds.value = [];
   classifys.value = [];
+  // 删除之后清空封面图列表
+  coverImages.value = [];
   // 取消多选
   multipleTableRef.value!.clearSelection();
 };

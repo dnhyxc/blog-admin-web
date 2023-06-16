@@ -137,6 +137,14 @@ export const md5HashName = (file: File) => {
   });
 };
 
+// 校验是否是 base64 url
+export const checkUrl = (url: string) => {
+  if (url.includes('data:image')) {
+    return false;
+  }
+  return true;
+};
+
 // 校验是否是正常的链接
 export const checkHref = (url: string) => {
   const Expression =
