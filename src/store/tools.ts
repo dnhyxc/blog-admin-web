@@ -20,14 +20,19 @@ export const useToolsStore = defineStore('tools', {
   }),
 
   actions: {
-    // 绑定账户
+    // 添加工具
     async addTools(params: ToolsParams) {
       try {
         if (!userStore.userId) {
           ElMessage.warning('请先登录后再试');
           return;
         }
-        const res = normalizeResult<ToolsParams>(await Service.addTools(params));
+        const res = normalizeResult<ToolsParams>(
+          await Service.addTools({
+            ...params,
+            sort: this.list.length + 1,
+          }),
+        );
         if (res.success) {
           ElMessage.success(res.message);
           this.getToolList();
