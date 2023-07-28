@@ -6,6 +6,7 @@ import { normalizeResult } from './result';
 import { decrypt, encrypt } from './crypto';
 import request from './request';
 import { locSetItem, locGetItem, locRemoveItem, ssnGetItem, ssnSetItem, ssnRemoveItem } from './storage';
+import { compressImage } from './compress';
 
 export {
   request,
@@ -18,6 +19,7 @@ export {
   ssnGetItem,
   ssnSetItem,
   ssnRemoveItem,
+  compressImage,
 };
 // 格式化时间
 export const formatDate = (date: number, format = 'YYYY/MM/DD HH:mm:ss') => {
@@ -320,4 +322,49 @@ export const verifyResetPassword = (value: string, newPwd: string) => {
     msg: '必须包含字母、数字、特称字符',
     status: false,
   };
+};
+
+// 将网络图片转换成base64格式
+export const image2Base64 = (image: any, type?: string) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = image.width;
+  canvas.height = image.height;
+  const ctx = canvas.getContext('2d');
+  ctx?.drawImage(image, 0, 0, image.width, image.height);
+  // 可选其他值 image/jpeg
+  return canvas.toDataURL(type || 'image/png');
+};
+
+export const getImgInfo = (url: string) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = '*';
+    img.onload = function () {
+      const width = img.width;
+      const height = img.height;
+      resolve({
+        width,
+        height,
+      });
+    };
+    img.onerror = function () {
+      reject(new Error('图片加载失败'));
+    };
+    img.src = url;
+  });
+};
+
+// 设置头像base64
+export const url2Base64 = (src: string, type?: string) => {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    // 处理缓存
+    image.src = src + '?v=' + Math.random();
+    // 支持跨域图片
+    image.crossOrigin = '*';
+    image.onload = () => {
+      const base64 = image2Base64(image, type);
+      resolve(base64);
+    };
+  });
 };

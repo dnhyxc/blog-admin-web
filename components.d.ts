@@ -59,6 +59,7 @@ declare module '@vue/runtime-core' {
     Toc: typeof import('./src/components/Toc/index.vue')['default']
     TopMenu: typeof import('./src/components/TopMenu/index.vue')['default']
     ToTopIcon: typeof import('./src/components/ToTopIcon/index.vue')['default']
+    Upload: typeof import('./src/components/Upload/index.vue')['default']
   }
   export interface ComponentCustomProperties {
     vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
