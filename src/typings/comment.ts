@@ -254,7 +254,7 @@ export interface ToolsParams {
   toolUrl?: string;
   powerUsers?: { username: string; id: string }[];
   id?: string;
-  sort?: number;
+  sort?: number | string;
 }
 
 export interface ToolListRes {

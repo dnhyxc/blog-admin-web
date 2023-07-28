@@ -30,7 +30,7 @@ export const useToolsStore = defineStore('tools', {
         const res = normalizeResult<ToolsParams>(
           await Service.addTools({
             ...params,
-            sort: this.list.length + 1,
+            sort: '',
           }),
         );
         if (res.success) {
