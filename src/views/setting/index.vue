@@ -125,16 +125,16 @@ const onUpload = async (event: { file: Blob }) => {
 
   if (!import.meta.env.DEV) {
     // 更换域名
-    const url = res?.replace(location.origin, WEB_MAIN_URL);
+    const url = res?.filePath.replace(location.origin, WEB_MAIN_URL);
     if (avatarUrl.value !== url) {
       avatarUrl.value && (await uploadStore.removeFile(avatarUrl.value));
       avatarUrl.value = url || '';
     }
   } else {
     // 删除上一次上传的图标
-    if (avatarUrl.value !== res) {
+    if (avatarUrl.value !== res?.filePath) {
       avatarUrl.value && (await uploadStore.removeFile(avatarUrl.value));
-      avatarUrl.value = res || '';
+      avatarUrl.value = res?.filePath || '';
     }
   }
 };

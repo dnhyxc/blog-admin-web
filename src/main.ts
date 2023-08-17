@@ -22,7 +22,7 @@ import hljs from 'highlight.js';
 import router from '@/router';
 import App from './App.vue';
 import store from './store/initStore';
-
+import '@/assets/iconfont/iconfont.css';
 import './style.less';
 
 // 编辑mackdown配置

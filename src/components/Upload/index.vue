@@ -25,11 +25,10 @@
     <div v-if="filePath" class="preview">
       <div v-if="preview" class="mack">
         <i v-if="sourceUrl" class="shot iconfont icon-line-screenshotpingmujietu-01" @click="onRestoreShot" />
-        <i class="download iconfont icon-xiazai1" @click.stop="(e) => onDownload(e, cropperUrl || filePath)" />
         <i class="view iconfont icon-browse" @click="onPreview" />
         <i class="del iconfont icon-shanchu" @click="onDelImage" />
       </div>
-      <slot name="preview" :data="{ onRestoreShot, onDownload, onPreview, onDelImage }" />
+      <slot name="preview" :data="{ onRestoreShot, onPreview, onDelImage }" />
     </div>
     <el-dialog v-model="shotVisible" title="图片剪裁" class="crop-dialog" width="600px">
       <div ref="cropperContent" class="cropper-content">
@@ -71,7 +70,7 @@ import { ElMessage } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
 import type { UploadProps } from 'element-plus';
 import { VueCropper } from 'vue-cropper';
-import { uploadStore, pictureStore } from '@/store';
+import { uploadStore } from '@/store';
 import { FILE_TYPE, FILE_UPLOAD_MSG } from '@/constant';
 import { getImgInfo } from '@/utils';
 import 'vue-cropper/dist/index.css';
@@ -84,7 +83,6 @@ interface IProps {
   getUploadUrl?: (url: string) => void;
   needCropper?: boolean;
   delete?: boolean; // 控制点击删除图标时，是否删除数据库中的图片
-  isAtlas?: boolean; // 是否是图片集上传
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -95,7 +93,6 @@ const props = withDefaults(defineProps<IProps>(), {
   getUploadUrl: () => {},
   needCropper: true,
   delete: false,
-  isAtlas: false,
 });
 
 const emit = defineEmits(['update:filePath']);
@@ -170,14 +167,11 @@ const onUpload = async (event: { file: Blob }) => {
   fileInfo.value = event.file as File;
   // 不需要进行裁剪
   if (!props.needCropper) {
-    const res = await uploadStore.uploadFile(event.file as File, props.isAtlas);
+    const res = await uploadStore.uploadFile(event.file as File);
     if (res) {
       props.getUploadUrl?.(res.filePath);
       // 更新父组件传递过来的filePath
       emit('update:filePath', res.filePath);
-      if (props.isAtlas) {
-        pictureStore.addAtlasImages(res.filePath, res.compressFile);
-      }
     }
     return;
   }
@@ -242,9 +236,9 @@ const onFinish = () => {
     const file = new File([blob], fileInfo.value?.name || '', { type: fileInfo.value?.type }) as File;
     const res = await uploadStore.uploadFile(file);
     if (res) {
-      props.getUploadUrl?.(res.filePath);
-      // 更新父组件传递过来的filePath
       emit('update:filePath', res.filePath);
+      // 更新父组件传递过来的filePath
+      props.getUploadUrl?.(res.filePath);
       // 文件上传完毕之后，清除存储的文件信息
       fileInfo.value = null;
     }
@@ -315,15 +309,15 @@ const onDelImage = () => {
       font-size: 20px;
       width: 100%;
       height: 100%;
-      color: var(--font-4);
+      color: @font-4;
       text-align: center;
       box-sizing: border-box;
       border: 1px dashed @border;
       border-radius: 4px;
 
       &:hover {
-        color: var(--theme-blue);
-        border: 1px dashed var(--theme-blue);
+        color: @primary;
+        border: 1px dashed @primary;
       }
     }
   }
@@ -346,7 +340,7 @@ const onDelImage = () => {
       justify-content: center;
       border-radius: 4px;
       background-color: @shade-1;
-      color: var(--fff);
+      color: @fff;
       display: none;
       z-index: 99;
       .view {
@@ -401,7 +395,7 @@ const onDelImage = () => {
     }
 
     .el-dialog__close {
-      color: var(--font-1);
+      color: @font-1;
     }
   }
 }

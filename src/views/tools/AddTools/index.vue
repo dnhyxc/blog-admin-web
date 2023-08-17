@@ -6,19 +6,15 @@
 -->
 <template>
   <div class="add-tools-wrap">
-    <el-form ref="formRef" :rules="rules" label-width="78px" :model="addToolsForm" class="form-wrap">
+    <el-form ref="formRef" :rules="rules" label-width="79px" :model="addToolsForm" class="form-wrap">
       <el-form-item prop="tooUrl" label="工具图标" class="form-item">
-        <el-upload
-          class="avatar-uploader"
-          :action="UPLOAD"
-          headers=""
-          :show-file-list="false"
-          :before-upload="beforeUpload"
-          :http-request="onUpload"
-        >
-          <img v-if="toolUrl" :src="toolUrl" class="avatar" />
-          <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-        </el-upload>
+        <div class="cover-img-wrap">
+          <Upload v-model:file-path="toolUrl" :fixed-number="[130, 130]" delete>
+            <template #preview>
+              <img :src="toolUrl" class="cover-img avatar" />
+            </template>
+          </Upload>
+        </div>
       </el-form-item>
       <el-form-item
         prop="toolName"
@@ -42,12 +38,7 @@
 
 <script setup lang="ts">
 import { reactive, ref, watchEffect, watch } from 'vue';
-import { ElMessage } from 'element-plus';
-import type { FormInstance, UploadProps, FormRules } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue';
-import { UPLOAD } from '@/server/api';
-import { uploadStore } from '@/store';
-import { FILE_TYPE, FILE_UPLOAD_MSG, WEB_MAIN_URL } from '@/constant';
+import type { FormInstance, FormRules } from 'element-plus';
 import { checkHref } from '@/utils';
 import { ToolsParams } from '@/typings/comment';
 
@@ -105,38 +96,6 @@ watch(
   },
 );
 
-// 自定义上传
-const onUpload = async (event: { file: Blob }) => {
-  // 不需要进行裁剪
-  const res = await uploadStore.uploadFile(event.file as File);
-
-  if (!import.meta.env.DEV) {
-    // 更换域名
-    const url = res?.replace(location.origin, WEB_MAIN_URL);
-    if (toolUrl.value !== url) {
-      toolUrl.value && (await uploadStore.removeFile(toolUrl.value));
-      toolUrl.value = url || '';
-    }
-  } else {
-    // 删除上一次上传的图标
-    if (toolUrl.value !== res) {
-      toolUrl.value && (await uploadStore.removeFile(toolUrl.value));
-      toolUrl.value = res || '';
-    }
-  }
-};
-
-const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  if (!FILE_TYPE.includes(rawFile.type)) {
-    ElMessage.error(FILE_UPLOAD_MSG);
-    return false;
-  } else if (rawFile.size / 1024 / 1024 > 20) {
-    ElMessage.error('图片不能超过20M');
-    return false;
-  }
-  return true;
-};
-
 // 清除数据
 const clearToolUrl = () => {
   toolUrl.value = '';
@@ -153,32 +112,15 @@ defineExpose({
 <style scoped lang="less">
 @import '@/styles/index.less';
 
-.avatar-uploader .avatar {
-  width: 80px;
-  height: 80px;
-  display: block;
-}
+.add-tools-wrap {
+  .cover-img-wrap {
+    width: 130px;
+    height: 130px;
 
-:deep {
-  .avatar-uploader .el-upload {
-    border: 1px dashed @border-color;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.2s;
-  }
-
-  .avatar-uploader .el-upload:hover {
-    border-color: @primary;
-  }
-
-  .el-icon.avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 80px;
-    height: 80px;
-    text-align: center;
+    .cover-img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>
