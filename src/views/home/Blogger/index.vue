@@ -1,5 +1,5 @@
 <!--
- * 时间轴
+ * 博主介绍
  * @author: dnhyxc
  * @since: 2022-12-25
  * index.vue
@@ -37,11 +37,9 @@
       <div class="left">
         <div class="header">博主发表的文章数量</div>
         <div class="number">{{ userStore.authorInfoEndArticleInfo?.articleInfo?.articleTotal }}</div>
-        <div class="article-info">
-          <span class="lately-article">最近发表：</span>
-          <span class="title" @click="toDetail">
-            {{ userStore.authorInfoEndArticleInfo?.articleInfo?.newArticle?.title }}
-          </span>
+        <div class="lately-article">最近发表</div>
+        <div class="title" @click="toDetail">
+          {{ userStore.authorInfoEndArticleInfo?.articleInfo?.newArticle?.title }}
         </div>
       </div>
     </div>
@@ -151,20 +149,22 @@ const toDetail = () => {
   .bottom {
     height: 50%;
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     justify-content: space-between;
     background-color: @fff;
     border-radius: 5px;
 
     .left {
+      flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      padding: 10px 0;
+      padding: 10px 5px 10px 0;
+      box-sizing: border-box;
 
       .header {
-        font-size: 18px;
+        font-size: 14px;
       }
 
       .number {
@@ -173,26 +173,35 @@ const toDetail = () => {
         margin: 10px 0;
       }
 
+      .lately-article {
+        font-size: 14px;
+        margin: 5px 0 10px;
+      }
+
       .title {
         color: @primary;
         cursor: pointer;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
+        .ellipsisMore(2);
       }
     }
 
     .right {
+      flex: 1;
       display: flex;
       align-items: center;
-      height: 50%;
+      margin-right: 10px;
 
       .image {
-        border-radius: 5px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
         height: 100%;
 
         :deep {
           .image-item {
-            border-radius: 5px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
             display: block;
           }
         }
