@@ -71,7 +71,7 @@ import { Plus } from '@element-plus/icons-vue';
 import type { UploadProps } from 'element-plus';
 import { VueCropper } from 'vue-cropper';
 import { uploadStore } from '@/store';
-import { FILE_TYPE, FILE_UPLOAD_MSG } from '@/constant';
+import { FILE_TYPE, FILE_UPLOAD_MSG, WEB_MAIN_URL } from '@/constant';
 import { getImgInfo } from '@/utils';
 import 'vue-cropper/dist/index.css';
 
@@ -169,9 +169,11 @@ const onUpload = async (event: { file: Blob }) => {
   if (!props.needCropper) {
     const res = await uploadStore.uploadFile(event.file as File);
     if (res) {
-      props.getUploadUrl?.(res.filePath);
+      // 更换域名
+      const url = res?.filePath.replace(location.origin, WEB_MAIN_URL);
+      props.getUploadUrl?.(url);
       // 更新父组件传递过来的filePath
-      emit('update:filePath', res.filePath);
+      emit('update:filePath', url);
     }
     return;
   }
@@ -236,9 +238,10 @@ const onFinish = () => {
     const file = new File([blob], fileInfo.value?.name || '', { type: fileInfo.value?.type }) as File;
     const res = await uploadStore.uploadFile(file);
     if (res) {
-      emit('update:filePath', res.filePath);
+      const url = res?.filePath.replace(location.origin, WEB_MAIN_URL);
+      emit('update:filePath', url);
       // 更新父组件传递过来的filePath
-      props.getUploadUrl?.(res.filePath);
+      props.getUploadUrl?.(url);
       // 文件上传完毕之后，清除存储的文件信息
       fileInfo.value = null;
     }
