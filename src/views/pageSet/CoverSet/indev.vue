@@ -49,11 +49,10 @@
             <div class="upload-text">
               <span class="card-text-label">-</span>
             </div>
-            <el-image class="img" :src="IMAGES.girl" fit="cover" />
+            <el-image class="img" :src="IMAGES.ssm" fit="cover" />
           </div>
         </template>
       </el-upload>
-
       <el-dialog v-model="dialogVisible">
         <img w-full :src="dialogImageUrl" alt="Preview Image" />
       </el-dialog>
@@ -216,6 +215,23 @@ const onSave = () => {
         flex-direction: column;
         box-shadow: 0 0 5px @border-color;
         border-radius: 5px;
+        border: 1px dashed @primary;
+
+        &:hover {
+          border: 1px dashed @primary-light-3;
+
+          .upload-text {
+            &::before {
+              color: @primary-light-3;
+            }
+          }
+
+          .img {
+            &::before {
+              color: @primary-light-3;
+            }
+          }
+        }
 
         .upload-text {
           position: relative;
@@ -241,17 +257,22 @@ const onSave = () => {
         .img {
           border-bottom-left-radius: 5px;
           border-bottom-right-radius: 5px;
+          display: block;
 
           &::before {
             content: '+';
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             width: 100%;
+            height: 100%;
             text-align: center;
             font-size: 40px;
-            color: @fff;
-            background: rgba(0, 0, 0, 0.25);
+            color: @primary;
+            background: rgba(225, 225, 225, 0.25);
           }
         }
       }
