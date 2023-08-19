@@ -65,6 +65,13 @@
           </el-form>
         </div>
       </Modal>
+      <Message
+        v-model:visible="messageVisible"
+        title="删除文章"
+        content="确定删除该文章吗？"
+        info="删除文章后，该文章将无法恢复！"
+        :on-submit="onSubmitDelete"
+      />
     </div>
   </div>
 </template>
@@ -88,6 +95,8 @@ const noMore = computed(() => {
 const disabled = computed(() => classifyStore.loading || noMore.value);
 const isMounted = ref<boolean>(false);
 const visible = ref<boolean>(false);
+const messageVisible = ref<boolean>(false); // 删除二次确认框的状态
+const deleteId = ref<string>('');
 const formRef = ref<FormInstance>();
 const classifyForm = reactive<{
   classifyName: string;
@@ -145,7 +154,12 @@ const onAddOrRemoveClassify = async (id: string, type: boolean | undefined) => {
 
 // 删除分类
 const onDeleteClassify = async (item: ClassifyItem) => {
-  await classifyStore.deleteClassify(item.id);
+  deleteId.value = item.id;
+  messageVisible.value = true;
+};
+
+const onSubmitDelete = async () => {
+  await classifyStore.deleteClassify(deleteId.value);
 };
 
 // 滚动到顶部
