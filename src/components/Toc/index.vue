@@ -45,25 +45,7 @@ const onScroll = _.debounce(() => {
     const { scrollHeight, scrollTop } = detailElement!;
     const number = scrollTop! / scrollHeight;
     tocRef.value.scrollTop = tocRef.value.scrollHeight * number;
-    // detailStore.titles.forEach((i, index) => {
-    //   const res = checkInPage(i);
-    //   if (res && i.offsetTop - detailElement.scrollTop - 312 <= 60) {
-    //     prevHtags.value = i.innerText + index;
-    //   }
-    // });
   }
-
-  // const tags = tocRef.value?.querySelectorAll('a');
-
-  // tags &&
-  //   Array.from(tags).forEach((i, index) => {
-  //     if (i.innerText + index === prevHtags.value) {
-  //       console.log(i, 'ddddd');
-  //       i.classList.add('active');
-  //     } else {
-  //       i.classList.remove('active');
-  //     }
-  //   });
 }, 10);
 
 onMounted(() => {

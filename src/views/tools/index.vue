@@ -5,70 +5,72 @@
  * index.vue
 -->
 <template>
-  <el-scrollbar class="tools-wrap">
+  <div class="tools-wrap">
     <div class="action-list">
       <el-button type="primary" @click="onAddTool">添加工具</el-button>
       <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
     </div>
-    <el-table
-      ref="multipleTableRef"
-      :data="toolsStore.list"
-      style="width: 100%"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="55" />
-      <el-table-column label="工具名称" show-overflow-tooltip width="220">
-        <template #default="scope">
-          <div class="user-info">
-            <el-image
-              style="width: 50px; height: 50px; min-width: 50px; border-radius: 5px"
-              :src="scope.row.toolUrl || TOOL_SVG"
-              fit="cover"
-            />
-            <span class="username">{{ scope.row.toolName }}</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column property="toolHref" label="工具链接">
-        <template #default="scope">
-          <a :href="scope.row.toolHref" class="tool-herf" target="_blank">{{ scope.row.toolHref }}</a>
-        </template>
-      </el-table-column>
-      <el-table-column property="createTime" label="添加时间" show-overflow-tooltip width="180">
-        <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
-      </el-table-column>
-      <el-table-column property="powerUsers" label="权限范围" show-overflow-tooltip width="350">
-        <template #default="scope">
-          <div class="tool-users">
-            <div v-for="item in scope.row.powerUsers" :key="item.id" class="power">
-              <span>{{ item.username }}</span>
+    <el-scrollbar class="content">
+      <el-table
+        ref="multipleTableRef"
+        :data="toolsStore.list"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55" />
+        <el-table-column label="工具名称" show-overflow-tooltip width="220">
+          <template #default="scope">
+            <div class="user-info">
+              <el-image
+                style="width: 50px; height: 50px; min-width: 50px; border-radius: 5px"
+                :src="scope.row.toolUrl || TOOL_SVG"
+                fit="cover"
+              />
+              <span class="username">{{ scope.row.toolName }}</span>
             </div>
-            <div v-if="!scope.row?.powerUsers?.length" class="power">全员可见</div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="175">
-        <template #default="scope">
-          <div class="actions">
-            <el-button link type="primary" @click="onSetPower(scope.row)">权限设置</el-button>
-            <el-button link type="primary" @click="onEditTool(scope.row)">编辑</el-button>
-            <el-button link type="danger" @click="onDelete(scope.row.id)">删除</el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="footer">
-      <el-pagination
-        v-model:current-page="toolsStore.pageNo"
-        :page-size="PAGESIZE"
-        background
-        :disabled="disabled"
-        layout="prev, pager, next"
-        :total="toolsStore.total"
-        :hide-on-single-page="toolsStore.list.length <= PAGESIZE"
-      />
-    </div>
-  </el-scrollbar>
+          </template>
+        </el-table-column>
+        <el-table-column property="toolHref" label="工具链接">
+          <template #default="scope">
+            <a :href="scope.row.toolHref" class="tool-herf" target="_blank">{{ scope.row.toolHref }}</a>
+          </template>
+        </el-table-column>
+        <el-table-column property="createTime" label="添加时间" show-overflow-tooltip width="180">
+          <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
+        </el-table-column>
+        <el-table-column property="powerUsers" label="权限范围" show-overflow-tooltip width="350">
+          <template #default="scope">
+            <div class="tool-users">
+              <div v-for="item in scope.row.powerUsers" :key="item.id" class="power">
+                <span>{{ item.username }}</span>
+              </div>
+              <div v-if="!scope.row?.powerUsers?.length" class="power">全员可见</div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="175">
+          <template #default="scope">
+            <div class="actions">
+              <el-button link type="primary" @click="onSetPower(scope.row)">权限设置</el-button>
+              <el-button link type="primary" @click="onEditTool(scope.row)">编辑</el-button>
+              <el-button link type="danger" @click="onDelete(scope.row.id)">删除</el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="footer">
+        <el-pagination
+          v-model:current-page="toolsStore.pageNo"
+          :page-size="PAGESIZE"
+          background
+          :disabled="disabled"
+          layout="prev, pager, next"
+          :total="toolsStore.total"
+          :hide-on-single-page="toolsStore.list.length <= PAGESIZE"
+        />
+      </div>
+    </el-scrollbar>
+  </div>
   <Message
     v-model:visible="messageVisible"
     title="删除工具"
@@ -250,85 +252,98 @@ const onAddedTools = async () => {
 @import '@/styles/index.less';
 
 .tools-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   .layoutStyles();
 
-  :deep {
-    .el-image__error {
-      font-size: 12px;
-    }
-  }
-
   .action-list {
-    display: flex;
-    align-items: center;
-    background-color: @fff;
-    height: 50px;
-    padding: 0 12px;
-    border-bottom: 1px solid @primary-light-9;
+    background-color: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #ebeef5;
   }
 
-  .user-info {
-    display: flex;
-    align-items: center;
+  .content {
+    flex: 1;
 
-    .username {
-      margin-left: 10px;
-      .ellipsis();
-    }
-  }
-
-  .tool-herf {
-    display: flex;
-    align-items: center;
-    min-height: 80px;
-    color: @primary;
-  }
-
-  .tool-users {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    min-height: 80px;
-
-    .power {
-      margin-right: 10px;
-
-      &:last-child {
-        margin-right: 0;
+    :deep {
+      .el-image__error {
+        font-size: 12px;
       }
     }
-  }
 
-  .status {
-    .status-use,
-    .status-del {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 10px;
-      margin-right: 6px;
+    .action-list {
+      // display: flex;
+      // align-items: center;
+      // background-color: @fff;
+      // height: 50px;
+      // padding: 0 12px;
+      // border-bottom: 1px solid @primary-light-9;
     }
 
-    .status-use {
-      background-color: @success;
+    .user-info {
+      display: flex;
+      align-items: center;
+
+      .username {
+        margin-left: 10px;
+        .ellipsis();
+      }
     }
 
-    .status-del {
-      background-color: @warning;
+    .tool-herf {
+      display: flex;
+      align-items: center;
+      min-height: 80px;
+      color: @primary;
     }
-  }
 
-  .actions {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-  }
+    .tool-users {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      min-height: 80px;
 
-  .footer {
-    display: flex;
-    justify-content: flex-end;
-    background-color: @fff;
-    padding: 18px 10px;
+      .power {
+        margin-right: 10px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .status {
+      .status-use,
+      .status-del {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+        margin-right: 6px;
+      }
+
+      .status-use {
+        background-color: @success;
+      }
+
+      .status-del {
+        background-color: @warning;
+      }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: flex-end;
+      background-color: @fff;
+      padding: 18px 10px;
+    }
   }
 }
 

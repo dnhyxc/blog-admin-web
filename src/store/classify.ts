@@ -54,7 +54,6 @@ export const useClassifyStore = defineStore('classify', {
     async updateClassify(classifyName: string) {
       const res = normalizeResult<ClassifyItem>(await Service.updateClassify(classifyName));
       if (res.success) {
-        console.log(res, 'res');
         ElMessage.success(res.message);
       } else {
         ElMessage.error(res.message);
@@ -92,7 +91,6 @@ export const useClassifyStore = defineStore('classify', {
     async deleteClassify(ids: string | string[]) {
       const res = normalizeResult<ClassifyItem>(await Service.deleteClassifys(ids));
       if (res.success) {
-        console.log(res, 'res');
         ElMessage.success(res.message);
       } else {
         ElMessage.error(res.message);

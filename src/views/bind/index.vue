@@ -109,7 +109,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
         router.push('/home');
       }
     } else {
-      console.log(bindAccountForm, 'error submit!');
       return false;
     }
   });

@@ -35,7 +35,6 @@ export function createWebSocket(wsUrl: string) {
     ws = new WebSocket(wsUrl);
     websocketInit();
   } catch (e) {
-    console.log('catch');
     // 出现异常时，重新连接ws
     websocketReconnect(wsUrl);
   }
@@ -119,8 +118,6 @@ function onOpen(event: any) {
 function onMessage(event: any) {
   try {
     const data = JSON.parse(event.data);
-    console.log(data, 'data');
-
     if (data.code === 200) {
       // 心跳数据不处理
       // 所需的正常操作
@@ -129,7 +126,6 @@ function onMessage(event: any) {
       } else {
         // 解析处理数据
         if (data.action === 'push') {
-          console.log('推送消息');
           messageStore.setCount();
         }
       }

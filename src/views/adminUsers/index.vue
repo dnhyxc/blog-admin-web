@@ -6,66 +6,68 @@
 -->
 <template>
   <div class="users-wrap">
-    <el-table
-      ref="multipleTableRef"
-      :data="adminAccountStore.list"
-      style="width: 100%"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="55" />
-      <el-table-column label="用户名" show-overflow-tooltip>
-        <template #default="scope">
-          <div class="username">
-            {{ scope.row.username }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column property="auth" label="权限">
-        <template #default="scope">
-          <div v-if="scope.row.auth === 0" class="auth">普通用户</div>
-          <div v-else-if="scope.row.auth === 1" class="auth">超级管理员</div>
-          <div v-else-if="scope.row.auth === 2" class="auth">管理员</div>
-          <div v-else class="auth">普通用户</div>
-        </template>
-      </el-table-column>
-      <el-table-column property="createTime" label="注册时间" show-overflow-tooltip />
-      <el-table-column property="status" label="账号状态">
-        <template #default="scope">
-          <div class="status" :title="scope.row.isDelete ? '已作废' : '使用中'">
-            <span v-if="scope.row.isDelete"><span class="status-del" />已作废</span>
-            <span v-else><span class="status-use" />使用中</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" width="175">
-        <template #default="scope">
-          <div class="actions">
-            <el-button link type="primary" @click="onSetAuth(scope.row)">权限设置</el-button>
-            <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onManageUser(scope.row)">
-              <span v-if="!scope.row.isDelete">作废</span>
-              <span v-else>恢复</span>
-            </el-button>
-            <el-button link type="danger" @click="onDeleteUser(scope.row)">删除</el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="footer">
-      <div class="action-btn">
-        <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
-        <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
-        <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+    <div class="action-btn">
+      <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
+      <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
+      <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+    </div>
+    <div class="content">
+      <el-table
+        ref="multipleTableRef"
+        :data="adminAccountStore.list"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55" />
+        <el-table-column label="用户名" show-overflow-tooltip>
+          <template #default="scope">
+            <div class="username">
+              {{ scope.row.username }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column property="auth" label="权限">
+          <template #default="scope">
+            <div v-if="scope.row.auth === 0" class="auth">普通用户</div>
+            <div v-else-if="scope.row.auth === 1" class="auth">超级管理员</div>
+            <div v-else-if="scope.row.auth === 2" class="auth">管理员</div>
+            <div v-else class="auth">普通用户</div>
+          </template>
+        </el-table-column>
+        <el-table-column property="createTime" label="注册时间" show-overflow-tooltip />
+        <el-table-column property="status" label="账号状态">
+          <template #default="scope">
+            <div class="status" :title="scope.row.isDelete ? '已作废' : '使用中'">
+              <span v-if="scope.row.isDelete"><span class="status-del" />已作废</span>
+              <span v-else><span class="status-use" />使用中</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="175">
+          <template #default="scope">
+            <div class="actions">
+              <el-button link type="primary" @click="onSetAuth(scope.row)">权限设置</el-button>
+              <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onManageUser(scope.row)">
+                <span v-if="!scope.row.isDelete">作废</span>
+                <span v-else>恢复</span>
+              </el-button>
+              <el-button link type="danger" @click="onDeleteUser(scope.row)">删除</el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="footer">
+        <el-pagination
+          v-model:current-page="currentPage"
+          :page-size="PAGESIZE"
+          background
+          :disabled="disabled"
+          layout="prev, pager, next"
+          :total="adminAccountStore.total"
+          :hide-on-single-page="adminAccountStore.list.length <= adminAccountStore.total"
+          @current-change="onPageChange"
+        />
       </div>
-      <el-pagination
-        v-model:current-page="currentPage"
-        :page-size="PAGESIZE"
-        background
-        :disabled="disabled"
-        layout="prev, pager, next"
-        :total="adminAccountStore.total"
-        :hide-on-single-page="adminAccountStore.list.length <= adminAccountStore.total"
-        @current-change="onPageChange"
-      />
     </div>
     <Modal v-model:visible="visible" :on-submit="onSetAuthSubmit" title="权限设置">
       <template #default>
@@ -225,7 +227,22 @@ const onPageChange = (value: number) => {
 @import '@/styles/index.less';
 
 .users-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   .layoutStyles();
+
+  .action-btn {
+    background-color: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #ebeef5;
+  }
+
+  .content {
+    flex: 1;
+    overflow: auto;
+    background-color: #fff;
+  }
 
   .username,
   .auth,
@@ -260,7 +277,7 @@ const onPageChange = (value: number) => {
 
   .footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding: 10px;
     background-color: @fff;
   }

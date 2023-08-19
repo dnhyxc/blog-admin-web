@@ -105,7 +105,6 @@ const onSelectUser = (item: UserInfoParams) => {
 
 // 移除用户
 const onRemoveUser = (item: UserInfoParams) => {
-  console.log(item, 'item');
   selectedUsers.value = selectedUsers.value.filter((i: any) => i.id !== item.id);
 };
 

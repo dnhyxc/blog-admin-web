@@ -137,7 +137,6 @@ const onLogin = (formEl: FormInstance | undefined) => {
         router.push('/home');
       }
     } else {
-      console.log('error submit!');
       return false;
     }
   });
@@ -150,7 +149,6 @@ const onRegister = (formEl: FormInstance | undefined) => {
     if (valid) {
       userStore.onRegister(loginForm);
     } else {
-      console.log('error submit!');
       return false;
     }
   });
@@ -165,7 +163,6 @@ const onEnter = () => {
         router.push('/home');
       }
     } else {
-      console.log(loginForm, 'error submit!');
       return false;
     }
   });
@@ -186,7 +183,6 @@ const onResetEnter = () => {
         router.push('home');
       }
     } else {
-      console.log(loginForm, 'error submit!');
       return false;
     }
   });

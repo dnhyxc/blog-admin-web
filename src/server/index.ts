@@ -25,8 +25,6 @@ export const uploadFile = async (params?: any) => {
 
 // 删除文件
 export const removeFile = async (url: string | string[]) => {
-  console.log(url, 'urls>>>>>>>>url');
-
   const res = await post(API.REMOVE_FILE, copeParams({ url }));
   return res;
 };

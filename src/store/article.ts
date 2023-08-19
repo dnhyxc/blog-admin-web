@@ -65,7 +65,6 @@ export const useArticleStore = defineStore('article', {
         );
         this.loading = false;
         if (res.success) {
-          console.log(res.data, 'removeArticle');
           this.list.forEach((i) => {
             if (articleIds.includes(i.id)) {
               i.isDelete = true;

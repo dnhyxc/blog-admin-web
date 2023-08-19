@@ -5,7 +5,6 @@ export const useWindowScroll = (dom: HTMLDivElement) => {
 
   const onScroll = () => {
     y.value = dom.scrollTop;
-    console.log(y.value, 'aaaaa');
   };
 
   onMounted(() => {

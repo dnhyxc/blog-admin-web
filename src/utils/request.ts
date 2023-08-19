@@ -16,7 +16,6 @@ interface ErrorWithResponse extends Error {
 
 // 设置用户权限相关
 function setAuth(value: AuthParams) {
-  console.log(value, 'value>>>>>login');
   ssnSetItem('redirectUrl', JSON.stringify(value));
 }
 

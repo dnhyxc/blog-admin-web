@@ -5,66 +5,68 @@
  * index.vue
 -->
 <template>
-  <el-scrollbar class="intecact-wrap">
-    <el-table
-      ref="multipleTableRef"
-      :data="interactStore.list"
-      style="width: 100%"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="55" />
-      <el-table-column label="用户名称" show-overflow-tooltip width="150">
-        <template #default="scope">
-          <div class="user-info">
-            <el-image :src="scope.row.avatar" fit="cover" class="el-image-prev" />
-            <span class="username">{{ scope.row.username }}</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column property="comment" label="留言内容">
-        <template #default="scope">
-          <div class="comment">{{ scope.row.comment }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column property="createTime" label="发表时间" show-overflow-tooltip width="180">
-        <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
-      </el-table-column>
-      <el-table-column property="status" label="显示状态" show-overflow-tooltip width="110">
-        <template #default="scope">
-          <div class="status" :title="scope.row.isDelete ? '隐藏' : '显示'">
-            <span v-if="scope.row.isDelete"><span class="status-del" />已隐藏</span>
-            <span v-else><span class="status-use" />已显示</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="105">
-        <template #default="scope">
-          <div class="actions">
-            <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onManageInteract(scope.row)">
-              {{ scope.row.isDelete ? '显示' : '隐藏' }}
-            </el-button>
-            <el-button link type="danger" @click="onDelete(scope.row.id)">删除</el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="footer">
-      <div>
-        <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量显示</el-button>
-        <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量影藏</el-button>
-        <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
-      </div>
-      <el-pagination
-        v-model:current-page="currentPage"
-        :page-size="PAGESIZE"
-        background
-        :disabled="disabled"
-        layout="prev, pager, next"
-        :total="interactStore.total"
-        :hide-on-single-page="interactStore.list.length <= PAGESIZE"
-      />
+  <div class="interact-wrap">
+    <div class="action-list">
+      <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量显示</el-button>
+      <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量影藏</el-button>
+      <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
     </div>
-  </el-scrollbar>
+    <el-scrollbar class="intecact-wrap">
+      <el-table
+        ref="multipleTableRef"
+        :data="interactStore.list"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55" />
+        <el-table-column label="用户名称" show-overflow-tooltip width="150">
+          <template #default="scope">
+            <div class="user-info">
+              <el-image :src="scope.row.avatar" fit="cover" class="el-image-prev" />
+              <span class="username">{{ scope.row.username }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column property="comment" label="留言内容">
+          <template #default="scope">
+            <div class="comment">{{ scope.row.comment }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column property="createTime" label="发表时间" show-overflow-tooltip width="180">
+          <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
+        </el-table-column>
+        <el-table-column property="status" label="显示状态" show-overflow-tooltip width="110">
+          <template #default="scope">
+            <div class="status" :title="scope.row.isDelete ? '隐藏' : '显示'">
+              <span v-if="scope.row.isDelete"><span class="status-del" />已隐藏</span>
+              <span v-else><span class="status-use" />已显示</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="105">
+          <template #default="scope">
+            <div class="actions">
+              <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onManageInteract(scope.row)">
+                {{ scope.row.isDelete ? '显示' : '隐藏' }}
+              </el-button>
+              <el-button link type="danger" @click="onDelete(scope.row.id)">删除</el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="footer">
+        <el-pagination
+          v-model:current-page="currentPage"
+          :page-size="PAGESIZE"
+          background
+          :disabled="disabled"
+          layout="prev, pager, next"
+          :total="interactStore.total"
+          :hide-on-single-page="interactStore.list.length <= PAGESIZE"
+        />
+      </div>
+    </el-scrollbar>
+  </div>
   <Message
     v-model:visible="messageVisible"
     title="删除留言"
@@ -171,8 +173,21 @@ const onSubmitDelete = async () => {
 <style scoped lang="less">
 @import '@/styles/index.less';
 
-.intecact-wrap {
+.interact-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   .layoutStyles();
+
+  .action-list {
+    padding: 10px;
+    background-color: #fff;
+    border-bottom: 1px solid #ebeef5;
+  }
+}
+
+.intecact-wrap {
+  flex: 1;
 
   :deep {
     .el-image__error {
@@ -228,7 +243,7 @@ const onSubmitDelete = async () => {
 
   .footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     background-color: @fff;
     padding: 18px 10px;
   }

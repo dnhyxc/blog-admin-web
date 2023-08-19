@@ -212,7 +212,6 @@ const confirmClick = () => {
       visible.value = false;
       router.push('/article');
     } else {
-      console.log(createArticleForm, 'error submit!');
       return false;
     }
   });

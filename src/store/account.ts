@@ -147,8 +147,6 @@ export const useAccountStore = defineStore('account', {
     // 搜索时重新更新用户列表
     updateUserList(keyword: string) {
       const findUser = this.userList.filter((i) => i.username.includes(keyword));
-      console.log(findUser, 'findUser');
-
       this.userList = findUser;
     },
 

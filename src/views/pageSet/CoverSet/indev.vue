@@ -92,7 +92,6 @@ const emit = defineEmits<Emits>();
 // 选择卡片
 const onSelectCard = () => {
   const checkedImgs = checkList.value.filter((i) => i.checked)?.map((j) => j.img);
-  console.log(checkedImgs, 'checkedImgs');
   emit('update:checkedImgs', checkedImgs);
 };
 

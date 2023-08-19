@@ -33,7 +33,6 @@ import Card from '@/components/Card/index.vue';
 const router = useRouter();
 
 const toDetail = (id: string) => {
-  console.log(id, 'id');
   router.push(`/detail/${id}`);
 };
 </script>

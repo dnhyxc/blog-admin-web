@@ -1,5 +1,10 @@
 <template>
   <Loading :loading="accountStore.loading" class="home-wrap">
+    <div class="action-btn">
+      <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
+      <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
+      <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
+    </div>
     <el-scrollbar class="article-list-wrap">
       <el-table
         ref="multipleTableRef"
@@ -70,11 +75,6 @@
         </el-table-column>
       </el-table>
       <div class="footer">
-        <div class="action-btn">
-          <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
-          <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
-          <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
-        </div>
         <el-pagination
           v-model:current-page="currentPage"
           :page-size="PAGESIZE"
@@ -248,76 +248,88 @@ const onPageChange = (value: number) => {
 <style lang="less" scoped>
 @import '@/styles/index.less';
 
-.article-list-wrap {
+.home-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   .layoutStyles();
-  overflow-y: hidden;
 
-  .username {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+  .action-btn {
+    padding: 10px;
+    background-color: #fff;
+    border-bottom: 1px solid #ebeef5;
+  }
 
-    .img {
-      margin-right: 10px;
+  .article-list-wrap {
+    flex: 1;
+
+    .username {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      .img {
+        margin-right: 10px;
+      }
+
+      .name {
+        .ellipsis();
+      }
     }
 
-    .name {
+    .job,
+    .registerTime,
+    .motto,
+    .status {
       .ellipsis();
     }
-  }
 
-  .job,
-  .registerTime,
-  .motto,
-  .status {
-    .ellipsis();
-  }
+    .introduce {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 80px;
+      line-height: 30px;
 
-  .introduce {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 80px;
-    line-height: 30px;
+      .desc {
+        display: table-cell;
+        vertical-align: middle;
 
-    .desc {
-      display: table-cell;
-      vertical-align: middle;
-
-      .ellipsisMore(2);
-    }
-  }
-
-  .status {
-    .status-use,
-    .status-del {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 10px;
-      margin-right: 6px;
+        .ellipsisMore(2);
+      }
     }
 
-    .status-use {
-      background-color: @success;
+    .status {
+      .status-use,
+      .status-del {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+        margin-right: 6px;
+      }
+
+      .status-use {
+        background-color: @success;
+      }
+
+      .status-del {
+        background-color: @warning;
+      }
     }
 
-    .status-del {
-      background-color: @warning;
+    .actions {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
     }
-  }
 
-  .actions {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-  }
-
-  .footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: @fff;
+    .footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px;
+      background-color: @fff;
+    }
   }
 }
 </style>
