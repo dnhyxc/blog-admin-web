@@ -31,7 +31,7 @@
                     >{{ isAdded(item) ? '移除分类' : '添加分类' }}</el-button
                   >
                   <el-button
-                    v-if="userStore.auth === AUTH_CONFIG.SUPER && !isAdded(item)"
+                    v-if="userStore.auth === AUTH_CONFIG.SUPER"
                     type="danger"
                     link
                     class="add-btn"
