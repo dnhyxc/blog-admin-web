@@ -25,9 +25,18 @@
                 <div class="action">
                   <el-button
                     :type="!isAdded(item) ? 'primary' : 'warning'"
+                    link
                     class="add-btn"
                     @click.stop="onAddOrRemoveClassify(item.id, isAdded(item))"
                     >{{ isAdded(item) ? '移除分类' : '添加分类' }}</el-button
+                  >
+                  <el-button
+                    v-if="userStore.auth === AUTH_CONFIG.SUPER && !isAdded(item)"
+                    type="danger"
+                    link
+                    class="add-btn"
+                    @click.stop="onDeleteClassify(item)"
+                    >删除</el-button
                   >
                 </div>
               </template>
@@ -67,6 +76,7 @@ import { scrollTo } from '@/utils';
 import { useScroller } from '@/hooks';
 import { classifyStore, userStore } from '@/store';
 import { ClassifyItem } from '@/typings/comment';
+import { AUTH_CONFIG } from '@/constant';
 import Card from '@/components/Card/index.vue';
 
 const { scrollRef, scrollTop } = useScroller();
@@ -131,6 +141,11 @@ const onAddOrRemoveClassify = async (id: string, type: boolean | undefined) => {
   } else {
     await classifyStore.addClassify(id, 'add');
   }
+};
+
+// 删除分类
+const onDeleteClassify = async (item: ClassifyItem) => {
+  await classifyStore.deleteClassify(item.id);
 };
 
 // 滚动到顶部
@@ -198,7 +213,7 @@ const onScrollTo = () => {
             margin-bottom: 15px;
 
             .title {
-              margin-bottom: 5px;
+              margin-bottom: 20px;
               font-size: 18px;
               font-weight: 700;
             }
@@ -208,8 +223,9 @@ const onScrollTo = () => {
             }
 
             .action {
-              padding: 12px 25% 0;
-              text-align: center;
+              display: flex;
+              justify-content: center;
+              margin-top: 20px;
 
               .add-btn {
                 font-size: 13px;

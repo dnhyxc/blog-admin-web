@@ -92,6 +92,8 @@ export const useClassifyStore = defineStore('classify', {
       const res = normalizeResult<ClassifyItem>(await Service.deleteClassifys(ids));
       if (res.success) {
         ElMessage.success(res.message);
+        this.clearClassifyList();
+        this.getClassifyList();
       } else {
         ElMessage.error(res.message);
       }
