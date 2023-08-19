@@ -117,8 +117,6 @@ export const useArticleStore = defineStore('article', {
       classifys: string[];
       coverImages: string[];
     }) {
-      console.log(params.coverImages, 'coverImages');
-
       if (!params.articleIds.length) {
         ElMessage.info('没有可删除的文章');
         return;
