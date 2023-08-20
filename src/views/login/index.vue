@@ -235,13 +235,15 @@ const onBackLogin = () => {
     height: 500px;
     border-radius: 5px;
     box-shadow: 0 0 10px #ccc;
-    background-image: url('@/assets/img/ssm2.jpg');
-    background-size: cover;
 
     .content-left {
       color: @fff;
       width: 350px;
       height: 100%;
+      background-image: url('@/assets/img/login.jpeg');
+      background-size: cover;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
     }
 
     .content-right {
@@ -250,7 +252,8 @@ const onBackLogin = () => {
       justify-content: center;
       padding: 20px;
       background-color: @fff;
-      border-radius: 5px;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
 
       .title {
         height: 50px;
