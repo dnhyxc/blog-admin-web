@@ -10,7 +10,6 @@ import {
   User,
   Tickets,
 } from '@element-plus/icons-vue';
-import QD from '@/assets/img/qd.jpg';
 import SEA from '@/assets/img/sea.jpg';
 import SSM from '@/assets/img/ssm.jpg';
 import PAGE_ICON from '@/assets/svg/pageIcon.svg';
@@ -19,7 +18,7 @@ import { MenuListParams } from '@/typings/comment';
 import TOOL_SVG from '@/assets/svg/tool.svg';
 import SEA_SVG from '@/assets/svg/sea.svg';
 
-export { QD, SEA, SSM, TOOL_SVG, SEA_SVG };
+export { SEA, SSM, TOOL_SVG, SEA_SVG };
 
 // 左侧菜单配置
 export const MENULIST: MenuListParams<typeof Grid>[] = [
@@ -101,7 +100,6 @@ export const PAGESIZE = 20;
 
 // 标签图片
 export const IMAGES = {
-  qd: QD,
   sea: SEA,
   ssm: SSM,
   pageIcon: PAGE_ICON,
