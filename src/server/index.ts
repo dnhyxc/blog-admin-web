@@ -7,6 +7,7 @@ import {
   CreateArticleParams,
   ManageCommentParams,
   ToolsParams,
+  ThemesParams,
 } from '@/typings/comment';
 import * as API from './api';
 
@@ -335,5 +336,11 @@ export const getAuthorInfo = async () => {
 // 获取最受欢迎的文章
 export const getPopularArticles = async () => {
   const res = await post(API.GET_POPULAR_ARTICLES, copeParams({}));
+  return res;
+};
+
+// 获取最受欢迎的文章
+export const themes = async (params: ThemesParams) => {
+  const res = await post(API.THEMES, copeParams(params));
   return res;
 };

@@ -148,3 +148,6 @@ export const GET_AUTHOR_INFO = '/admin/getAuthorInfo';
 
 // 获取最受欢迎的文章
 export const GET_POPULAR_ARTICLES = '/admin/getPopularArticles';
+
+// 获取最受欢迎的文章
+export const THEMES = '/admin/themes';

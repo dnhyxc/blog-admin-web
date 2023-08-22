@@ -292,3 +292,17 @@ interface YearData {
 }
 
 export type ArticleStatisticData = YearData;
+
+export interface ThemesParams {
+  name: string;
+  size: number;
+  type: string;
+  url: string;
+  auth?: [
+    {
+      username: string;
+      userId: string;
+    },
+  ];
+  checked?: boolean;
+}

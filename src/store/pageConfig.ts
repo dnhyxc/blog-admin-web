@@ -2,16 +2,18 @@ import { defineStore } from 'pinia';
 import { ElMessage } from 'element-plus';
 import * as Service from '@/server';
 import { normalizeResult } from '@/utils';
-import { PageConfig } from '@/typings/comment';
+import { PageConfig, ThemesParams } from '@/typings/comment';
 import { userStore } from '@/store';
 
 interface IParams {
   loading: boolean;
+  themes: ThemesParams[];
 }
 
 export const usePageConfigStore = defineStore('pageConfig', {
   state: (): IParams => ({
     loading: false,
+    themes: [],
   }),
 
   actions: {
@@ -31,6 +33,18 @@ export const usePageConfigStore = defineStore('pageConfig', {
         }
       } catch (error) {
         return false;
+      }
+    },
+
+    // 添加主题
+    async addThemes(params: ThemesParams) {
+      const res = normalizeResult<ThemesParams>(await Service.themes(params));
+      console.log(res, '>>>>>res');
+
+      if (res.success) {
+        ElMessage.success(res.message);
+      } else {
+        ElMessage.error(res.message);
       }
     },
   },

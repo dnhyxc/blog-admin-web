@@ -39,11 +39,7 @@
           <el-image class="img" :src="item.url" fit="cover" />
         </div>
       </div>
-      <el-upload
-        action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-        :show-file-list="false"
-        class="el-upload"
-      >
+      <el-upload :show-file-list="false" :before-upload="beforeUpload" :http-request="onUpload" class="el-upload">
         <template #trigger>
           <div class="card-upload">
             <div class="upload-text">
@@ -63,37 +59,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { ElMessage } from 'element-plus';
-import { COVER_LIST, IMAGES } from '@/constant';
-import { pageConfigStore } from '@/store';
+import type { UploadProps } from 'element-plus';
+import { COVER_LIST, IMAGES, WEB_MAIN_URL, FILE_UPLOAD_MSG, FILE_TYPE } from '@/constant';
+import { pageConfigStore, uploadStore } from '@/store';
 
 const checkList = ref(COVER_LIST);
 const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
-
-const isSelectedTwo = computed(() => checkList.value.filter((i) => i.checked).length > 1);
-
-interface IProps {
-  cardLayout: number;
-  layout: number;
-  layoutSet: number;
-  checkedImgs: string[];
-}
-
-interface Emits {
-  (e: 'update:checkedImgs', checkedImgs: string[]): void;
-}
-
-const props = withDefaults(defineProps<IProps>(), {
-  checkedImgs: () => [],
-});
-
-const emit = defineEmits<Emits>();
-
-// 选择卡片
-const onSelectCard = () => {
-  const checkedImgs = checkList.value.filter((i) => i.checked)?.map((j) => j.img);
-  emit('update:checkedImgs', checkedImgs);
-};
 
 const fileList = ref<any[]>([
   {
@@ -127,6 +99,74 @@ const fileList = ref<any[]>([
     checked: false,
   },
 ]);
+
+const isSelectedTwo = computed(() => checkList.value.filter((i) => i.checked).length > 1);
+
+interface IProps {
+  cardLayout: number;
+  layout: number;
+  layoutSet: number;
+  checkedImgs: string[];
+}
+
+interface Emits {
+  (e: 'update:checkedImgs', checkedImgs: string[]): void;
+  (e: 'update:filePath', filePath: string): void;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  checkedImgs: () => [],
+});
+
+const emit = defineEmits<Emits>();
+
+// 上传校验
+const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  if (!FILE_TYPE.includes(rawFile.type)) {
+    ElMessage.error(FILE_UPLOAD_MSG);
+    return false;
+  } else if (rawFile.size / 1024 / 1024 > 20) {
+    ElMessage.error('图片不能超过20M');
+    return false;
+  }
+  return true;
+};
+
+// 自定义上传
+const onUpload = async (event: { file: Blob }) => {
+  // 不需要进行裁剪
+  const res = await uploadStore.uploadFile(event.file as File);
+  console.log(res, 'res');
+
+  if (res) {
+    const { name, size, type } = res.compressFile;
+    console.log(name, size, type, 'name, size, type');
+    // 更换域名
+    const url = res?.filePath.replace(location.origin, WEB_MAIN_URL);
+    pageConfigStore.addThemes({
+      name,
+      url,
+      size,
+      type,
+    });
+    // // 更新父组件传递过来的filePath
+    // fileList.value = [
+    //   ...fileList.value,
+    //   {
+    //     id: fileList.value.length,
+    //     name: '海岛.jpg',
+    //     url,
+    //     checked: false,
+    //   },
+    // ];
+  }
+};
+
+// 选择卡片
+const onSelectCard = () => {
+  const checkedImgs = checkList.value.filter((i) => i.checked)?.map((j) => j.img);
+  emit('update:checkedImgs', checkedImgs);
+};
 
 // 保存设置
 const onSave = () => {
