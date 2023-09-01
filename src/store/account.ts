@@ -64,8 +64,10 @@ export const useAccountStore = defineStore('account', {
           const { list, total } = res.data;
           this.list = list;
           this.total = total;
+          return true;
         } else {
           ElMessage.error(res.message);
+          return false;
         }
       } catch (error) {
         throw error;
@@ -127,7 +129,7 @@ export const useAccountStore = defineStore('account', {
     },
 
     // 设置权限
-    async setAuth(params: { userId: string; auth: number }) {
+    async setAuth(params: { userId: string; auth: number; menus: { key: string; name: string }[] }) {
       try {
         this.loading = true;
         const res = normalizeResult<{ userId: string }>(await Service.setAuth(params));
@@ -138,6 +140,24 @@ export const useAccountStore = defineStore('account', {
         } else {
           ElMessage.error(res.message);
           return false;
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+
+    // 获取用户菜单权限
+    async getUserMenuRoles(userId: string) {
+      console.log(userId, 'userId');
+
+      try {
+        const res = normalizeResult<{ id: string; menus: { key: string; name: string }[] }>(
+          await Service.getUserMenuRoles(userId),
+        );
+        console.log(res, '>>>>>>>menus');
+
+        if (res.success) {
+          return res.data?.menus;
         }
       } catch (error) {
         throw error;

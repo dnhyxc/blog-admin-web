@@ -339,8 +339,14 @@ export const getPopularArticles = async () => {
   return res;
 };
 
-// 获取最受欢迎的文章
+// 获取主题
 export const themes = async (params: ThemesParams) => {
   const res = await post(API.THEMES, copeParams(params));
+  return res;
+};
+
+// 获取菜单权限
+export const getUserMenuRoles = async (userId: string) => {
+  const res = await post(API.GET_USER_MENU_ROLES, copeParams({ userId }));
   return res;
 };

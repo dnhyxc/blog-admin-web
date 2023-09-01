@@ -88,10 +88,19 @@
       </div>
       <Modal v-model:visible="visible" :on-submit="onSubmit" title="权限设置">
         <template #default>
-          <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
-            <el-radio v-if="userStore?.auth === AUTH_CONFIG.SUPER" :label="1">设置为博主</el-radio>
-            <el-radio :label="0">设置为普通用户</el-radio>
-          </el-radio-group>
+          <div class="account-auth">
+            <div class="title">账号权限</div>
+            <el-radio-group v-model="authStatus" @change="onChangeAuthStatus">
+              <el-radio v-if="userStore?.auth === AUTH_CONFIG.SUPER" :label="1">设置为博主</el-radio>
+              <el-radio :label="0">设置为普通用户</el-radio>
+            </el-radio-group>
+          </div>
+          <div class="menu-auth">
+            <div class="title">菜单权限</div>
+            <el-checkbox-group v-model="checkList">
+              <el-checkbox v-for="menu in MENU_LIST_CONFIG" :key="menu.key" :label="menu.name" />
+            </el-checkbox-group>
+          </div>
         </template>
       </Modal>
       <Message
@@ -107,7 +116,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { ElTable } from 'element-plus';
-import { PAGESIZE, AUTH_CONFIG } from '@/constant';
+import { PAGESIZE, AUTH_CONFIG, MENU_LIST_CONFIG } from '@/constant';
 import { accountStore, userStore } from '@/store';
 import { formatDate } from '@/utils';
 import Modal from '@/components/Modal/index.vue';
@@ -116,6 +125,7 @@ import Message from '@/components/Message/index.vue';
 interface AccountType {
   id: string;
   userId: string;
+  bindUserId: string;
   username: string;
   job: string;
   motto: string;
@@ -123,6 +133,7 @@ interface AccountType {
   introduce: string;
   createTime: string;
   isDelete: boolean;
+  menus: { key: string; name: string }[];
 }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();
@@ -135,14 +146,15 @@ const authStatus = ref<number>(1); // 选择需要设置的权限类型
 const deleteId = ref<string>(''); // 删除id
 const deleteIds = ref<string[]>([]); // 批量删除ids
 const authUserId = ref<string>(''); // 需要设置权限的userId
+const checkList = ref<string[]>([MENU_LIST_CONFIG[0].name]);
 
 onMounted(() => {
   getAccountList();
 });
 
 // 获取账号列表
-const getAccountList = () => {
-  accountStore.getAccountList({
+const getAccountList = async () => {
+  return await accountStore.getAccountList({
     pageNo: currentPage.value,
     pageSize: PAGESIZE,
   });
@@ -159,14 +171,23 @@ const onChangeAuthStatus = (value: number) => {
 };
 
 // 设置权限
-const onSetAuth = (scope: AccountType) => {
+const onSetAuth = async (scope: AccountType) => {
+  const menus = await accountStore.getUserMenuRoles(scope?.id);
+  if (menus?.length) {
+    const menuNames = menus?.map((i) => i.name);
+    checkList.value = menuNames;
+  } else {
+    checkList.value = [MENU_LIST_CONFIG[0].name];
+  }
   authUserId.value = scope.id;
   visible.value = true;
 };
 
 // 权限设置提交
 const onSubmit = async () => {
-  return await accountStore.setAuth({ auth: authStatus.value, userId: authUserId.value });
+  const menus = MENU_LIST_CONFIG.filter((i) => checkList.value.includes(i.name));
+  await accountStore.setAuth({ auth: authStatus.value, userId: authUserId.value, menus });
+  return getAccountList();
 };
 
 // 账号操作
@@ -330,6 +351,15 @@ const onPageChange = (value: number) => {
       padding: 10px;
       background-color: @fff;
     }
+  }
+
+  .account-auth {
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 16px;
+    font-weight: 700;
   }
 }
 </style>
