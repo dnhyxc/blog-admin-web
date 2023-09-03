@@ -129,7 +129,7 @@ export const useAccountStore = defineStore('account', {
     },
 
     // 设置权限
-    async setAuth(params: { userId: string; auth: number; menus: { key: string; name: string }[] }) {
+    async setAuth(params: { userId: string; auth: number; menus: string[] }) {
       try {
         this.loading = true;
         const res = normalizeResult<{ userId: string }>(await Service.setAuth(params));
@@ -148,14 +148,10 @@ export const useAccountStore = defineStore('account', {
 
     // 获取用户菜单权限
     async getUserMenuRoles(userId: string) {
-      console.log(userId, 'userId');
-
       try {
-        const res = normalizeResult<{ id: string; menus: { key: string; name: string }[] }>(
+        const res = normalizeResult<{ id: string; menus: string[] }>(
           await Service.getUserMenuRoles(userId),
         );
-        console.log(res, '>>>>>>>menus');
-
         if (res.success) {
           return res.data?.menus;
         }
