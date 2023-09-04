@@ -98,7 +98,7 @@
           <div class="menu-auth">
             <div class="title">菜单权限</div>
             <el-checkbox-group v-model="checkList">
-              <el-checkbox v-for="menu in MENU_LIST_CONFIG" :key="menu.key" :label="menu.key" />
+              <el-checkbox v-for="menu in MENU_LIST_CONFIG" :key="menu.key" :label="menu.name" />
             </el-checkbox-group>
           </div>
         </template>
@@ -173,12 +173,11 @@ const onChangeAuthStatus = (value: number) => {
 // 设置权限
 const onSetAuth = async (scope: AccountType) => {
   const menus = await accountStore.getUserMenuRoles(scope?.id);
-  console.log(menus, 'menus');
-
   if (menus?.length) {
-    checkList.value = menus;
+    const findMenus = MENU_LIST_CONFIG.filter((i) => menus.includes(i.key)).map((j) => j.name);
+    checkList.value = findMenus;
   } else {
-    checkList.value = [MENU_LIST_CONFIG[0].key];
+    checkList.value = [MENU_LIST_CONFIG[0].name];
   }
   authUserId.value = scope.id;
   visible.value = true;
@@ -186,10 +185,9 @@ const onSetAuth = async (scope: AccountType) => {
 
 // 权限设置提交
 const onSubmit = async () => {
-  const menus = MENU_LIST_CONFIG.filter((i) => checkList.value.includes(i.key)).map((j) => j.key);
-  console.log(menus, '>>>>>>menus');
-
+  const menus = MENU_LIST_CONFIG.filter((i) => checkList.value.includes(i.name)).map((j) => j.key);
   await accountStore.setAuth({ auth: authStatus.value, userId: authUserId.value, menus });
+  currentPage.value = 1;
   return getAccountList();
 };
 
