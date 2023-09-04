@@ -8,7 +8,7 @@
   <div class="bind-wrap">
     <div class="content">
       <div class="header">账号绑定</div>
-      <el-form ref="formRef" :model="bindAccountForm" label-width="110px" class="form-wrap">
+      <el-form ref="formRef" :model="bindAccountForm" label-width="110px" class="form-wrap" @submit.native.prevent>
         <el-form-item
           prop="bindAccount"
           label="绑定账号名 1"

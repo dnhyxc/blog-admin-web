@@ -254,3 +254,8 @@ export const MENU_LIST_CONFIG = [
   { key: 'tools', name: '实用工具' },
   { key: 'picture', name: '图片集' },
 ];
+
+// 生成的验证码长度
+export const CODE_LENGTH = 4;
+// 随机生成的字符集
+export const CHARACTERS = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789abcdefghijklmnpqrstuvwxyz';
