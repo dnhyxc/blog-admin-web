@@ -30,7 +30,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column property="toolHref" label="工具链接">
+        <el-table-column property="toolHref" label="工具链接" min-width="300">
           <template #default="scope">
             <a :href="scope.row.toolHref" class="tool-herf" target="_blank">{{ scope.row.toolHref }}</a>
           </template>
@@ -38,7 +38,7 @@
         <el-table-column property="createTime" label="添加时间" show-overflow-tooltip width="180">
           <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
         </el-table-column>
-        <el-table-column property="powerUsers" label="权限范围" show-overflow-tooltip width="350">
+        <el-table-column property="powerUsers" label="权限范围" show-overflow-tooltip width="280">
           <template #default="scope">
             <div class="tool-users">
               <div v-for="item in scope.row.powerUsers" :key="item.id" class="power">

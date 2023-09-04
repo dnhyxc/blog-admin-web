@@ -32,8 +32,8 @@
           </el-form-item>
         </el-form>
         <div class="reset-wrap">
-          <el-button class="action" link @click="toRegister(true)">没有账号，前往注册</el-button>
-          <el-button class="action" link @click="onForgetPwd">忘记密码</el-button>
+          <el-button class="action" type="primary" link @click="toRegister(true)">没有账号，前往注册</el-button>
+          <el-button class="action" type="primary" link @click="onForgetPwd">忘记密码</el-button>
         </div>
       </div>
       <div v-if="isRegister" class="content-right">
@@ -56,8 +56,8 @@
           </el-form-item>
         </el-form>
         <div class="reset-wrap">
-          <el-button class="action" link @click="toRegister(false)">已有账号，前往登录</el-button>
-          <el-button class="action" link @click="onForgetPwd">忘记密码</el-button>
+          <el-button class="action" type="primary" link @click="toRegister(false)">已有账号，前往登录</el-button>
+          <el-button class="action" type="primary" link @click="onForgetPwd">忘记密码</el-button>
         </div>
       </div>
       <div v-if="isRestore" class="content-right">
@@ -283,7 +283,7 @@ const onResetEnter = () => {
   });
 };
 
-// 忘记密码
+// 账号注册
 const toRegister = (type: boolean) => {
   isRegister.value = type;
 };
