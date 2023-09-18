@@ -38,7 +38,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column property="introduce" label="个人介绍">
+        <el-table-column property="introduce" label="个人介绍" width="300">
           <template #default="scope">
             <div class="introduce" :title="scope.row.introduce">
               <div class="desc">
@@ -47,18 +47,25 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column property="registerTime" label="注册时间">
+        <el-table-column property="isDelete" label="角色">
           <template #default="scope">
-            <div class="registerTime" :title="formatDate(scope.row.registerTime)">
-              {{ formatDate(scope.row.registerTime) }}
+            <div class="status">
+              {{ scope.row.auth === 1 ? '超级管理员' : '普通用户' }}
             </div>
           </template>
         </el-table-column>
         <el-table-column property="isDelete" label="账号状态">
           <template #default="scope">
-            <div class="status" :title="scope.row.isDelete ? '已作废' : '使用中'">
+            <div class="status">
               <span v-if="scope.row.isDelete"><span class="status-del" />已作废</span>
               <span v-else><span class="status-use" />使用中</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column property="registerTime" label="注册时间" width="160">
+          <template #default="scope">
+            <div class="registerTime" :title="formatDate(scope.row.registerTime)">
+              {{ formatDate(scope.row.registerTime) }}
             </div>
           </template>
         </el-table-column>
