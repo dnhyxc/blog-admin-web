@@ -130,6 +130,7 @@ import Modal from '@/components/Modal/index.vue';
 import Message from '@/components/Message/index.vue';
 
 interface AccountType {
+  auth: number;
   id: string;
   userId: string;
   bindUserId: string;
@@ -179,6 +180,8 @@ const onChangeAuthStatus = (value: number) => {
 
 // 设置权限
 const onSetAuth = async (scope: AccountType) => {
+  // 初始化菜单权限
+  authStatus.value = scope.auth || 0;
   const menus = await accountStore.getUserMenuRoles(scope?.id);
   if (menus?.length) {
     const findMenus = MENU_LIST_CONFIG.filter((i) => menus.includes(i.key)).map((j) => j.name);
