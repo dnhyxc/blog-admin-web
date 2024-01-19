@@ -1,5 +1,5 @@
 <template>
-  <div class="comment">
+  <Loading :loading="commentStore.loading" class="comment">
     <el-collapse v-model="activeNames" class="el-collapse">
       <el-scrollbar ref="scrollRef" class="tag-list">
         <div v-if="isMounted" class="infinite-list-wrapper">
@@ -29,7 +29,7 @@
       </el-scrollbar>
     </el-collapse>
     <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollTo" />
-  </div>
+  </Loading>
 </template>
 
 <script lang="ts" setup>

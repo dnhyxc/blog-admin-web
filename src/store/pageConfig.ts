@@ -39,8 +39,6 @@ export const usePageConfigStore = defineStore('pageConfig', {
     // 添加主题
     async addThemes(params: ThemesParams) {
       const res = normalizeResult<ThemesParams>(await Service.themes(params));
-      console.log(res, '>>>>>res');
-
       if (res.success) {
         ElMessage.success(res.message);
       } else {

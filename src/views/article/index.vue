@@ -1,5 +1,5 @@
 <template>
-  <div class="article-list-wrap">
+  <Loading :loading="articleStore.loading" class="article-list-wrap">
     <div class="action-list">
       <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量上架</el-button>
       <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量下架</el-button>
@@ -67,7 +67,7 @@
       info="删除文章后，该文章将无法恢复！"
       :on-submit="onSubmitDelete"
     />
-  </div>
+  </Loading>
 </template>
 
 <script setup lang="ts">

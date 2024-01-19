@@ -151,6 +151,8 @@ const errorHandler = () => true;
 
         .el-image {
           border-radius: 5px;
+          width: 100%;
+          height: auto;
         }
       }
 

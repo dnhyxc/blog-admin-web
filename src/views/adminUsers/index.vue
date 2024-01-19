@@ -5,7 +5,7 @@
  * index.vue
 -->
 <template>
-  <div class="users-wrap">
+  <Loading :loading="adminAccountStore.loading" class="users-wrap">
     <div class="action-btn">
       <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量作废</el-button>
       <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量恢复</el-button>
@@ -84,7 +84,7 @@
       content="确定删除该账号吗？"
       :on-submit="onSubmitDelete"
     />
-  </div>
+  </Loading>
 </template>
 
 <script setup lang="ts">

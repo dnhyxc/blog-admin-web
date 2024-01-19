@@ -1,85 +1,82 @@
 <template>
-  <div class="home">
-    <div class="card-list">
-      <Card>
-        <template #title>
-          <div class="title">作者人数</div>
-        </template>
-        <template #content>
-          <div class="content">{{ homeStore.authors?.length }}</div>
-        </template>
-        <template #footer>
-          <div v-if="homeStore.authors?.length > 0" class="footer">
-            贡献文章最多的作者<span class="mack">{{ homeStore.authors?.[0].authorName }}</span>
-          </div>
-        </template>
-      </Card>
-      <Card>
-        <template #title>
-          <div class="title">文章总数</div>
-        </template>
-        <template #content>
-          <div class="content">{{ homeStore.articleTotalCount }}</div>
-        </template>
-        <template #footer>
-          <div class="footer">
-            最受欢迎的文章<span class="mack">{{ homeStore.popularArticle?.title }}</span>
-          </div>
-        </template>
-      </Card>
-      <Card>
-        <template #title>
-          <div class="title">标签总数</div>
-        </template>
-        <template #content>
-          <div class="content">{{ homeStore.tagTotal }}</div>
-        </template>
-        <template #footer>
-          <div class="footer">
-            使用最多的标签<span class="mack">{{ homeStore.tagMaxItem?.name }}</span> ，共
-            {{ homeStore.tagMaxItem?.value }} 篇文章
-          </div>
-        </template>
-      </Card>
-      <Card>
-        <template #title>
-          <div class="title">分类总数</div>
-        </template>
-        <template #content>
-          <div class="content">{{ homeStore.classifyTotal }}</div>
-        </template>
-        <template #footer>
-          <div class="footer">
-            使用最多的分类<span class="mack">{{ homeStore.classifyMaxItem?.name }} </span>， 共
-            {{ homeStore.classifyMaxItem?.value }} 篇文章
-          </div>
-        </template>
-      </Card>
+  <Loading :loading="homeStore.loading" class="spin-wrap">
+    <div class="home">
+      <div class="card-list">
+        <Card>
+          <template #title>
+            <div class="title">作者人数</div>
+          </template>
+          <template #content>
+            <div class="content">{{ homeStore.authors?.length }}</div>
+          </template>
+          <template #footer>
+            <div v-if="homeStore.authors?.length > 0" class="footer">
+              贡献文章最多的作者<span class="mack">{{ homeStore.authors?.[0].authorName }}</span>
+            </div>
+          </template>
+        </Card>
+        <Card>
+          <template #title>
+            <div class="title">文章总数</div>
+          </template>
+          <template #content>
+            <div class="content">{{ homeStore.articleTotalCount }}</div>
+          </template>
+          <template #footer>
+            <div class="footer">
+              最受欢迎的文章<span class="mack">{{ homeStore.popularArticle?.title }}</span>
+            </div>
+          </template>
+        </Card>
+        <Card>
+          <template #title>
+            <div class="title">标签总数</div>
+          </template>
+          <template #content>
+            <div class="content">{{ homeStore.tagTotal }}</div>
+          </template>
+          <template #footer>
+            <div class="footer">
+              使用最多的标签<span class="mack">{{ homeStore.tagMaxItem?.name }}</span> ，共
+              {{ homeStore.tagMaxItem?.value }} 篇文章
+            </div>
+          </template>
+        </Card>
+        <Card>
+          <template #title>
+            <div class="title">分类总数</div>
+          </template>
+          <template #content>
+            <div class="content">{{ homeStore.classifyTotal }}</div>
+          </template>
+          <template #footer>
+            <div class="footer">
+              使用最多的分类<span class="mack">{{ homeStore.classifyMaxItem?.name }} </span>， 共
+              {{ homeStore.classifyMaxItem?.value }} 篇文章
+            </div>
+          </template>
+        </Card>
+      </div>
+      <div v-if="homeStore.articleStatisticData && homeStore.classifyList?.length > 0" class="echarts-list">
+        <ClassifyChart class="left" />
+        <ArticleChart class="center" />
+        <RegisterChart v-if="homeStore.registerStatistic?.length > 0" class="right" />
+      </div>
+      <div class="list-container">
+        <AuthorList class="list-content" />
+        <TagList class="list-content" />
+        <Blogger class="list-content" />
+      </div>
+      <div class="hot-article-list">
+        <HotArticle />
+      </div>
     </div>
-    <div
-      v-if="
-        homeStore.articleStatisticData && homeStore.classifyList?.length > 0 && homeStore.registerStatistic?.length > 0
-      "
-      class="echarts-list"
-    >
-      <ClassifyChart class="left" />
-      <ArticleChart class="center" />
-      <RegisterChart class="right" />
-    </div>
-    <div class="list-container">
-      <AuthorList class="list-content" />
-      <TagList class="list-content" />
-      <Blogger class="list-content" />
-    </div>
-    <div class="hot-article-list">
-      <HotArticle />
-    </div>
-  </div>
+  </Loading>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
-import { homeStore, accountStore, userStore } from '@/store';
+import { homeStore, accountStore } from '@/store';
 import Card from '@/components/Card/index.vue';
 import ClassifyChart from './ClassifyChart/index.vue';
 import ArticleChart from './ArticleChart/index.vue';
@@ -90,15 +87,7 @@ import Blogger from './Blogger/index.vue';
 import HotArticle from './HotArticle/index.vue';
 
 onMounted(() => {
-  Promise.all([
-    homeStore.getClassifyList(),
-    homeStore.getArticlesStatistics(),
-    homeStore.getRegisterStatistics(),
-    homeStore.getAuhthorList(),
-    homeStore.getTagList(),
-  ]);
-  userStore.getAuthorInfo();
-  homeStore.getPopularArticles();
+  homeStore.getHomeData();
 });
 
 onUnmounted(() => {

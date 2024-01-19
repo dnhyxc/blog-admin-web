@@ -1,5 +1,5 @@
 <template>
-  <div class="tag-list-wrap">
+  <Loading :loading="classifyStore.loading" class="tag-list-wrap">
     <div v-if="userStore?.auth === 1" class="create">
       <div class="create-btn" @click="onCreateClassify">创建新分类</div>
     </div>
@@ -73,7 +73,7 @@
         :on-submit="onSubmitDelete"
       />
     </div>
-  </div>
+  </Loading>
 </template>
 
 <script setup lang="ts">

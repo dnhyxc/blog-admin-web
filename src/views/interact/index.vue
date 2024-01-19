@@ -5,7 +5,7 @@
  * index.vue
 -->
 <template>
-  <div class="interact-wrap">
+  <Loading :loading="interactStore.loading" class="interact-wrap">
     <div class="action-list">
       <el-button type="primary" :disabled="!multipleSelection.length" @click="onRestoreAll">批量显示</el-button>
       <el-button type="warning" :disabled="!multipleSelection.length" @click="onRemoveAll">批量影藏</el-button>
@@ -66,7 +66,7 @@
         />
       </div>
     </el-scrollbar>
-  </div>
+  </Loading>
   <Message
     v-model:visible="messageVisible"
     title="删除留言"

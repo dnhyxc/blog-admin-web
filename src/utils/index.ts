@@ -167,7 +167,7 @@ export const manageArticleStatistics = (data: ArticleStatistic[]) => {
     if (!newData[item.year]) {
       newData[item.year] = [];
     }
-    if (!yearList.includes(item.year)) {
+    if (!yearList.includes(item.year) && item.year) {
       yearList.push(item.year);
     }
     newData[item.year].push(item);
