@@ -5,7 +5,7 @@ let wstime: any = null;
 // lockReconnect用于避免重复连接
 let lockReconnect = false;
 // 连接ws的url
-const wsUrl = `ws://${location.hostname === '43.143.27.249' ? '43.143.27.249' : '127.0.0.1'}:9002/ws?id=${
+const wsUrl = `ws://${location.hostname === '101.43.50.15' ? '101.43.50.15' : '127.0.0.1'}:9002/ws?id=${
   userStore?.userId
 }`;
 let timeoutObj: any = null;
