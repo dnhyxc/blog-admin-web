@@ -12,8 +12,8 @@
       </div>
       <template v-if="needFooter" #footer>
         <span class="footer">
+          <el-button :disabled="disabled" type="primary" @click="onConfirm">{{ onText }}</el-button>
           <el-button @click="handleCancel">{{ cancelText }}</el-button>
-          <el-button type="primary" @click="onConfirm">{{ onText }}</el-button>
         </span>
       </template>
     </el-dialog>
@@ -32,6 +32,7 @@ interface IProps {
   needFooter?: boolean;
   width?: number;
   contentPadding?: string;
+  disabled?: boolean;
 }
 
 interface Emits {

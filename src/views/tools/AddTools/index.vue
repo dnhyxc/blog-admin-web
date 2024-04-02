@@ -16,6 +16,9 @@
           </Upload>
         </div>
       </el-form-item>
+      <el-form-item prop="toolHref" label="工具链接" class="form-item">
+        <el-input v-model="addToolsForm.toolHref" placeholder="请输入工具链接" @input="onSearch" />
+      </el-form-item>
       <el-form-item
         prop="toolName"
         label="工具名称"
@@ -29,9 +32,6 @@
       >
         <el-input v-model="addToolsForm.toolName" placeholder="请输入工具名称" />
       </el-form-item>
-      <el-form-item prop="toolHref" label="工具链接" class="form-item">
-        <el-input v-model="addToolsForm.toolHref" placeholder="请输入工具链接" />
-      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -39,6 +39,8 @@
 <script setup lang="ts">
 import { reactive, ref, watchEffect, watch } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
+import { debounce } from 'lodash';
+import { toolsStore } from '@/store';
 import { checkHref } from '@/utils';
 import { ToolsParams } from '@/typings/comment';
 
@@ -95,6 +97,20 @@ watch(
     }
   },
 );
+
+const search = debounce(async () => {
+  if (addToolsForm.toolHref) {
+    const { title, iconUrl } = await toolsStore.getPageInfo(addToolsForm.toolHref);
+    addToolsForm.toolName = title;
+    addToolsForm.toolUrl = iconUrl;
+    toolUrl.value = iconUrl;
+  }
+}, 500);
+
+const onSearch = (value: string) => {
+  addToolsForm.toolHref = value;
+  search();
+};
 
 // 清除数据
 const clearToolUrl = () => {
