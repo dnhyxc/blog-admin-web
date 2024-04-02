@@ -131,6 +131,9 @@ export const UPDATE_TOOLS = '/admin/updateTools';
 // 删除工具
 export const DELETE_TOOLS = '/admin/deleteTools';
 
+// 获取网页信息
+export const GET_PAGE_INFO = '/admin/getPageInfo';
+
 // 文章统计
 export const GET_ARTICLES_STATISTICS = '/admin/getArticlesStatistics';
 

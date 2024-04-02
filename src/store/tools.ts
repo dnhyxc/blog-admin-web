@@ -8,15 +8,25 @@ import { PAGESIZE } from '@/constant';
 
 interface IParams extends ToolListRes {
   loading: boolean;
+  pageLoading: boolean;
   pageNo: number;
+  pageInfo: {
+    iconUrl: string;
+    title: string;
+  };
 }
 
 export const useToolsStore = defineStore('tools', {
   state: (): IParams => ({
     loading: false,
+    pageLoading: false,
     list: [],
     total: 0,
     pageNo: 1,
+    pageInfo: {
+      iconUrl: '',
+      title: '',
+    },
   }),
 
   actions: {
@@ -107,6 +117,43 @@ export const useToolsStore = defineStore('tools', {
         }
       } catch (error) {
         return false;
+      }
+    },
+
+    // 根据url获取网页信息
+    async getPageInfo(url: string): Promise<{ title: string; iconUrl: string }> {
+      if (userStore.userId) {
+        this.pageLoading = true;
+        const res = normalizeResult<string>(await Service.getPageInfo(url));
+        this.pageLoading = false;
+        if (res.success) {
+          // 创建一个虚拟的 DOM，用于解析 HTML 内容
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(res.data, 'text/html');
+          // 获取网页标题
+          const title = doc.querySelector('title')?.textContent || '';
+          // 获取网页图标链接
+          let iconLink = doc.querySelector('link[rel~="icon"]') as HTMLLinkElement;
+          if (!iconLink) {
+            iconLink = doc.querySelector('link[rel~="shortcut icon"]') as HTMLLinkElement;
+          }
+          const iconUrl = iconLink ? iconLink.href : '';
+          this.pageInfo.iconUrl = iconUrl;
+          this.pageInfo.title = title;
+          return this.pageInfo;
+        } else {
+          ElMessage.error(res.message);
+          return {
+            title: '',
+            iconUrl: '',
+          };
+        }
+      } else {
+        ElMessage.warning('请先登录后再试');
+        return {
+          title: '',
+          iconUrl: '',
+        };
       }
     },
   },

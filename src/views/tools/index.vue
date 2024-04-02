@@ -89,6 +89,7 @@
     :width="550"
     content-padding="20px 20px 0"
     :on-submit="onAddedTools"
+    :disabled="toolsStore.pageLoading"
   >
     <div class="add-tools-modal-content">
       <AddTools ref="addToolsRef" :add-visible="addVisible" :selected-item="selectedItem" />

@@ -303,6 +303,12 @@ export const deleteTools = async (ids: string | string[]) => {
   return res;
 };
 
+// 删除
+export const getPageInfo = async (url: string) => {
+  const res = await post(API.GET_PAGE_INFO, copeParams({ url }));
+  return res;
+};
+
 // 文章统计
 export const getArticlesStatistics = async () => {
   const res = await post(API.GET_ARTICLES_STATISTICS, copeParams({}));
