@@ -5,7 +5,7 @@
  * index.vue
 -->
 <template>
-  <div class="setting-wrap">
+  <Loading :loading="settingStore.loading" class="setting-wrap">
     <div class="header">账号设置</div>
     <el-form ref="formRef" :model="bindedUserForm" label-width="110px" class="form-wrap">
       <el-form-item
@@ -72,7 +72,7 @@
     <Modal v-model:visible="visible" title="账号绑定">
       <ResetBind v-model:visible="visible" />
     </Modal>
-  </div>
+  </Loading>
 </template>
 
 <script setup lang="ts">

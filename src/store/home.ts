@@ -56,13 +56,26 @@ export const useHomeStore = defineStore('home', {
   }),
 
   actions: {
+    // 获取首页数据
+    async getHomeData() {
+      this.loading = true;
+      await Promise.all([
+        this.getClassifyList(),
+        this.getArticlesStatistics(),
+        this.getRegisterStatistics(),
+        this.getAuhthorList(),
+        this.getTagList(),
+      ]);
+      await userStore.getAuthorInfo();
+      await this.getPopularArticles();
+      this.loading = false;
+    },
+
     // 文章统计
     async getArticlesStatistics() {
       if (!userStore?.userId) return;
       try {
-        this.loading = true;
         const res = normalizeResult<ArticleStatistic[]>(await Service.getArticlesStatistics());
-        this.loading = false;
         if (res.success) {
           const { years, dataSource, maxArticle, totalCount } = manageArticleStatistics(res.data);
           this.articleStatisticData = dataSource;
@@ -81,9 +94,7 @@ export const useHomeStore = defineStore('home', {
     async getRegisterStatistics() {
       if (!userStore?.userId) return;
       try {
-        this.loading = true;
         const res = normalizeResult<{ count: number; month: string }[]>(await Service.getRegisterStatistics());
-        this.loading = false;
         if (res.success) {
           this.registerStatistic = res.data;
         } else {
@@ -98,9 +109,7 @@ export const useHomeStore = defineStore('home', {
     async getClassifyList(type?: string) {
       if (!userStore?.userId) return;
       try {
-        this.loading = true;
         const res = normalizeResult<{ value: number; name: string }[]>(await Service.getTagList(type || 'classify'));
-        this.loading = false;
         if (res.success) {
           this.classifyList = res.data;
           this.classifyTotal = res.data.length;
@@ -119,9 +128,7 @@ export const useHomeStore = defineStore('home', {
     async getTagList(type?: string) {
       if (!userStore?.userId) return;
       try {
-        this.loading = true;
         const res = normalizeResult<{ value: number; name: string }[]>(await Service.getTagList(type || 'tag'));
-        this.loading = false;
         if (res.success) {
           this.tagList = res.data;
           this.tagTotal = res.data.length;
@@ -140,9 +147,7 @@ export const useHomeStore = defineStore('home', {
     async getAuhthorList() {
       if (!userStore?.userId) return;
       try {
-        this.loading = true;
         const res = normalizeResult<{ count: number; authorName: string }[]>(await Service.getAuhthorList());
-        this.loading = false;
         if (res.success) {
           this.authors = res.data;
           const total = res.data.reduce((acc, cur) => acc + cur.count, 0);
@@ -159,9 +164,7 @@ export const useHomeStore = defineStore('home', {
     async getPopularArticles() {
       if (!userStore?.userId) return;
       try {
-        this.loading = true;
         const res = normalizeResult<ArticleItem[]>(await Service.getPopularArticles());
-        this.loading = false;
         if (res.success) {
           this.popularArticleList = res.data;
         } else {

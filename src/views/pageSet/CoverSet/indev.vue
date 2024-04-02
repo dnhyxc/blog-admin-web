@@ -136,11 +136,8 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
 const onUpload = async (event: { file: Blob }) => {
   // 不需要进行裁剪
   const res = await uploadStore.uploadFile(event.file as File);
-  console.log(res, 'res');
-
   if (res) {
     const { name, size, type } = res.compressFile;
-    console.log(name, size, type, 'name, size, type');
     // 更换域名
     const url = res?.filePath.replace(location.origin, WEB_MAIN_URL);
     pageConfigStore.addThemes({

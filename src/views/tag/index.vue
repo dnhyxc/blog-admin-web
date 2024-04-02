@@ -17,7 +17,7 @@
                   <Card class="card">
                     <template #img>
                       <div class="img">
-                        <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.qd" />
+                        <el-avatar class="avatar" :size="50" fit="fill" :src="IMAGES.sea" />
                       </div>
                     </template>
                     <template #title>

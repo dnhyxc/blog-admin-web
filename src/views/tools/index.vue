@@ -5,7 +5,7 @@
  * index.vue
 -->
 <template>
-  <div class="tools-wrap">
+  <Loading :loading="toolsStore.loading" class="tools-wrap">
     <div class="action-list">
       <el-button type="primary" @click="onAddTool">添加工具</el-button>
       <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
@@ -70,7 +70,7 @@
         />
       </div>
     </el-scrollbar>
-  </div>
+  </Loading>
   <Message
     v-model:visible="messageVisible"
     title="删除工具"
