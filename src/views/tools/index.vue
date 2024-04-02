@@ -67,6 +67,7 @@
           layout="prev, pager, next"
           :total="toolsStore.total"
           :hide-on-single-page="toolsStore.list.length <= PAGESIZE"
+          @current-change="onPageChange"
         />
       </div>
     </el-scrollbar>
@@ -147,7 +148,7 @@ onUnmounted(() => {
 // 监听分页变化，实时获取对应页数的工具列表
 watch(currentPage, (newVal, oldVal) => {
   toolsStore.pageNo = newVal;
-  toolsStore.getToolList();
+  toolsStore.getToolList(newVal);
 });
 
 // 监听选人组件是否关闭
@@ -246,6 +247,11 @@ const onAddedTools = async () => {
       return false;
     }
   });
+};
+
+// 切换分页
+const onPageChange = (value: number) => {
+  currentPage.value = value;
 };
 </script>
 

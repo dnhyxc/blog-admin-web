@@ -55,7 +55,7 @@ export const useToolsStore = defineStore('tools', {
     },
 
     // 获取工具列表
-    async getToolList() {
+    async getToolList(pageNo?: number) {
       try {
         const { userId } = userStore;
         this.loading = true;
@@ -65,7 +65,7 @@ export const useToolsStore = defineStore('tools', {
         }
         const res = normalizeResult<ToolListRes>(
           await Service.getToolList({
-            pageNo: this.pageNo,
+            pageNo: pageNo || this.pageNo,
             pageSize: PAGESIZE,
           }),
         );
