@@ -1,9 +1,9 @@
-import { defineStore } from 'pinia';
-import { ElMessage } from 'element-plus';
+import {defineStore} from 'pinia';
+import {ElMessage} from 'element-plus';
 import * as Service from '@/server';
-import { normalizeResult } from '@/utils';
-import { userStore } from '@/store';
-import { UserInfoParams } from '@/typings/comment';
+import {normalizeResult} from '@/utils';
+import {userStore} from '@/store';
+import {UserInfoParams} from '@/typings/comment';
 
 interface bindUserInfoPrams {
   username: string;
@@ -50,12 +50,12 @@ export const useSettingStore = defineStore('setting', {
     },
 
     // 修改用户信息
-    async updateUserInfo(params: { username: string; headUrl: string }) {
+    async updateUserInfo(params: { username?: string; headUrl: string }, needMsg = true) {
       this.loading = true;
       const res = normalizeResult<UserInfoParams>(await Service.updateUserInfo(params));
       this.loading = false;
       if (res.success) {
-        ElMessage.success(res.message);
+        needMsg && ElMessage.success(res.message);
         userStore.updateUserInfo({
           username: res.data.username,
           headUrl: res.data.headUrl,

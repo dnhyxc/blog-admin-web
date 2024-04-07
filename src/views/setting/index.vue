@@ -9,30 +9,15 @@
     <div class="header">账号设置</div>
     <el-form ref="formRef" :model="bindedUserForm" label-width="110px" class="form-wrap">
       <el-form-item
-        prop="username"
+        prop="avatar"
         label="用户头像"
-        :rules="[
-          {
-            required: true,
-            message: '请输入需要更改的名称',
-            trigger: 'blur',
-          },
-        ]"
-        class="form-item"
+        class="form-item form-item-avatar"
       >
-        <el-upload
-          class="avatar-uploader"
-          :show-file-list="false"
-          :action="UPLOAD"
-          headers=""
-          :before-upload="beforeUpload"
-          :http-request="onUpload"
-        >
-          <img v-if="avatarUrl" :src="avatarUrl" class="avatar"/>
-          <el-icon v-else class="avatar-uploader-icon">
-            <Plus/>
-          </el-icon>
-        </el-upload>
+        <Upload v-model:file-path="avatarUrl" :fixed-number="[130, 130]" delete :get-upload-url="getUploadUrl">
+          <template #preview>
+            <Image :url="avatarUrl || IMAGES.sea" :transition-img="IMAGES.sea" class="avatar-uploader avatar"/>
+          </template>
+        </Upload>
       </el-form-item>
       <el-form-item
         prop="username"
@@ -83,8 +68,10 @@ import {ElMessage} from 'element-plus';
 import type {FormInstance, UploadProps} from 'element-plus';
 import {Plus} from '@element-plus/icons-vue';
 import Modal from '@/components/Modal/index.vue';
+import Upload from '@/components/Upload/index.vue'
+import Image from '@/components/Image/index.vue'
 import {settingStore, userStore, uploadStore} from '@/store';
-import {FILE_TYPE, FILE_UPLOAD_MSG, WEB_MAIN_URL} from '@/constant';
+import {FILE_TYPE, FILE_UPLOAD_MSG, IMAGES, WEB_MAIN_URL} from '@/constant';
 import {UPLOAD} from '@/server/api';
 import ResetBind from './ResetBind.vue';
 
@@ -120,26 +107,11 @@ onMounted(async () => {
   bindedUserForm.username = userStore?.username!;
 });
 
-// 自定义上传
-const onUpload = async (event: { file: Blob }) => {
-  // 不需要进行裁剪
-  const res = await uploadStore.uploadFile(event.file as File);
-
-  if (!import.meta.env.DEV) {
-    // 更换域名
-    const url = res?.filePath.replace(location.origin, WEB_MAIN_URL);
-    if (avatarUrl.value !== url) {
-      avatarUrl.value && (await uploadStore.removeFile(avatarUrl.value));
-      avatarUrl.value = url || '';
-    }
-  } else {
-    // 删除上一次上传的图标
-    if (avatarUrl.value !== res?.filePath) {
-      avatarUrl.value && (await uploadStore.removeFile(avatarUrl.value));
-      avatarUrl.value = res?.filePath || '';
-    }
-  }
-};
+const getUploadUrl = async (url: string) => {
+  await settingStore.updateUserInfo({
+    headUrl: url
+  }, false);
+}
 
 const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   if (!FILE_TYPE.includes(rawFile.type)) {
@@ -199,28 +171,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
   .avatar-uploader {
     display: flex;
     justify-content: center;
-
-    :deep {
-      .el-upload {
-        border: 1px dashed @border-color;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .el-icon.avatar-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 125px;
-        height: 125px;
-        text-align: center;
-      }
-    }
+    width: 130px;
+    height: 130px;
+    border-radius: 4px;
 
     .avatar {
-      width: 125px;
-      height: 125px;
+      width: 130px;
+      height: 130px;
       display: block;
     }
   }
@@ -246,6 +203,21 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
         .action-btn {
           flex: 1;
+        }
+      }
+    }
+
+    .form-item-avatar {
+
+      :deep {
+        .upload-wrap {
+          width: 130px;
+          height: 130px;
+          max-width: 130px;
+        }
+
+        .image-item {
+          border-radius: 4px;
         }
       }
     }
