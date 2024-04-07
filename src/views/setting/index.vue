@@ -28,8 +28,10 @@
           :before-upload="beforeUpload"
           :http-request="onUpload"
         >
-          <img v-if="avatarUrl" :src="avatarUrl" class="avatar" />
-          <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          <img v-if="avatarUrl" :src="avatarUrl" class="avatar"/>
+          <el-icon v-else class="avatar-uploader-icon">
+            <Plus/>
+          </el-icon>
         </el-upload>
       </el-form-item>
       <el-form-item
@@ -44,7 +46,7 @@
         ]"
         class="form-item"
       >
-        <el-input v-model="bindedUserForm.username" placeholder="请输入需要更改的名称" />
+        <el-input v-model="bindedUserForm.username" placeholder="请输入需要更改的名称"/>
       </el-form-item>
       <div class="bind-wrap">
         <el-form-item
@@ -59,7 +61,7 @@
           }"
           class="form-item-custom"
         >
-          <el-input v-model="domain.value" disabled placeholder="请输入需要绑定的前台账号名称" />
+          <el-input v-model="domain.value" disabled placeholder="请输入需要绑定的前台账号名称"/>
         </el-form-item>
         <el-button class="del-btn" type="primary" link @click.prevent="onResetBind">重新设置绑定账号</el-button>
       </div>
@@ -69,21 +71,21 @@
         </div>
       </el-form-item>
     </el-form>
-    <Modal v-model:visible="visible" title="账号绑定">
-      <ResetBind v-model:visible="visible" />
+    <Modal v-model:visible="visible" title="账号绑定" :need-footer="false">
+      <ResetBind v-model:visible="visible"/>
     </Modal>
   </Loading>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, watchEffect } from 'vue';
-import { ElMessage } from 'element-plus';
-import type { FormInstance, UploadProps } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue';
+import {reactive, ref, onMounted, watchEffect} from 'vue';
+import {ElMessage} from 'element-plus';
+import type {FormInstance, UploadProps} from 'element-plus';
+import {Plus} from '@element-plus/icons-vue';
 import Modal from '@/components/Modal/index.vue';
-import { settingStore, userStore, uploadStore } from '@/store';
-import { FILE_TYPE, FILE_UPLOAD_MSG, WEB_MAIN_URL } from '@/constant';
-import { UPLOAD } from '@/server/api';
+import {settingStore, userStore, uploadStore} from '@/store';
+import {FILE_TYPE, FILE_UPLOAD_MSG, WEB_MAIN_URL} from '@/constant';
+import {UPLOAD} from '@/server/api';
 import ResetBind from './ResetBind.vue';
 
 interface DomainItem {

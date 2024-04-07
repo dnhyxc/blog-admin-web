@@ -53,6 +53,7 @@ export const useSettingStore = defineStore('setting', {
     async updateUserInfo(params: { username: string; headUrl: string }) {
       this.loading = true;
       const res = normalizeResult<UserInfoParams>(await Service.updateUserInfo(params));
+      this.loading = false;
       if (res.success) {
         ElMessage.success(res.message);
         userStore.updateUserInfo({
