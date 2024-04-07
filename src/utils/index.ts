@@ -1,12 +1,12 @@
 import moment from 'moment';
 import SparkMD5 from 'spark-md5';
-import { EMOJI_TEXTS, EMOJI_URLS, CODE_LENGTH, CHARACTERS } from '@/constant';
-import { ArticleStatistic, ArticleStatisticData, ArticleInfo } from '@/typings/comment';
-import { normalizeResult } from './result';
-import { decrypt, encrypt } from './crypto';
+import {EMOJI_TEXTS, EMOJI_URLS, CODE_LENGTH, CHARACTERS} from '@/constant';
+import {ArticleStatistic, ArticleStatisticData, ArticleInfo} from '@/typings/comment';
+import {normalizeResult} from './result';
+import {decrypt, encrypt} from './crypto';
 import request from './request';
-import { locSetItem, locGetItem, locRemoveItem, ssnGetItem, ssnSetItem, ssnRemoveItem } from './storage';
-import { compressImage } from './compress';
+import {locSetItem, locGetItem, locRemoveItem, ssnGetItem, ssnSetItem, ssnRemoveItem} from './storage';
+import {compressImage} from './compress';
 
 export {
   request,
@@ -189,7 +189,7 @@ export const manageArticleStatistics = (data: ArticleStatistic[]) => {
     const months = newData[year];
 
     // 生成一个包含所有月份的数组
-    const allMonths = Array.from({ length: 12 }, (_, idx) => idx + 1);
+    const allMonths = Array.from({length: 12}, (_, idx) => idx + 1);
 
     // 遍历每个月份
     for (let j = 0; j < allMonths.length; j++) {
@@ -212,7 +212,7 @@ export const manageArticleStatistics = (data: ArticleStatistic[]) => {
   }
 
   let maxReadCount = -Infinity;
-  let maxArticle: ArticleInfo = { title: '', readCount: 0 };
+  let maxArticle: ArticleInfo = {title: '', readCount: 0};
   data.forEach((month) => {
     month.articleInfo.forEach((article) => {
       if (article.readCount && article.readCount > maxReadCount) {
@@ -362,10 +362,10 @@ const randomNum = (min: number, max: number) => {
 
 // canvas 绘制验证码
 export const drawCharater = ({
-  canvasElement,
-  width,
-  height,
-}: {
+                               canvasElement,
+                               width,
+                               height,
+                             }: {
   canvasElement: HTMLCanvasElement;
   width: number;
   height: number;

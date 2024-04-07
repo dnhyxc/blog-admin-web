@@ -20,7 +20,7 @@
           class="form-item-custom"
         >
           <div class="inp-wrap">
-            <el-input v-model="domain.value" placeholder="请输入需要绑定的前台账号名称" />
+            <el-input v-model="domain.value" placeholder="请输入需要绑定的前台账号名称"/>
             <el-button v-if="index > 0" class="del-btn" link @click.prevent="removeDomain(domain)">删除</el-button>
           </div>
         </el-form-item>
@@ -38,10 +38,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watchEffect } from 'vue';
-import type { FormInstance } from 'element-plus';
-import { settingStore, bindAccountStore } from '@/store';
-import { BindUserRes } from '@/typings/comment';
+import {reactive, ref, watchEffect} from 'vue';
+import type {FormInstance} from 'element-plus';
+import {settingStore, bindAccountStore} from '@/store';
+import {BindUserRes} from '@/typings/comment';
+import {uuid} from '@/utils'
 
 interface DomainItem {
   key: string;
@@ -54,7 +55,8 @@ interface Emits {
 
 const props = withDefaults(defineProps<{ visible: boolean; getValues: Function }>(), {
   visible: false,
-  getValues: () => {},
+  getValues: () => {
+  },
 });
 
 const emit = defineEmits<Emits>();
@@ -86,7 +88,7 @@ const removeDomain = (item: DomainItem) => {
 // 添加账号绑定输入框
 const addDomain = () => {
   bindAccountForm.domains.push({
-    key: crypto.randomUUID(),
+    key: uuid(),
     value: '',
   });
 };

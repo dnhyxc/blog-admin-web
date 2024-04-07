@@ -21,7 +21,7 @@
           ]"
           class="form-item"
         >
-          <el-input v-model="bindAccountForm.bindAccount" placeholder="请输入需要绑定的前台账号名称" />
+          <el-input v-model="bindAccountForm.bindAccount" placeholder="请输入需要绑定的前台账号名称"/>
         </el-form-item>
         <el-form-item
           v-for="(domain, index) in bindAccountForm.domains"
@@ -36,7 +36,7 @@
           class="form-item-custom"
         >
           <div class="inp-wrap">
-            <el-input v-model="domain.value" placeholder="请输入需要绑定的前台账号名称" />
+            <el-input v-model="domain.value" placeholder="请输入需要绑定的前台账号名称"/>
             <el-button class="del-btn" link @click.prevent="removeDomain(domain)">删除</el-button>
           </div>
         </el-form-item>
@@ -54,10 +54,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import type { FormInstance } from 'element-plus';
-import { bindAccountStore, userStore } from '@/store';
+import {reactive, ref, onMounted} from 'vue';
+import {useRouter} from 'vue-router';
+import type {FormInstance} from 'element-plus';
+import {bindAccountStore, userStore} from '@/store';
+import {uuid} from '@/utils'
 
 const router = useRouter();
 
@@ -90,7 +91,7 @@ const removeDomain = (item: DomainItem) => {
 // 添加账号绑定输入框
 const addDomain = () => {
   bindAccountForm.domains.push({
-    key: crypto.randomUUID(),
+    key: uuid(),
     value: '',
   });
 };
