@@ -8,16 +8,17 @@
   <div class="add-tools-wrap">
     <el-form ref="formRef" :rules="rules" label-width="79px" :model="addToolsForm" class="form-wrap">
       <el-form-item prop="tooUrl" label="工具图标" class="form-item">
-        <div class="cover-img-wrap">
+        <Loading :loading="toolsStore.pageLoading" text="正在自动获取图标..." class="cover-img-wrap">
           <Upload v-model:file-path="toolUrl" :fixed-number="[130, 130]" delete>
             <template #preview>
-              <img :src="toolUrl" class="cover-img avatar" />
+              <img :src="toolUrl" class="cover-img avatar"/>
             </template>
           </Upload>
-        </div>
+        </Loading>
+        <el-button type="text" class="reload" :disabled="toolsStore.pageLoading" @click="search">重新获取图标</el-button>
       </el-form-item>
       <el-form-item prop="toolHref" label="工具链接" class="form-item">
-        <el-input v-model="addToolsForm.toolHref" placeholder="请输入工具链接" @input="onSearch" />
+        <el-input v-model="addToolsForm.toolHref" placeholder="请输入工具链接" @input="onSearch"/>
       </el-form-item>
       <el-form-item
         prop="toolName"
@@ -30,19 +31,20 @@
         ]"
         class="form-item"
       >
-        <el-input v-model="addToolsForm.toolName" placeholder="请输入工具名称" />
+        <el-input v-model="addToolsForm.toolName" placeholder="请输入工具名称"/>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watchEffect, watch } from 'vue';
-import type { FormInstance, FormRules } from 'element-plus';
-import { debounce } from 'lodash';
-import { toolsStore } from '@/store';
-import { checkHref } from '@/utils';
-import { ToolsParams } from '@/typings/comment';
+import {reactive, ref, watchEffect, watch} from 'vue';
+import type {FormInstance, FormRules} from 'element-plus';
+import {debounce} from 'lodash';
+import {toolsStore} from '@/store';
+import {checkHref} from '@/utils';
+import {ToolsParams} from '@/typings/comment';
+import Loading from '@/components/Loading/index.vue'
 
 interface IProps {
   selectedItem?: ToolsParams;
@@ -71,11 +73,11 @@ const validateHref = (rule: any, value: any, callback: any) => {
 };
 
 const rules = reactive<FormRules>({
-  toolHref: [{ validator: validateHref, trigger: 'blur', required: true }],
+  toolHref: [{validator: validateHref, trigger: 'blur', required: true}],
 });
 
 watchEffect(() => {
-  const { selectedItem } = props;
+  const {selectedItem} = props;
   if (selectedItem?.toolName) {
     addToolsForm.toolName = selectedItem?.toolName;
     addToolsForm.toolHref = selectedItem?.toolHref;
@@ -100,7 +102,7 @@ watch(
 
 const search = debounce(async () => {
   if (addToolsForm.toolHref) {
-    const { title, iconUrl } = await toolsStore.getPageInfo(addToolsForm.toolHref);
+    const {title, iconUrl} = await toolsStore.getPageInfo(addToolsForm.toolHref);
     addToolsForm.toolName = title;
     addToolsForm.toolUrl = iconUrl;
     toolUrl.value = iconUrl;
@@ -129,6 +131,16 @@ defineExpose({
 @import '@/styles/index.less';
 
 .add-tools-wrap {
+  .form-item {
+    position: relative;
+
+    .reload{
+      position: absolute;
+      top: 0;
+      left: 142px;
+    }
+  }
+
   .cover-img-wrap {
     width: 130px;
     height: 130px;
@@ -136,6 +148,12 @@ defineExpose({
     .cover-img {
       width: 100%;
       height: 100%;
+    }
+
+    :deep {
+      .el-loading-spinner {
+        margin-top: -45px;
+      }
     }
   }
 }
