@@ -62,7 +62,7 @@
           :page-size="PAGESIZE"
           background
           :disabled="disabled"
-          layout="prev, pager, next"
+          layout="total, prev, pager, next"
           :total="adminAccountStore.total"
           :hide-on-single-page="adminAccountStore.list.length <= adminAccountStore.total"
           @current-change="onPageChange"

@@ -4,7 +4,7 @@
       <div class="card-list">
         <Card>
           <template #title>
-            <div class="title">作者人数</div>
+            <div class="title">已发布过文章的作者人数</div>
           </template>
           <template #content>
             <div class="content">{{ homeStore.authors?.length }}</div>

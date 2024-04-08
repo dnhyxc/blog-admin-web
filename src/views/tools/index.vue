@@ -64,7 +64,7 @@
           :page-size="PAGESIZE"
           background
           :disabled="disabled"
-          layout="prev, pager, next"
+          layout="total, prev, pager, next"
           :total="toolsStore.total"
           :hide-on-single-page="toolsStore.list.length <= PAGESIZE"
           @current-change="onPageChange"

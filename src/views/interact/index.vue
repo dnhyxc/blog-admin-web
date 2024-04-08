@@ -60,7 +60,7 @@
           :page-size="PAGESIZE"
           background
           :disabled="disabled"
-          layout="prev, pager, next"
+          layout="total, prev, pager, next"
           :total="interactStore.total"
           :hide-on-single-page="interactStore.list.length <= PAGESIZE"
         />

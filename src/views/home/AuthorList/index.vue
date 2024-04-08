@@ -18,7 +18,7 @@
       >
         <List v-for="i in accountStore.userList" :key="i.id" class="list-item">
           <template #left>
-            <Image :url="i.headUrl || SSM" :transition-img="SSM" class="avatar-image" />
+            <Image :url="i.headUrl || SSM" :transition-img="SSM" class="avatar-image"/>
           </template>
           <template #title>
             <div class="title">
@@ -34,16 +34,16 @@
         </List>
       </div>
       <div v-if="accountStore.loading" class="loading">Loading...</div>
-      <div v-if="noMore" class="no-more">没有更多了～～～</div>
+      <div v-if="noMore" class="no-more">共{{ accountStore.total }}条，没有更多了～～～</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { accountStore } from '@/store';
-import { SSM } from '@/constant';
-import { formatDate } from '@/utils';
+import {computed, onMounted, ref} from 'vue';
+import {accountStore} from '@/store';
+import {SSM} from '@/constant';
+import {formatDate} from '@/utils';
 import List from '@/components/List/index.vue';
 
 const isMounted = ref<boolean>(false);

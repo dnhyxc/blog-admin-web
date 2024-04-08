@@ -54,7 +54,7 @@
           :page-size="PAGESIZE"
           background
           :disabled="disabled"
-          layout="prev, pager, next"
+          layout="total, prev, pager, next"
           :total="articleStore.total"
           :hide-on-single-page="articleStore.list.length <= PAGESIZE"
         />

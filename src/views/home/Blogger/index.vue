@@ -29,7 +29,7 @@
     <div class="bottom">
       <div class="right">
         <Image
-          :url="userStore.authorInfoEndArticleInfo?.authorInfo?.headUrl || SEA"
+          :url="userStore.authorInfoEndArticleInfo?.articleInfo?.newArticle?.coverImage || SEA"
           :transition-img="SEA"
           class="image"
         />
@@ -47,9 +47,9 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { userStore } from '@/store';
-import { SEA } from '@/constant';
+import {useRouter} from 'vue-router';
+import {userStore} from '@/store';
+import {SEA} from '@/constant';
 
 const router = useRouter();
 

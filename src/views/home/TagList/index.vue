@@ -22,14 +22,14 @@
             </div>
           </template>
         </List>
-        <div class="no-more">没有更多了～～～</div>
+        <div class="no-more">共{{ homeStore.tagTotal }}条，没有更多了～～～</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { homeStore } from '@/store';
+import {homeStore} from '@/store';
 import List from '@/components/List/index.vue';
 </script>
 

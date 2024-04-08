@@ -1,6 +1,6 @@
 import moment from 'moment';
 import SparkMD5 from 'spark-md5';
-import {EMOJI_TEXTS, EMOJI_URLS, CODE_LENGTH, CHARACTERS} from '@/constant';
+import {EMOJI_NAME, EMOJI_MAP, EMOJI_HOST, CODE_LENGTH, CHARACTERS} from '@/constant';
 import {ArticleStatistic, ArticleStatisticData, ArticleInfo} from '@/typings/comment';
 import {normalizeResult} from './result';
 import {decrypt, encrypt} from './crypto';
@@ -89,14 +89,29 @@ export const replaceCommentContent = (content: string) => {
 };
 
 // 表情包转换
+// export const replaceEmojis = (content: string) => {
+//   content = content.replace(/\[[^[^\]]+\]/g, (word) => {
+//     const index = EMOJI_TEXTS.indexOf(word.replace('[', '').replace(']', ''));
+//     if (index > -1) {
+//       return `<img style="vertical-align: middle;width: 32px;height: 32px" src="${
+//         // @ts-ignore
+//         EMOJI_URLS[index + 1]
+//       }" title="${word}"/>`;
+//     } else {
+//       return word;
+//     }
+//   });
+//   return replacePictures(content);
+// };
+
 export const replaceEmojis = (content: string) => {
-  content = content.replace(/\[[^[^\]]+\]/g, (word) => {
-    const index = EMOJI_TEXTS.indexOf(word.replace('[', '').replace(']', ''));
+  content = content.replace(/\[[^[^\]]+]/g, (word) => {
+    const index = EMOJI_NAME.indexOf(word);
     if (index > -1) {
       return `<img style="vertical-align: middle;width: 32px;height: 32px" src="${
         // @ts-ignore
-        EMOJI_URLS[index + 1]
-      }" title="${word}"/>`;
+        EMOJI_HOST + EMOJI_MAP[word]
+      }" alt="" title="${word}"/>`;
     } else {
       return word;
     }
