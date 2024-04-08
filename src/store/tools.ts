@@ -122,7 +122,6 @@ export const useToolsStore = defineStore('tools', {
 
     // 根据url获取网页信息
     async getPageInfo(url: string): Promise<{ title: string; iconUrl: string }> {
-      console.log(url, 'url----')
       if (userStore.userId) {
         this.pageLoading = true;
         const res = normalizeResult<string>(await Service.getPageInfo(url));
