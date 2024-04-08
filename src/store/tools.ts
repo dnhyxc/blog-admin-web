@@ -1,10 +1,10 @@
-import { defineStore } from 'pinia';
-import { ElMessage } from 'element-plus';
+import {defineStore} from 'pinia';
+import {ElMessage} from 'element-plus';
 import * as Service from '@/server';
-import { normalizeResult } from '@/utils';
-import { ToolsParams, ToolListRes } from '@/typings/comment';
-import { userStore } from '@/store';
-import { PAGESIZE } from '@/constant';
+import {normalizeResult} from '@/utils';
+import {ToolsParams, ToolListRes} from '@/typings/comment';
+import {userStore} from '@/store';
+import {PAGESIZE} from '@/constant';
 
 interface IParams extends ToolListRes {
   loading: boolean;
@@ -57,7 +57,7 @@ export const useToolsStore = defineStore('tools', {
     // 获取工具列表
     async getToolList(pageNo?: number) {
       try {
-        const { userId } = userStore;
+        const {userId} = userStore;
         this.loading = true;
         if (!userId) {
           ElMessage.warning('请先登录后再试');
@@ -71,7 +71,7 @@ export const useToolsStore = defineStore('tools', {
         );
         this.loading = false;
         if (res.success) {
-          const { list, total } = res.data;
+          const {list, total} = res.data;
           this.list = list;
           this.total = total;
         } else {
@@ -122,6 +122,7 @@ export const useToolsStore = defineStore('tools', {
 
     // 根据url获取网页信息
     async getPageInfo(url: string): Promise<{ title: string; iconUrl: string }> {
+      console.log(url, 'url----')
       if (userStore.userId) {
         this.pageLoading = true;
         const res = normalizeResult<string>(await Service.getPageInfo(url));
@@ -138,7 +139,13 @@ export const useToolsStore = defineStore('tools', {
             iconLink = doc.querySelector('link[rel~="shortcut icon"]') as HTMLLinkElement;
           }
           const iconUrl = iconLink ? iconLink.href : '';
-          this.pageInfo.iconUrl = iconUrl;
+          const aElement = document.createElement('a');
+          aElement.href = url;
+          // 获取协议和主机部分
+          const domain = aElement.protocol + '//' + aElement.hostname;
+          aElement.href = iconUrl
+          const path = aElement.pathname;
+          this.pageInfo.iconUrl = domain + path;
           this.pageInfo.title = title;
           return this.pageInfo;
         } else {
