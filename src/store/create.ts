@@ -34,19 +34,21 @@ export const useCreateStore = defineStore('create', {
     },
 
     // 更新文章
-    async updateArticle(params: CreateArticleParams) {
+    async updateArticle(params: CreateArticleParams, needMsg = true) {
       this.loading = true;
       try {
         const res = normalizeResult<{ id: string }>(await Service.updateArticle(params));
         this.loading = false;
         if (res.success) {
           this.id = res.data.id;
+          if (!needMsg) return;
           if (params.isTop) {
             ElMessage.success('设置置顶成功');
           } else {
             ElMessage.success(res.message);
           }
         } else {
+          if (!needMsg) return;
           if (params.isTop) {
             ElMessage.success('设置置顶失败');
           } else {

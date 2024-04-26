@@ -1,12 +1,12 @@
 <template>
   <div class="edit-wrap">
-    <el-drawer v-show="visible" v-model="visible" direction="rtl" custom-class="el-drawer">
+    <el-drawer v-show="visible" v-model="visible" direction="rtl" custom-class="el-drawer" :before-close="cancelClick">
       <template #header>
         <div class="title">创建文章</div>
       </template>
       <template #default>
         <div>
-          <el-form ref="formRef" :model="createArticleForm" class="form-wrap">
+          <el-form ref="formRef" :label-width="82" :model="createArticleForm" class="form-wrap">
             <el-form-item
               prop="title"
               label="文章标题"
@@ -69,6 +69,20 @@
                 class="el-date-picker"
               />
             </el-form-item>
+            <el-form-item prop="coverImage" label="文章封面" class="form-item-cover">
+              <div class="cover-wrap">
+                <Upload
+                  v-model:file-path="createArticleForm.coverImage"
+                  :delete="!detailStore.detail.id"
+                  :get-upload-url="getUploadUrl"
+                >
+                  <template #preview>
+                    <img :src="createArticleForm.coverImage || detailStore.detail?.coverImage!" class="cover-img"
+                         alt="文章封面" />
+                  </template>
+                </Upload>
+              </div>
+            </el-form-item>
             <el-form-item
               prop="authorId"
               label="文章作者"
@@ -125,11 +139,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watchEffect, onUnmounted } from 'vue';
+import { onMounted, ref, watchEffect, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance } from 'element-plus';
-import { detailStore, settingStore, createStore } from '@/store';
+import { detailStore, settingStore, createStore, uploadStore } from '@/store';
 import { CreateArticleParams } from '@/typings/comment';
 import Editor from '@/components/Editor/index.vue';
 
@@ -148,7 +162,9 @@ const createArticleForm = ref<CreateArticleParams>({
   authorId: '',
   articleId: '',
   authorName: '',
+  coverImage: ''
 });
+const oldCoverImage = ref<string>('');
 
 // 监听 visible 状态实时设置表单值
 watchEffect(() => {
@@ -158,6 +174,8 @@ watchEffect(() => {
       ...detailStore.detail,
       createTime: detailStore.detail.createTime || new Date().valueOf(),
     } as CreateArticleParams;
+
+    oldCoverImage.value = detailStore.detail?.coverImage || '';
   }
 });
 
@@ -165,7 +183,7 @@ onMounted(() => {
   // 获取绑定的前台账号信息
   settingStore.getBindUserInfo();
   // 进入页面时，如果有id，则通过id查找详情内容
-  const { id } = route.query;
+  const {id} = route.query;
   if (id) {
     detailStore.getArticleDetail(id as string);
   }
@@ -176,6 +194,16 @@ onUnmounted(() => {
   settingStore.onReset();
   createStore.clearId();
 });
+
+watch(visible, (cur, pre) => {
+
+});
+
+const getUploadUrl = async (url: string) => {
+  if (oldCoverImage.value !== url) {
+    createArticleForm.value.coverImage = url;
+  }
+};
 
 // 发布文章
 const onPublish = (html: string) => {
@@ -188,12 +216,20 @@ const onPublish = (html: string) => {
 };
 
 // 取消
-const cancelClick = () => {
+const cancelClick = (e: Event | null, delUrl?: string) => {
+  console.log(delUrl, 'delUrl');
   visible.value = false;
+  if (createArticleForm.value.coverImage && createArticleForm.value.coverImage !== oldCoverImage.value) {
+    console.log('需要删除当前上传的图片', {
+      newUrl: createArticleForm.value.coverImage,
+      oldUrl: oldCoverImage.value
+    });
+    uploadStore.removeFile(delUrl || createArticleForm.value.coverImage);
+  }
 };
 
 // 确定
-const confirmClick = () => {
+const confirmClick = (e: Event) => {
   if (!formRef.value) return;
   formRef.value.validate(async (valid) => {
     if (valid) {
@@ -206,6 +242,7 @@ const confirmClick = () => {
         params.authorName =
           settingStore.bindUserInfo.find((i) => i.userId === createArticleForm.value.authorId)?.username || '';
         await createStore.updateArticle(params);
+        cancelClick(e, oldCoverImage.value);
       } else {
         await createStore.createArticle(params);
       }
@@ -266,6 +303,26 @@ const confirmClick = () => {
     .form-item {
       margin-bottom: 30px;
       width: 100%;
+    }
+
+    .form-item-cover {
+      display: flex;
+
+      .cover-wrap {
+        flex: 1;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        height: 140px;
+
+        .cover-img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          border-radius: 4px;
+          .imgStyle;
+        }
+      }
     }
   }
 }
