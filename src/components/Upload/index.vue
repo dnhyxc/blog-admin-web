@@ -83,6 +83,7 @@ interface IProps {
   getUploadUrl?: (url: string) => void;
   needCropper?: boolean;
   delete?: boolean; // 控制点击删除图标时，是否删除数据库中的图片
+  onRemoveOldImage?: (() => void) | null; // 点击删除图标时，触发的回调函数，用于删除数据库中的图片
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -93,6 +94,7 @@ const props = withDefaults(defineProps<IProps>(), {
   getUploadUrl: () => {},
   needCropper: true,
   delete: false,
+  onRemoveOldImage: null,
 });
 
 const emit = defineEmits(['update:filePath']);
@@ -265,6 +267,7 @@ const onPreview = () => {
 
 // 清除图片
 const onDelImage = () => {
+  props?.onRemoveOldImage?.();
   // 清空父组件传递过来的filePath
   emit('update:filePath', '');
   // 删除上传的原图片

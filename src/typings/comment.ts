@@ -207,6 +207,7 @@ export interface CreateArticleParams {
   articleId?: string;
   authorName?: string;
   isTop?: number;
+  oldCoverImage?: string;
 }
 
 // 删除、恢复评论传参

@@ -75,10 +75,14 @@
                   v-model:file-path="createArticleForm.coverImage"
                   :delete="!detailStore.detail.id"
                   :get-upload-url="getUploadUrl"
+                  :on-remove-old-image="onRemoveOldImage"
                 >
                   <template #preview>
-                    <img :src="createArticleForm.coverImage || detailStore.detail?.coverImage!" class="cover-img"
-                         alt="文章封面" />
+                    <img
+                      :src="createArticleForm.coverImage || detailStore.detail?.coverImage!"
+                      class="cover-img"
+                      alt="文章封面"
+                    />
                   </template>
                 </Upload>
               </div>
@@ -139,7 +143,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watchEffect, onUnmounted, watch } from 'vue';
+import { onMounted, ref, watchEffect, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance } from 'element-plus';
@@ -162,7 +166,7 @@ const createArticleForm = ref<CreateArticleParams>({
   authorId: '',
   articleId: '',
   authorName: '',
-  coverImage: ''
+  coverImage: '',
 });
 const oldCoverImage = ref<string>('');
 
@@ -174,18 +178,17 @@ watchEffect(() => {
       ...detailStore.detail,
       createTime: detailStore.detail.createTime || new Date().valueOf(),
     } as CreateArticleParams;
-
-    oldCoverImage.value = detailStore.detail?.coverImage || '';
   }
 });
 
-onMounted(() => {
+onMounted(async () => {
   // 获取绑定的前台账号信息
   settingStore.getBindUserInfo();
   // 进入页面时，如果有id，则通过id查找详情内容
-  const {id} = route.query;
+  const { id } = route.query;
   if (id) {
-    detailStore.getArticleDetail(id as string);
+    await detailStore.getArticleDetail(id as string);
+    oldCoverImage.value = detailStore.detail?.coverImage || '';
   }
 });
 
@@ -193,10 +196,6 @@ onUnmounted(() => {
   detailStore.clearDetail();
   settingStore.onReset();
   createStore.clearId();
-});
-
-watch(visible, (cur, pre) => {
-
 });
 
 const getUploadUrl = async (url: string) => {
@@ -217,14 +216,17 @@ const onPublish = (html: string) => {
 
 // 取消
 const cancelClick = (e: Event | null, delUrl?: string) => {
-  console.log(delUrl, 'delUrl');
   visible.value = false;
   if (createArticleForm.value.coverImage && createArticleForm.value.coverImage !== oldCoverImage.value) {
-    console.log('需要删除当前上传的图片', {
-      newUrl: createArticleForm.value.coverImage,
-      oldUrl: oldCoverImage.value
-    });
     uploadStore.removeFile(delUrl || createArticleForm.value.coverImage);
+  }
+};
+
+const onRemoveOldImage = () => {
+  console.log(createArticleForm.value.coverImage, 'createArticleForm.value.coverImage');
+  console.log(oldCoverImage.value, 'oldCoverImage.value');
+  if (createArticleForm.value.coverImage && createArticleForm.value.coverImage !== oldCoverImage.value) {
+    uploadStore.removeFile(createArticleForm.value.coverImage);
   }
 };
 
@@ -236,13 +238,13 @@ const confirmClick = (e: Event) => {
       const params = {
         ...createArticleForm.value,
         content: mackdownValue.value,
+        oldCoverImage: oldCoverImage.value,
       };
       if (route.query.id) {
         params.articleId = route.query.id as string;
         params.authorName =
           settingStore.bindUserInfo.find((i) => i.userId === createArticleForm.value.authorId)?.username || '';
         await createStore.updateArticle(params);
-        cancelClick(e, oldCoverImage.value);
       } else {
         await createStore.createArticle(params);
       }
