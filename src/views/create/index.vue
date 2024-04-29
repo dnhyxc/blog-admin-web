@@ -147,7 +147,7 @@ import { onMounted, ref, watchEffect, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance } from 'element-plus';
-import { detailStore, settingStore, createStore, uploadStore } from '@/store';
+import { detailStore, settingStore, createStore, articleStore } from '@/store';
 import { CreateArticleParams } from '@/typings/comment';
 import Editor from '@/components/Editor/index.vue';
 
@@ -218,15 +218,18 @@ const onPublish = (html: string) => {
 const cancelClick = (e: Event | null, delUrl?: string) => {
   visible.value = false;
   if (createArticleForm.value.coverImage && createArticleForm.value.coverImage !== oldCoverImage.value) {
-    uploadStore.removeFile(delUrl || createArticleForm.value.coverImage);
+    // 查找是否有别的文章应用该封面，没有则删除
+    articleStore.findArticleByCoverImage(
+      delUrl || createArticleForm.value.coverImage,
+      createArticleForm.value.authorId!,
+    );
   }
 };
 
 const onRemoveOldImage = () => {
-  console.log(createArticleForm.value.coverImage, 'createArticleForm.value.coverImage');
-  console.log(oldCoverImage.value, 'oldCoverImage.value');
   if (createArticleForm.value.coverImage && createArticleForm.value.coverImage !== oldCoverImage.value) {
-    uploadStore.removeFile(createArticleForm.value.coverImage);
+    // 查找是否有别的文章应用该封面，没有则删除
+    articleStore.findArticleByCoverImage(createArticleForm.value.coverImage, createArticleForm.value.authorId!);
   }
 };
 

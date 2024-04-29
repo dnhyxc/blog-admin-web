@@ -190,6 +190,12 @@ export const updateArticle = async (params: CreateArticleParams) => {
   return res;
 };
 
+// 获取文章详情
+export const findArticleByCoverImage = async (params: { coverImage: string; authorId: string }) => {
+  const res = await post(API.FIND_ARTICLE_BY_COVER_IMAGE, params);
+  return res;
+};
+
 // 获取详情文章评论
 export const getCommentList = async (params: { id: string }) => {
   const res = await post(API.GET_COMMENT_LIST, params);

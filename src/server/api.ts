@@ -68,6 +68,9 @@ export const BATCH_DEL_ARTICLE = '/admin/batchDelArticle';
 // 批量删除文章
 export const ARTICLE_DETAIL = '/admin/articleDetail';
 
+// 根据封面图获取文章
+export const FIND_ARTICLE_BY_COVER_IMAGE = '/api/findArticleByCoverImage';
+
 // 创建文章
 export const CREATE_ARTICLE = '/admin/createArticle';
 

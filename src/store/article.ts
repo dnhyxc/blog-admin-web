@@ -141,6 +141,25 @@ export const useArticleStore = defineStore('article', {
       }
     },
 
+    // 删除文章（支持批量删除）
+    async findArticleByCoverImage(coverImage: string, authorId: string) {
+      try {
+        this.loading = true;
+        const res = normalizeResult<{ id: string; title: string; coverImage: string }>(
+          await Service.findArticleByCoverImage({
+            coverImage,
+            authorId,
+          }),
+        );
+        this.loading = false;
+        if (res.success && !res.data && coverImage) {
+          await uploadStore.removeFile(coverImage);
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+
     // 清除文章列表数据
     removeArticleList() {
       this.list = [];
