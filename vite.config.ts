@@ -8,7 +8,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import prismjs from 'vite-plugin-prismjs';
 
 export default defineConfig({
-  base: './', // 打包路径
+  base: '/', // 打包路径
   plugins: [
     vue(),
     AutoImport({
