@@ -36,9 +36,9 @@
           class="comment-detail"
         />
       </div>
-      <el-affix v-if="detailStore.tocTitles.length" target="#__DETAIL__" :offset="60" class="toc-el-affix">
+      <div v-if="detailStore.tocTitles.length" target="#__DETAIL__" :offset="60" class="toc-affix">
         <Toc />
-      </el-affix>
+      </div>
     </div>
     <div v-if="scrollTop >= 500" class="back-top" @click="onScrollToTop">
       <i class="icon iconfont icon-huojian" />
@@ -64,6 +64,9 @@ const detailWrapRef = ref<HTMLDivElement | null>(null);
 const scrollTop = ref<number>(0);
 
 onMounted(async () => {
+  nextTick(() => {
+    detailStore.setPreviewRef(detailWrapRef.value);
+  });
   const { id } = route.params;
   if (id) {
     // 获取文章详情
@@ -100,7 +103,9 @@ const errorHandler = () => true;
 .detail-wrap {
   position: relative;
   height: 100%;
+  width: 100%;
   background-color: @bg-color-page;
+  box-sizing: border-box;
   overflow: hidden;
 
   .top-menu {
@@ -111,23 +116,29 @@ const errorHandler = () => true;
   }
 
   .content {
+    position: relative;
     display: flex;
     justify-content: center;
     margin-top: 60px;
     margin-bottom: 10px;
     height: calc(100vh - 70px);
     overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 0 12%;
 
-    .toc-el-affix {
+    .toc-affix {
+      position: sticky;
+      top: 0;
       box-sizing: border-box;
-      width: 280px;
+      width: 280px !important;
       height: calc(100vh - 70px);
     }
 
     .prewiew {
       display: flex;
       flex-direction: column;
-      width: 820px;
+      width: calc(100% - 280px);
+      height: 100%;
       margin: 0 10px;
       border-radius: 5px;
 
@@ -180,7 +191,6 @@ const errorHandler = () => true;
 
       .preview-content {
         max-width: 100%;
-        overflow-x: auto;
         border-radius: 5px;
       }
 

@@ -27,17 +27,6 @@ import { detailStore } from '@/store';
 const checkTocTitle = ref<string | undefined>('');
 
 const tocRef = ref<HTMLDivElement | null>(null);
-// const prevHtags = ref<string>('');
-
-// 判断元素是出现在页面中
-// const checkInPage = (el: any) => {
-//   const pageHeight = document.documentElement.clientHeight;
-
-//   const contentTop = el.getBoundingClientRect().top;
-//   const contentHeight = el.offsetHeight;
-
-//   return (contentTop < pageHeight && contentTop >= 0) || (contentTop < 0 && contentTop + contentHeight > 0);
-// };
 
 const onScroll = _.debounce(() => {
   const detailElement: HTMLDivElement | null = document.querySelector('#__DETAIL__');
@@ -63,14 +52,10 @@ onUnmounted(() => {
 const handleAnchorClick = (anchor: { lineIndex: string; title: string }, index: number) => {
   const { lineIndex, title } = anchor;
   checkTocTitle.value = title + index;
-  const heading = detailStore.previewRef.$el.querySelector(`[data-v-md-line="${lineIndex}"]`);
+  const heading = detailStore.previewRef.querySelector(`[data-v-md-line="${lineIndex}"]`);
   if (heading) {
     heading.classList.add('header-active');
-    detailStore.previewRef.scrollToTarget({
-      target: heading,
-      scrollContainer: document.querySelector('#__DETAIL__'),
-      top: 60,
-    });
+    detailStore.previewRef.scrollTo({ top: heading.offsetTop - 5, behavior: 'smooth' });
   }
 };
 </script>
