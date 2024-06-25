@@ -62,13 +62,13 @@
         <ArticleChart class="center" />
         <RegisterChart v-if="homeStore.registerStatistic?.length > 0" class="right" />
       </div>
+      <div class="hot-article-list">
+        <HotArticle />
+      </div>
       <div class="list-container">
         <AuthorList class="list-content" />
         <TagList class="list-content" />
         <Blogger class="list-content" />
-      </div>
-      <div class="hot-article-list">
-        <HotArticle />
       </div>
     </div>
   </Loading>

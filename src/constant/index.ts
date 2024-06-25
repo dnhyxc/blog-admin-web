@@ -14,11 +14,11 @@ import SEA from '@/assets/img/sea.jpg';
 import SSM from '@/assets/img/ssm.jpg';
 import PAGE_ICON from '@/assets/svg/pageIcon.svg';
 import PUSH_ICON from '@/assets/svg/push.svg';
-import {MenuListParams} from '@/typings/comment';
+import { MenuListParams } from '@/typings/comment';
 import TOOL_SVG from '@/assets/svg/tool.svg';
 import SEA_SVG from '@/assets/svg/sea.svg';
 
-export {SEA, SSM, TOOL_SVG, SEA_SVG};
+export { SEA, SSM, TOOL_SVG, SEA_SVG };
 
 // 左侧菜单配置
 export const MENULIST: MenuListParams<typeof Grid>[] = [
@@ -91,7 +91,7 @@ export const MENULIST: MenuListParams<typeof Grid>[] = [
 ];
 
 // 只有超级管理员具备访问权限的页面
-export const SUPER_ADMIN_POWER_PAGES = ['users', 'account', 'tools', 'interact'];
+export const SUPER_ADMIN_POWER_PAGES = ['users', 'account', 'tools', 'interact', 'pageSet'];
 
 export const GATEWAY_HOST = '';
 
@@ -108,18 +108,18 @@ export const IMAGES = {
 
 // 封面图地址
 export const COVER_LIST = [
-  {name: '选项1', checked: false, img: IMAGES.sea, id: '1'},
-  {name: '选项2', checked: false, img: IMAGES.ssm, id: '2'},
-  {name: '选项3', checked: false, img: IMAGES.ssm, id: '3'},
-  {name: '选项4', checked: false, img: IMAGES.ssm, id: '4'},
-  {name: '选项5', checked: false, img: IMAGES.ssm, id: '5'},
-  {name: '选项6', checked: false, img: IMAGES.ssm, id: '6'},
-  {name: '选项7', checked: false, img: IMAGES.sea, id: '7'},
-  {name: '选项8', checked: false, img: IMAGES.ssm, id: '8'},
-  {name: '选项9', checked: false, img: IMAGES.ssm, id: '9'},
-  {name: '选项10', checked: false, img: IMAGES.sea, id: '10'},
-  {name: '选项11', checked: false, img: IMAGES.ssm, id: '11'},
-  {name: '选项12', checked: false, img: IMAGES.ssm, id: '12'},
+  { name: '选项1', checked: false, img: IMAGES.sea, id: '1' },
+  { name: '选项2', checked: false, img: IMAGES.ssm, id: '2' },
+  { name: '选项3', checked: false, img: IMAGES.ssm, id: '3' },
+  { name: '选项4', checked: false, img: IMAGES.ssm, id: '4' },
+  { name: '选项5', checked: false, img: IMAGES.ssm, id: '5' },
+  { name: '选项6', checked: false, img: IMAGES.ssm, id: '6' },
+  { name: '选项7', checked: false, img: IMAGES.sea, id: '7' },
+  { name: '选项8', checked: false, img: IMAGES.ssm, id: '8' },
+  { name: '选项9', checked: false, img: IMAGES.ssm, id: '9' },
+  { name: '选项10', checked: false, img: IMAGES.sea, id: '10' },
+  { name: '选项11', checked: false, img: IMAGES.ssm, id: '11' },
+  { name: '选项12', checked: false, img: IMAGES.ssm, id: '12' },
 ];
 
 // 权限配置
@@ -156,7 +156,7 @@ export const CREATE_ARTICLE_CONFIG = [
     message: '请输入文章摘要',
     type: 'textarea',
     maxlength: 300,
-    autosize: {minRows: 5, maxRows: 8},
+    autosize: { minRows: 5, maxRows: 8 },
   },
 ];
 
@@ -318,8 +318,8 @@ export const EMOJI_MAP = {
   '[麦克风]': 'emoji_138@2x.png',
   '[麻将]': 'emoji_139@2x.png',
   '[鼓掌]': 'emoji_140@2x.png',
-  '[龇牙]': 'emoji_141@2x.png'
-}
+  '[龇牙]': 'emoji_141@2x.png',
+};
 export const EMOJI_NAME = [
   '[龇牙]',
   '[调皮]',
@@ -458,8 +458,8 @@ export const EMOJI_NAME = [
   '[瓢虫]',
   '[猫咪]',
   '[熊猫]',
-  '[青蛙]'
-]
+  '[青蛙]',
+];
 
 // 允许上传的文件类型
 export const FILE_TYPE = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp', 'image/svg+xml'];
@@ -468,8 +468,8 @@ export const FILE_UPLOAD_MSG = '请上传 png、jpg、jpeg、gif、webp、svg �
 
 // 前台菜单权限列表
 export const MENU_LIST_CONFIG = [
-  {key: 'tools', name: '实用工具'},
-  {key: 'picture', name: '图片集'},
+  { key: 'tools', name: '实用工具' },
+  { key: 'picture', name: '图片集' },
 ];
 
 // 生成的验证码长度

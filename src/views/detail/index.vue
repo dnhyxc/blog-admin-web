@@ -7,7 +7,7 @@
 <template>
   <div id="__DETAIL__" v-loading="detailStore.loading" class="detail-wrap">
     <TopMenu class="top-menu" />
-    <div class="content">
+    <div ref="detailWrapRef" class="content" @scroll="onScroll">
       <div class="prewiew">
         <div class="header">{{ detailStore.detail?.title }}</div>
         <div class="info">
@@ -40,11 +40,14 @@
         <Toc />
       </el-affix>
     </div>
+    <div v-if="scrollTop >= 500" class="back-top" @click="onScrollToTop">
+      <i class="icon iconfont icon-huojian" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { detailStore, commentStore } from '@/store';
 import { formatDate } from '@/utils';
@@ -57,6 +60,8 @@ import Toc from '@/components/Toc/index.vue';
 const route = useRoute();
 
 const mackdown = ref<string | undefined>('');
+const detailWrapRef = ref<HTMLDivElement | null>(null);
+const scrollTop = ref<number>(0);
 
 onMounted(async () => {
   const { id } = route.params;
@@ -75,6 +80,16 @@ onUnmounted(() => {
   commentStore.clearComment();
 });
 
+const onScroll = (e: Event) => {
+  scrollTop.value = (e.target as HTMLDivElement).scrollTop;
+};
+
+const onScrollToTop = () => {
+  nextTick(() => {
+    detailWrapRef.value?.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+};
+
 // 图片加载失败事件
 const errorHandler = () => true;
 </script>
@@ -86,7 +101,7 @@ const errorHandler = () => true;
   position: relative;
   height: 100%;
   background-color: @bg-color-page;
-  overflow-x: hidden;
+  overflow: hidden;
 
   .top-menu {
     position: fixed;
@@ -100,6 +115,8 @@ const errorHandler = () => true;
     justify-content: center;
     margin-top: 60px;
     margin-bottom: 10px;
+    height: calc(100vh - 70px);
+    overflow-y: scroll;
 
     .toc-el-affix {
       box-sizing: border-box;
@@ -171,6 +188,25 @@ const errorHandler = () => true;
         margin-top: 10px;
         border-radius: 5px;
       }
+    }
+  }
+
+  .back-top {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgb(255 255 255 / 20%);
+    background-color: @fff;
+    cursor: pointer;
+
+    .icon {
+      font-size: 25px;
     }
   }
 }

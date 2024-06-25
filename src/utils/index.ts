@@ -1,12 +1,12 @@
 import moment from 'moment';
 import SparkMD5 from 'spark-md5';
-import {EMOJI_NAME, EMOJI_MAP, EMOJI_HOST, CODE_LENGTH, CHARACTERS} from '@/constant';
-import {ArticleStatistic, ArticleStatisticData, ArticleInfo} from '@/typings/comment';
-import {normalizeResult} from './result';
-import {decrypt, encrypt} from './crypto';
+import { EMOJI_NAME, EMOJI_MAP, EMOJI_HOST, CODE_LENGTH, CHARACTERS } from '@/constant';
+import { ArticleStatistic, ArticleStatisticData, ArticleInfo } from '@/typings/comment';
+import { normalizeResult } from './result';
+import { decrypt, encrypt } from './crypto';
 import request from './request';
-import {locSetItem, locGetItem, locRemoveItem, ssnGetItem, ssnSetItem, ssnRemoveItem} from './storage';
-import {compressImage} from './compress';
+import { locSetItem, locGetItem, locRemoveItem, ssnGetItem, ssnSetItem, ssnRemoveItem } from './storage';
+import { compressImage } from './compress';
 
 export {
   request,
@@ -125,11 +125,35 @@ export const replacePictures = (content: string) => {
     const index = word.indexOf(',');
     if (index > -1) {
       const arr = word.replace('<', '').replace('>', '').split(',');
-      return `<img id="__COMMENT_IMG__" style="border-radius: 5px;width: 100%;max-width: 250px;height:auto;display: block;padding: 5px 0;cursor: pointer;" src="${arr[1]}" title="${arr[0]}"/>`;
+      return `
+        <img
+          id="__COMMENT_IMG__"
+          style="border-radius: 5px;
+          width: 100%;
+          max-width: 250px;
+          height:auto;
+          display: block;
+          padding: 5px 0;
+          cursor: pointer;
+          -webkit-user-drag: none;
+          user-select: none;"
+          src="${arr[1]}"
+          title="${arr[0]}"
+          alt=""
+        />
+      `;
     } else {
       return word;
     }
   });
+  return wordToLink(content);
+  // return content;
+};
+
+export const wordToLink = (content: string) => {
+  if (checkHref(content)) {
+    return `<a style="color: #2b7de7; cursor: pointer; word-break: break-all;">${content}</a>`;
+  }
   return content;
 };
 
@@ -165,7 +189,7 @@ export const checkUrl = (url: string) => {
 // 校验是否是正常的链接
 export const checkHref = (url: string) => {
   const Expression =
-    /(https?:\/\/)?(([0-9a-z.]+\.[a-z]+)|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]+)?(\/[0-9a-z%/.\-_]*)?(\?[0-9a-z=&%_-]*)?(#[0-9a-z=&%_-]*)?/gi;
+    /^(https?:\/\/)?(([0-9a-z.]+\.[a-z]+)|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]+)?(\/[0-9a-z%/.\-_]*)?(\?[0-9a-z=&%_-]*)?(#[0-9a-z=&%_-]*)?/gi;
   const objExp = new RegExp(Expression);
   return objExp.test(url);
 };
@@ -204,7 +228,7 @@ export const manageArticleStatistics = (data: ArticleStatistic[]) => {
     const months = newData[year];
 
     // 生成一个包含所有月份的数组
-    const allMonths = Array.from({length: 12}, (_, idx) => idx + 1);
+    const allMonths = Array.from({ length: 12 }, (_, idx) => idx + 1);
 
     // 遍历每个月份
     for (let j = 0; j < allMonths.length; j++) {
@@ -227,7 +251,7 @@ export const manageArticleStatistics = (data: ArticleStatistic[]) => {
   }
 
   let maxReadCount = -Infinity;
-  let maxArticle: ArticleInfo = {title: '', readCount: 0};
+  let maxArticle: ArticleInfo = { title: '', readCount: 0 };
   data.forEach((month) => {
     month.articleInfo.forEach((article) => {
       if (article.readCount && article.readCount > maxReadCount) {
@@ -377,10 +401,10 @@ const randomNum = (min: number, max: number) => {
 
 // canvas 绘制验证码
 export const drawCharater = ({
-                               canvasElement,
-                               width,
-                               height,
-                             }: {
+  canvasElement,
+  width,
+  height,
+}: {
   canvasElement: HTMLCanvasElement;
   width: number;
   height: number;
