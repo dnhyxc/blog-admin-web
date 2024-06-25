@@ -10,6 +10,7 @@
         ref="multipleTableRef"
         :data="articleStore.list"
         style="width: 100%"
+        @row-click="(e) => toDetail(e.id)"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" />
