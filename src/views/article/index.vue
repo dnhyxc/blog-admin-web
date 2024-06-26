@@ -36,15 +36,15 @@
         <el-table-column fixed="right" label="操作" width="265">
           <template #default="scope">
             <div class="actions">
-              <el-button link type="primary" @click="toDetail(scope.row.id)">详情</el-button>
-              <el-button link :type="!scope.row.isTop ? 'primary' : 'warning'" @click="onTopOfCancelTop(scope.row)">
+              <el-button link type="primary" @click.stop="toDetail(scope.row.id)">详情</el-button>
+              <el-button link :type="!scope.row.isTop ? 'primary' : 'warning'" @click.stop="onTopOfCancelTop(scope.row)">
                 {{ scope.row.isTop ? '取消置顶' : '文章置顶' }}
               </el-button>
-              <el-button link type="primary" @click="onEdit(scope.row)">编辑</el-button>
-              <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click="onManageArticle(scope.row)">
+              <el-button link type="primary" @click.stop="onEdit(scope.row)">编辑</el-button>
+              <el-button link :type="scope.row.isDelete ? 'primary' : 'warning'" @click.stop="onManageArticle(scope.row)">
                 {{ scope.row.isDelete ? '上架' : '下架' }}
               </el-button>
-              <el-button link type="danger" @click="onDelete(scope.row)">删除</el-button>
+              <el-button link type="danger" @click.stop="onDelete(scope.row)">删除</el-button>
             </div>
           </template>
         </el-table-column>

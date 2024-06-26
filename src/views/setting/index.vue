@@ -8,14 +8,10 @@
   <Loading :loading="settingStore.loading" class="setting-wrap">
     <div class="header">账号设置</div>
     <el-form ref="formRef" :model="bindedUserForm" label-width="110px" class="form-wrap">
-      <el-form-item
-        prop="avatar"
-        label="用户头像"
-        class="form-item form-item-avatar"
-      >
+      <el-form-item prop="avatar" label="用户头像" class="form-item form-item-avatar">
         <Upload v-model:file-path="avatarUrl" :fixed-number="[130, 130]" delete :get-upload-url="getUploadUrl">
           <template #preview>
-            <Image :url="avatarUrl || IMAGES.sea" :transition-img="IMAGES.sea" class="avatar-uploader avatar"/>
+            <Image :url="avatarUrl || IMAGES.sea" :transition-img="IMAGES.sea" class="avatar-uploader avatar" />
           </template>
         </Upload>
       </el-form-item>
@@ -31,7 +27,7 @@
         ]"
         class="form-item"
       >
-        <el-input v-model="bindedUserForm.username" placeholder="请输入需要更改的名称"/>
+        <el-input v-model="bindedUserForm.username" placeholder="请输入需要更改的名称" />
       </el-form-item>
       <div class="bind-wrap">
         <el-form-item
@@ -46,7 +42,7 @@
           }"
           class="form-item-custom"
         >
-          <el-input v-model="domain.value" disabled placeholder="请输入需要绑定的前台账号名称"/>
+          <el-input v-model="domain.value" disabled placeholder="请输入需要绑定的前台账号名称" />
         </el-form-item>
         <el-button class="del-btn" type="primary" link @click.prevent="onResetBind">重新设置绑定账号</el-button>
       </div>
@@ -57,22 +53,19 @@
       </el-form-item>
     </el-form>
     <Modal v-model:visible="visible" title="账号绑定" :need-footer="false">
-      <ResetBind v-model:visible="visible"/>
+      <ResetBind v-model:visible="visible" />
     </Modal>
   </Loading>
 </template>
 
 <script setup lang="ts">
-import {reactive, ref, onMounted, watchEffect} from 'vue';
-import {ElMessage} from 'element-plus';
-import type {FormInstance, UploadProps} from 'element-plus';
-import {Plus} from '@element-plus/icons-vue';
+import { reactive, ref, onMounted, watchEffect } from 'vue';
+import type { FormInstance } from 'element-plus';
 import Modal from '@/components/Modal/index.vue';
-import Upload from '@/components/Upload/index.vue'
-import Image from '@/components/Image/index.vue'
-import {settingStore, userStore, uploadStore} from '@/store';
-import {FILE_TYPE, FILE_UPLOAD_MSG, IMAGES, WEB_MAIN_URL} from '@/constant';
-import {UPLOAD} from '@/server/api';
+import Upload from '@/components/Upload/index.vue';
+import Image from '@/components/Image/index.vue';
+import { settingStore, userStore } from '@/store';
+import { IMAGES } from '@/constant';
 import ResetBind from './ResetBind.vue';
 
 interface DomainItem {
@@ -108,20 +101,12 @@ onMounted(async () => {
 });
 
 const getUploadUrl = async (url: string) => {
-  await settingStore.updateUserInfo({
-    headUrl: url
-  }, false);
-}
-
-const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  if (!FILE_TYPE.includes(rawFile.type)) {
-    ElMessage.error(FILE_UPLOAD_MSG);
-    return false;
-  } else if (rawFile.size / 1024 / 1024 > 20) {
-    ElMessage.error('图片不能超过20M');
-    return false;
-  }
-  return true;
+  await settingStore.updateUserInfo(
+    {
+      headUrl: url,
+    },
+    false,
+  );
 };
 
 // 重新设置绑定账号
@@ -208,7 +193,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
     }
 
     .form-item-avatar {
-
       :deep {
         .upload-wrap {
           width: 130px;

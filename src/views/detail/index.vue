@@ -12,9 +12,7 @@
         <div class="header">{{ detailStore.detail?.title }}</div>
         <div class="info">
           <div class="avatar">
-            <el-avatar :size="60" fit="cover" :src="IMAGES.sea" @error="errorHandler">
-              <img :src="detailStore.detail?.headUrl || IMAGES.sea" />
-            </el-avatar>
+            <el-avatar :size="60" fit="cover" :src="detailStore.detail?.headUrl || IMAGES.sea" @error="errorHandler" />
           </div>
           <div class="art-info">
             <div class="username">{{ detailStore.detail.authorName }}</div>

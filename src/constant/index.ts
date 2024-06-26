@@ -168,10 +168,10 @@ export const LOADING_SVG = `
 export const DOMAIN_URL = '101.43.50.15';
 
 // 主域名
-export const WEB_MAIN_URL = 'http://101.43.50.15';
+export const WEB_MAIN_URL = 'http://101.43.50.15:9216';
 
 // web端域名
-export const WEB_DOMAIN_URL = 'http://101.43.50.15:9216';
+export const WEB_DOMAIN_URL = 'http://101.43.50.15';
 
 // 表情资源路径域名
 export const EMOJI_HOST = `http://${location.hostname === DOMAIN_URL ? DOMAIN_URL : '127.0.0.1:9112'}/image/`;

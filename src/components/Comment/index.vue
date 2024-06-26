@@ -18,9 +18,7 @@
       class="commentWrap"
     >
       <div class="avatar">
-        <el-avatar class="image" fit="cover" :src="IMAGES.sea" @error="errorHandler">
-          <img :src="i.headUrl || IMAGES.sea" />
-        </el-avatar>
+        <el-avatar class="image" fit="cover" :src="i.headUrl || IMAGES.sea" @error="errorHandler" />
       </div>
       <div class="commentContent">
         <div class="commentMain">
@@ -64,9 +62,13 @@
         <div v-if="i.replyList && i.replyList?.length! > 0" class="commentChild">
           <div v-for="j in checkReplyList(i.replyList, i.commentId!)" :key="j.commentId" class="commentChildItem">
             <div class="avatar">
-              <el-avatar class="image" fit="cover" :src="IMAGES.sea" @error="errorHandler" @click="() => {}">
-                <img :src="j.headUrl || IMAGES.sea" />
-              </el-avatar>
+              <el-avatar
+                class="image"
+                fit="cover"
+                :src="j.headUrl || IMAGES.sea"
+                @error="errorHandler"
+                @click="() => {}"
+              />
             </div>
             <div class="commentChildItemContent">
               <div class="userInfo">
