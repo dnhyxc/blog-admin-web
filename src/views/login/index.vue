@@ -90,7 +90,7 @@
             />
           </el-form-item>
           <el-form-item class="form-item action-list">
-            <el-button type="primary" size="large" class="action" @click="onResetAndLogin">重置并登录</el-button>
+            <el-button type="primary" size="large" class="action" @click="onResetAndLogin">确认重置</el-button>
             <el-button class="action" size="large" @click="onBackLogin">返回登录</el-button>
           </el-form-item>
         </el-form>
@@ -187,37 +187,37 @@ const rules = reactive<FormRules>({
   code: [{ validator: validateCode, trigger: 'blur', required: true }],
 });
 
-onMounted(() => {
+// 生成验证码
+const getCharaterValue = (element: HTMLCanvasElement) => {
+  charater.value = drawCharater({
+    canvasElement: element,
+    width,
+    height,
+    code: userStore.verifyCode.code!,
+  });
+};
+
+onMounted(async () => {
+  await userStore.getVerifyCode();
   nextTick(() => {
-    charater.value = drawCharater({
-      canvasElement: canvasCtx.value!,
-      width,
-      height,
-    });
+    getCharaterValue(canvasCtx.value!);
   });
 });
 
 watch([isRestore, isRegister], (newVal: boolean[]) => {
   if (!newVal[0] && !newVal[1]) {
     nextTick(() => {
-      charater.value = drawCharater({
-        canvasElement: canvasCtx.value!,
-        width,
-        height,
-      });
+      getCharaterValue(canvasCtx.value!);
     });
   }
 });
 
 // 重置验证码
-const onResetCode = () => {
+const onResetCode = async () => {
+  await userStore.getVerifyCode();
   if (canvasCtx.value) {
     charater.value = '';
-    charater.value = drawCharater({
-      canvasElement: canvasCtx.value,
-      width,
-      height,
-    });
+    getCharaterValue(canvasCtx.value!);
   }
 };
 
@@ -226,7 +226,7 @@ const onLogin = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid) => {
     if (valid) {
-      const res = await userStore.onLogin(loginForm);
+      const res = await userStore.onLogin(loginForm, onResetCode);
       if (res?.success) {
         router.push('/home');
       }
@@ -253,7 +253,7 @@ const onEnter = () => {
   if (!formRef.value) return;
   formRef.value.validate(async (valid) => {
     if (valid) {
-      const res = await userStore.onLogin(loginForm);
+      const res = await userStore.onLogin(loginForm, onResetCode);
       if (res?.success) {
         router.push('/home');
       }
@@ -273,9 +273,10 @@ const onResetEnter = () => {
   if (!formRef.value) return;
   formRef.value.validate(async (valid) => {
     if (valid) {
-      const loginInfo = await userStore.onResetPwd(loginForm);
-      if (loginInfo?.success) {
-        router.push('home');
+      const res = await userStore.onResetPwd(loginForm);
+      if (res?.success) {
+        isRegister.value = false;
+        isRestore.value = false;
       }
     } else {
       return false;
@@ -285,6 +286,9 @@ const onResetEnter = () => {
 
 // 账号注册
 const toRegister = (type: boolean) => {
+  if (!type) {
+    onResetCode();
+  }
   isRegister.value = type;
 };
 

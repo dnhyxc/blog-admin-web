@@ -6,11 +6,19 @@ export interface MenuListParams<T> {
   icon: T;
 }
 
+export interface VerifyCodeParams {
+  id: string;
+  createTime: string;
+  code: string;
+}
+
 // user store 属性声明
 export interface LoginParams {
   username: string;
   password: string;
   confirmPwd?: string;
+  codeId?: string;
+  code?: string;
 }
 
 // 用户信息属性声明

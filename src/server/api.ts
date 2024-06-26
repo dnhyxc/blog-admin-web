@@ -11,6 +11,9 @@ export const RESET_PASSWORD = '/admin/resetPassword';
 // 用户注册
 export const REGISTER = '/admin/register';
 
+// 获取验证码
+export const VERIFY_CODE = '/admin/verifyCode';
+
 // 校验token是否过期
 export const VERIFY = '/admin/verify';
 

@@ -1,7 +1,13 @@
 import { defineStore } from 'pinia';
-import { LoginParams, UserLoginParams, UserInfoParams, AuthorInfoEndArticleInfo } from '@/typings/comment';
+import {
+  LoginParams,
+  UserLoginParams,
+  UserInfoParams,
+  AuthorInfoEndArticleInfo,
+  VerifyCodeParams,
+} from '@/typings/comment';
 import * as Service from '@/server';
-import { normalizeResult, encrypt, ssnSetItem, ssnGetItem, ssnRemoveItem } from '@/utils';
+import { normalizeResult, encrypt, decrypt, ssnSetItem, ssnGetItem, ssnRemoveItem } from '@/utils';
 import { ElMessage } from 'element-plus';
 
 interface IProps extends UserLoginParams {
@@ -9,6 +15,8 @@ interface IProps extends UserLoginParams {
   authorInfoEndArticleInfo: AuthorInfoEndArticleInfo;
   bindAccount: string[] | null | undefined;
   bindUserInfo: { username: string; userId: string }[];
+  verifyCode: Partial<VerifyCodeParams>;
+  loadCode: boolean;
 }
 
 export const useUserStore = defineStore('user', {
@@ -26,6 +34,8 @@ export const useUserStore = defineStore('user', {
       authorInfo: {} as UserInfoParams,
       articleInfo: {},
     },
+    verifyCode: {},
+    loadCode: false,
   }),
 
   actions: {
@@ -51,15 +61,33 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    // 获取验证码
+    async getVerifyCode() {
+      if (this.loadCode) return;
+      this.loadCode = true;
+      const res = normalizeResult<VerifyCodeParams>(await Service.verifyCode({ id: this.verifyCode.id }));
+      this.loadCode = false;
+      if (res.success) {
+        const code = decrypt(res.data.code);
+        this.verifyCode = {
+          ...res.data,
+          code,
+        };
+      }
+    },
+
     // 登录
-    async onLogin(data: LoginParams) {
+    async onLogin(data: LoginParams, onResetCode?: Function) {
       try {
         // 密码加密传到后端
         const password = encrypt(data.confirmPwd || data.password);
+        const code = encrypt(data.code!);
         const res = normalizeResult<UserLoginParams>(
           await Service.login({
             username: data.username,
             password,
+            codeId: this.verifyCode.id,
+            code,
           }),
         );
         if (res.success) {
@@ -77,10 +105,11 @@ export const useUserStore = defineStore('user', {
           headUrl && ssnSetItem('headUrl', headUrl);
           ssnSetItem('auth', JSON.stringify(auth!));
           ssnSetItem('bindAccount', JSON.stringify(bindUserIds!));
-          return res;
         } else {
+          res.code === 406 && onResetCode?.();
           ElMessage.error(res.message);
         }
+        return res;
       } catch (error) {
         throw error;
       }
@@ -142,13 +171,12 @@ export const useUserStore = defineStore('user', {
       );
       // 重置成功后直接登录
       if (res.success) {
-        const loginInfo = await this.onLogin(params);
         ElMessage({
           message: res.message,
           type: 'success',
           offset: 80,
         });
-        return loginInfo;
+        return res;
       } else {
         ElMessage({
           message: res.message,

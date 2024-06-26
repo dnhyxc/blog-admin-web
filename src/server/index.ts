@@ -30,6 +30,11 @@ export const removeFile = async (url: string | string[]) => {
   return res;
 };
 
+// 获取验证码
+export const verifyCode = async (params: { id?: string }) => {
+  return await post(API.VERIFY_CODE, params);
+};
+
 // 登录
 export const login = async (params: LoginParams) => {
   try {

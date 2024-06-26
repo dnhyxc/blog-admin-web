@@ -1,6 +1,6 @@
 import moment from 'moment';
 import SparkMD5 from 'spark-md5';
-import { EMOJI_NAME, EMOJI_MAP, EMOJI_HOST, CODE_LENGTH, CHARACTERS } from '@/constant';
+import { EMOJI_NAME, EMOJI_MAP, EMOJI_HOST, CODE_LENGTH } from '@/constant';
 import { ArticleStatistic, ArticleStatisticData, ArticleInfo } from '@/typings/comment';
 import { normalizeResult } from './result';
 import { decrypt, encrypt } from './crypto';
@@ -404,15 +404,13 @@ export const drawCharater = ({
   canvasElement,
   width,
   height,
+  code,
 }: {
   canvasElement: HTMLCanvasElement;
   width: number;
   height: number;
+  code: string;
 }) => {
-  let txt = '';
-  for (let i = 0; i < CODE_LENGTH; i++) {
-    txt += CHARACTERS[randomNum(0, CHARACTERS.length)];
-  }
   const ctx = canvasElement?.getContext('2d') as CanvasRenderingContext2D;
   ctx.fillStyle = randomColor(180, 255);
   ctx.fillRect(0, 0, width, height);
@@ -421,10 +419,8 @@ export const drawCharater = ({
   ctx.textAlign = 'center'; // 设置文本对齐方式为居中
   ctx.fillRect(0, 0, width, height); // 填充背景色
   ctx.font = '32px sans-serif'; // 设置字体样式
-  // 随机生成字体大小(0.5 - 0.75)高的范围
-  // ctx.font = randomNum((height * 2) / 4, (height * 3) / 4) + 'px sans-serif';
   ctx.fillStyle = randomColor(0, 255);
-  ctx.fillText(txt, width / 2, height / 2 + 3); // 绘制文本
+  ctx.fillText(code, width / 2, height / 2 + 3); // 绘制文本
   // 绘制干扰线
   for (let j = 0; j < CODE_LENGTH; j++) {
     ctx.strokeStyle = randomColor(30, 180);
@@ -441,7 +437,7 @@ export const drawCharater = ({
     ctx.fill();
   }
 
-  return txt;
+  return code;
 };
 
 // 将网络图片转换成base64格式
