@@ -269,7 +269,7 @@ const errorHandler = () => true;
 
 .Comments {
   background-color: @fff;
-  padding: 0 20px 20px 20px;
+  padding: 0 30px 20px 30px;
   border-radius: 5px;
 
   .draftInputWrap {

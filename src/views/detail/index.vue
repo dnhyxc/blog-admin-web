@@ -27,6 +27,16 @@
         </div>
         <div class="abstract">{{ detailStore.detail?.abstract }}</div>
         <Preview v-if="mackdown" :mackdown="mackdown" class="preview-content" :on-preview-image="onPreviewImage" />
+        <div class="classify-tags">
+          <div class="tags">
+            分类:
+            <span class="classify">{{ detailStore.detail?.classify }}</span>
+          </div>
+          <div class="tags">
+            标签:
+            <span class="classify">{{ detailStore.detail?.tag }}</span>
+          </div>
+        </div>
         <Comment
           v-if="detailStore.detail?.id!"
           :article-id="detailStore.detail?.id!"
@@ -209,11 +219,48 @@ const errorHandler = () => true;
       .preview-content {
         max-width: 100%;
         border-radius: 5px;
+
+        :deep {
+          .v-md-editor-preview,
+          .vuepress-markdown-body {
+            border-radius: 0 0 5px 5px;
+          }
+        }
       }
 
       .comment-detail {
         margin-top: 10px;
         border-radius: 5px;
+      }
+
+      .classify-tags {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 10px 30px;
+        margin-top: 10px;
+        background-color: @fff;
+        border-radius: 5px;
+
+        .tags {
+          display: flex;
+          align-items: center;
+          max-width: 50%;
+
+          .classify {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            font-size: 16px;
+            font-weight: 700;
+            margin-left: 5px;
+            .ellipsisMore(1);
+          }
+        }
+
+        & > :first-child {
+          margin-right: 20px;
+        }
       }
     }
   }
