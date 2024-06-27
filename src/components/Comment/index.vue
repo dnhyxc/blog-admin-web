@@ -150,7 +150,7 @@
 import { ref } from 'vue';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { IMAGES } from '@/constant';
-import { formatGapTime, replaceCommentContent, checkHref } from '@/utils';
+import { formatGapTime, replaceCommentContent } from '@/utils';
 import { CommentParams, CommentListParams } from '@/typings/comment';
 import { commentStore } from '@/store';
 import Message from '@/components/Message/index.vue';
@@ -166,6 +166,7 @@ interface IProps {
   articleId: string;
   commentList?: CommentListParams;
   resetCommentList?: Function;
+  onPreviewImage?: (e: Event) => void;
 }
 
 interface manageParams {
@@ -183,6 +184,7 @@ const props = withDefaults(defineProps<IProps>(), {
     articleId: '',
   }),
   resetCommentList: () => {},
+  onPreviewImage: (e: Event) => {},
 });
 
 const viewMoreComments = ref<string[]>([]);
@@ -252,10 +254,10 @@ const onViewMoreReply = (commentId: string) => {
 };
 
 const onPreviewImage = (e: Event) => {
-  const target = e.target as HTMLImageElement;
-  if (target?.innerText && checkHref(target.innerText)) {
-    window.open(target.innerText);
-  }
+  // if (target?.innerText && checkHref(target.innerText)) {
+  //   window.open(target.innerText);
+  // }
+  props?.onPreviewImage?.(e);
 };
 
 // 图片加载失败事件

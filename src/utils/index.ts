@@ -7,6 +7,7 @@ import { decrypt, encrypt } from './crypto';
 import request from './request';
 import { locSetItem, locGetItem, locRemoveItem, ssnGetItem, ssnSetItem, ssnRemoveItem } from './storage';
 import { compressImage } from './compress';
+export * from './directive';
 
 export {
   request,

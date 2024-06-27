@@ -13,6 +13,8 @@ declare module '@kangc/v-md-editor/lib/preview';
 
 declare module '@kangc/v-md-editor/lib/preview-html';
 
+declare module '@kangc/v-md-editor/lib/plugins/copy-code/preview';
+
 declare module '@kangc/v-md-editor';
 
 declare module 'classname';

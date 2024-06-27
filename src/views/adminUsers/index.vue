@@ -34,7 +34,9 @@
             <div v-else class="auth">普通用户</div>
           </template>
         </el-table-column>
-        <el-table-column property="createTime" label="注册时间" show-overflow-tooltip />
+        <el-table-column property="registerTime" label="注册时间">
+          <template #default="scope">{{ formatDate(scope.row.registerTime) }}</template>
+        </el-table-column>
         <el-table-column property="status" label="账号状态">
           <template #default="scope">
             <div class="status" :title="scope.row.isDelete ? '已作废' : '使用中'">
@@ -92,6 +94,7 @@ import { ref, onMounted } from 'vue';
 import { ElTable } from 'element-plus';
 import { AUTH_CONFIG, PAGESIZE } from '@/constant';
 import { adminAccountStore, userStore } from '@/store';
+import { formatDate } from '@/utils';
 import Modal from '@/components/Modal/index.vue';
 import Message from '@/components/Message/index.vue';
 

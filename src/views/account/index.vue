@@ -10,31 +10,37 @@
         ref="multipleTableRef"
         :data="accountStore.list"
         style="width: 100%"
-        table-layout="fixed"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="35"/>
+        <el-table-column fixed="left" type="selection" width="39" />
         <el-table-column label="用户名" show-overflow-tooltip width="200">
           <template #default="scope">
             <div class="username">
               <div class="img">
-                <el-avatar class="avatar" :size="50" fit="fill" :src="scope.row.headUrl"/>
+                <el-avatar class="avatar" :size="50" fit="fill" :src="scope.row.headUrl" />
               </div>
               <div class="name" :title="scope.row.username">{{ scope.row.username }}</div>
             </div>
           </template>
         </el-table-column>
-        <el-table-column property="job" label="职位">
+        <el-table-column property="isDelete" label="角色" width="120">
           <template #default="scope">
-            <div class="job" :title="scope.row.job">
-              {{ scope.row.job || '-' }}
+            <div class="status">
+              {{ scope.row.auth === 1 ? '超级管理员' : '普通用户' }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column property="motto" label="座右铭">
+        <el-table-column property="registerTime" label="注册时间" width="180">
           <template #default="scope">
-            <div class="motto" :title="scope.row.motto">
-              {{ scope.row.motto || '-' }}
+            <div class="registerTime" :title="formatDate(scope.row.registerTime)">
+              {{ formatDate(scope.row.registerTime) }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column property="job" label="职位" width="150">
+          <template #default="scope">
+            <div class="job" :title="scope.row.job">
+              {{ scope.row.job || '-' }}
             </div>
           </template>
         </el-table-column>
@@ -47,29 +53,22 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column property="isDelete" label="角色">
+        <el-table-column property="motto" label="座右铭" width="200">
+          <template #default="scope">
+            <div class="motto" :title="scope.row.motto">
+              {{ scope.row.motto || '-' }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" property="isDelete" label="账号状态" width="100">
           <template #default="scope">
             <div class="status">
-              {{ scope.row.auth === 1 ? '超级管理员' : '普通用户' }}
+              <span v-if="scope.row.isDelete"><span class="status-del" />已作废</span>
+              <span v-else><span class="status-use" />使用中</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column property="isDelete" label="账号状态">
-          <template #default="scope">
-            <div class="status">
-              <span v-if="scope.row.isDelete"><span class="status-del"/>已作废</span>
-              <span v-else><span class="status-use"/>使用中</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column property="registerTime" label="注册时间" width="160">
-          <template #default="scope">
-            <div class="registerTime" :title="formatDate(scope.row.registerTime)">
-              {{ formatDate(scope.row.registerTime) }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="175">
+        <el-table-column fixed="right" label="操作" width="175">
           <template #default="scope">
             <div class="actions">
               <el-button link type="primary" @click="onSetAuth(scope.row)">权限设置</el-button>
@@ -105,7 +104,7 @@
           <div class="menu-auth">
             <div class="title">菜单权限</div>
             <el-checkbox-group v-model="checkList">
-              <el-checkbox v-for="menu in MENU_LIST_CONFIG" :key="menu.key" :label="menu.name"/>
+              <el-checkbox v-for="menu in MENU_LIST_CONFIG" :key="menu.key" :label="menu.name" />
             </el-checkbox-group>
           </div>
         </template>
@@ -121,11 +120,11 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
-import {ElTable} from 'element-plus';
-import {PAGESIZE, AUTH_CONFIG, MENU_LIST_CONFIG} from '@/constant';
-import {accountStore, userStore} from '@/store';
-import {formatDate} from '@/utils';
+import { ref, onMounted } from 'vue';
+import { ElTable } from 'element-plus';
+import { PAGESIZE, AUTH_CONFIG, MENU_LIST_CONFIG } from '@/constant';
+import { accountStore, userStore } from '@/store';
+import { formatDate } from '@/utils';
 import Modal from '@/components/Modal/index.vue';
 import Message from '@/components/Message/index.vue';
 
@@ -196,14 +195,14 @@ const onSetAuth = async (scope: AccountType) => {
 // 权限设置提交
 const onSubmit = async () => {
   const menus = MENU_LIST_CONFIG.filter((i) => checkList.value.includes(i.name)).map((j) => j.key);
-  await accountStore.setAuth({auth: authStatus.value, userId: authUserId.value, menus});
+  await accountStore.setAuth({ auth: authStatus.value, userId: authUserId.value, menus });
   currentPage.value = 1;
   return getAccountList();
 };
 
 // 账号操作
 const onMenageAccount = (scope: AccountType) => {
-  const {isDelete, id} = scope;
+  const { isDelete, id } = scope;
   if (isDelete) {
     onRecovery(id);
   } else {
@@ -214,7 +213,7 @@ const onMenageAccount = (scope: AccountType) => {
 // 恢复账号
 const onRecovery = async (id: string) => {
   // type：1 删除，0 恢复
-  await accountStore.manageAccount({userIds: [id], type: 0});
+  await accountStore.manageAccount({ userIds: [id], type: 0 });
   // 取消多选
   multipleTableRef.value!.clearSelection();
 };
@@ -222,14 +221,14 @@ const onRecovery = async (id: string) => {
 // 移除账号
 const onDelete = async (id: string) => {
   // type：1 删除，0 恢复
-  await accountStore.manageAccount({userIds: [id], type: 1});
+  await accountStore.manageAccount({ userIds: [id], type: 1 });
   // 取消多选
   multipleTableRef.value!.clearSelection();
 };
 
 // 删除账号
 const onDeleteAccount = (scope: AccountType) => {
-  const {id} = scope;
+  const { id } = scope;
   deleteId.value = id;
   messageVisible.value = true;
 };
@@ -256,7 +255,7 @@ const onDeleteAll = () => {
 // 批量移除
 const onRemoveAll = async () => {
   const ids = multipleSelection.value.filter((i) => !i.isDelete).map((j) => j.id) || [];
-  await accountStore.manageAccount({userIds: ids, type: 1});
+  await accountStore.manageAccount({ userIds: ids, type: 1 });
   // 取消多选
   multipleTableRef.value!.clearSelection();
 };
@@ -265,7 +264,7 @@ const onRemoveAll = async () => {
 const onRestoreAll = async () => {
   const ids = multipleSelection.value.filter((i) => i.isDelete).map((j) => j.id) || [];
   // type：1 删除，0 恢复
-  await accountStore.manageAccount({userIds: ids, type: 0});
+  await accountStore.manageAccount({ userIds: ids, type: 0 });
   // 取消多选
   multipleTableRef.value!.clearSelection();
 };
@@ -327,7 +326,7 @@ const onPageChange = (value: number) => {
         display: table-cell;
         vertical-align: middle;
 
-        .ellipsisMore(2);
+        .ellipsisMore(3);
       }
     }
 

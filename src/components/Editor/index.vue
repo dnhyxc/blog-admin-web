@@ -1,18 +1,24 @@
 <template>
   <div class="container">
+    <!-- 如果不设置 :disabled-menus="[]" 则无法显示上传本地图片的选项-->
     <v-md-editor
       v-model="mackdown"
       :height="height"
       autofocus
+      :disabled-menus="[]"
       left-toolbar="undo redo | h bold italic | quote code | strikethrough hr | link image | ul ol table | create"
       :toolbar="toolbar"
       placeholder="编辑内容"
+      @upload-image="onUploadImage"
+      @copy-code-success="onCopyCodeSuccess"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, watchEffect } from 'vue';
+import { ElMessage } from 'element-plus';
+import { uploadStore } from '@/store';
 
 interface ToolbarItem {
   action?: (editor: any) => void;
@@ -66,8 +72,24 @@ const toolbar = reactive<Toolbar>({
 watchEffect(() => {
   if (props.mackdown) {
     mackdown.value = props.mackdown;
+  } else {
+    mackdown.value = '';
   }
 });
+
+// 上传图片事件
+const onUploadImage = async (event: Event, insertImage: Function, files: File[]) => {
+  // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
+  const res = await uploadStore.uploadFile(files[0]);
+  insertImage({
+    url: res?.filePath,
+    desc: files[0]?.name,
+  });
+};
+
+const onCopyCodeSuccess = (code: string) => {
+  ElMessage.success('复制成功');
+};
 </script>
 
 <style lang="less" scoped>

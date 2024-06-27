@@ -1,6 +1,6 @@
 <template>
   <div class="edit-wrap">
-    <el-drawer v-show="visible" v-model="visible" direction="rtl" custom-class="el-drawer" :before-close="cancelClick">
+    <el-drawer v-model="visible" direction="rtl" class="el-drawer" :before-close="cancelClick">
       <template #header>
         <div class="title">创建文章</div>
       </template>
@@ -187,8 +187,12 @@ onMounted(async () => {
   // 进入页面时，如果有id，则通过id查找详情内容
   const { id } = route.query;
   if (id) {
+    console.log(11111)
     await detailStore.getArticleDetail(id as string);
     oldCoverImage.value = detailStore.detail?.coverImage || '';
+  } else {
+    console.log(22222)
+    detailStore.detail = {};
   }
 });
 

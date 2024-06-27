@@ -15,11 +15,11 @@ export const useUploadStore = defineStore('upload', {
 
   actions: {
     // 文件上传
-    async uploadFile(file: File, isAtlas?: boolean) {
+    async uploadFile(file: File) {
       // 上传前先压缩图片
       const { file: compressFile } = await compressImage({
         file,
-        quality: !isAtlas ? 0.5 : 0.4,
+        quality: 0.5,
         mimeType: file.type,
       });
       // 检验是否有userId，如果没有禁止发送请求
@@ -30,7 +30,7 @@ export const useUploadStore = defineStore('upload', {
       const findIndex = compressFile?.name?.lastIndexOf('.');
       const ext = compressFile.name.slice(findIndex + 1);
       // 修改文件名称，__ATLAS__ 用户区分是否是上传的图片集图片
-      const newFile = new File([compressFile], isAtlas ? `__ATLAS__${fileName}.${ext}` : `${fileName}.${ext}`, {
+      const newFile = new File([compressFile], `${fileName}_${userStore.userId}.${ext}`, {
         type: compressFile.type,
       });
       formData.append('file', newFile);

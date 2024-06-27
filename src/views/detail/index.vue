@@ -26,21 +26,21 @@
           <el-image class="el-image" :src="detailStore.detail?.coverImage" fit="cover" />
         </div>
         <div class="abstract">{{ detailStore.detail?.abstract }}</div>
-        <Preview v-if="mackdown" :mackdown="mackdown" class="preview-content" />
+        <Preview v-if="mackdown" :mackdown="mackdown" class="preview-content" :on-preview-image="onPreviewImage" />
         <Comment
           v-if="detailStore.detail?.id!"
           :article-id="detailStore.detail?.id!"
           :author-id="detailStore.detail?.authorId!"
           class="comment-detail"
+          :on-preview-image="onPreviewImage"
         />
       </div>
       <div v-if="detailStore.tocTitles.length" target="#__DETAIL__" :offset="60" class="toc-affix">
         <Toc />
       </div>
     </div>
-    <div v-if="scrollTop >= 500" class="back-top" @click="onScrollToTop">
-      <i class="icon iconfont icon-huojian" />
-    </div>
+    <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollToTop" />
+    <ImagePreview v-model:previewVisible="previewVisible" :select-image="{ url: filePath }" close-on-click-modal />
   </div>
 </template>
 
@@ -48,7 +48,7 @@
 import { onMounted, ref, onUnmounted, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { detailStore, commentStore } from '@/store';
-import { formatDate } from '@/utils';
+import { formatDate, checkHref } from '@/utils';
 import { IMAGES } from '@/constant';
 import Preview from '@/components/Preview/index.vue';
 import TopMenu from '@/components/TopMenu/index.vue';
@@ -60,6 +60,10 @@ const route = useRoute();
 const mackdown = ref<string | undefined>('');
 const detailWrapRef = ref<HTMLDivElement | null>(null);
 const scrollTop = ref<number>(0);
+// 图片预览状态
+const previewVisible = ref<boolean>(false);
+// 图片预览路径
+const filePath = ref<string>('');
 
 onMounted(async () => {
   nextTick(() => {
@@ -80,6 +84,20 @@ onUnmounted(() => {
   detailStore.clearDetail();
   commentStore.clearComment();
 });
+
+const onPreviewImage = (e: Event) => {
+  const target = e.target as HTMLImageElement;
+
+  if (target?.innerText && checkHref(target.innerText)) {
+    window.open(target.innerText);
+    return;
+  }
+
+  if (target.id === '__COMMENT_IMG__') {
+    previewVisible.value = true;
+    filePath.value = target.src;
+  }
+};
 
 const onScroll = (e: Event) => {
   scrollTop.value = (e.target as HTMLDivElement).scrollTop;
@@ -122,7 +140,6 @@ const errorHandler = () => true;
     height: calc(100vh - 70px);
     overflow-y: scroll;
     overflow-x: hidden;
-    padding: 0 12%;
 
     .toc-affix {
       position: sticky;
@@ -136,6 +153,7 @@ const errorHandler = () => true;
       display: flex;
       flex-direction: column;
       width: calc(100% - 280px);
+      max-width: 820px;
       height: 100%;
       margin: 0 10px;
       border-radius: 5px;
@@ -148,6 +166,7 @@ const errorHandler = () => true;
         font-weight: 700;
         background-color: @fff;
         border-radius: 5px;
+        word-break: break-all;
       }
 
       .info {
@@ -196,25 +215,6 @@ const errorHandler = () => true;
         margin-top: 10px;
         border-radius: 5px;
       }
-    }
-  }
-
-  .back-top {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px;
-    height: 45px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgb(255 255 255 / 20%);
-    background-color: @fff;
-    cursor: pointer;
-
-    .icon {
-      font-size: 25px;
     }
   }
 }

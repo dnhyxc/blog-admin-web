@@ -315,3 +315,19 @@ export interface ThemesParams {
   ];
   checked?: boolean;
 }
+
+// 图片集列表
+export interface AtlasItemParams {
+  id: string;
+  url: string;
+  createTime: number;
+  size: number;
+  fileName: string;
+  type: string;
+  coverImg?: string;
+  author?: string;
+  translator?: string;
+  language?: string;
+  userId?: string;
+  isDelete?: boolean;
+}
