@@ -69,7 +69,6 @@
                 v-model="createArticleForm.createTime"
                 type="datetime"
                 placeholder="请选择发文时间"
-                :default-time="new Date()"
                 class="el-date-picker"
               />
             </el-form-item>
@@ -149,6 +148,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watchEffect, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import moment from 'moment';
 import { ElMessage } from 'element-plus';
 import type { FormInstance } from 'element-plus';
 import { detailStore, settingStore, createStore, articleStore } from '@/store';
@@ -168,7 +168,7 @@ const createArticleForm = ref<CreateArticleParams>({
   title: '',
   classify: '',
   tag: '',
-  createTime: 0,
+  createTime: id ? detailStore.detail.createTime : new Date().valueOf(),
   abstract: '',
   authorId: '',
   articleId: '',
@@ -186,7 +186,7 @@ watchEffect(() => {
       title: title || detailStore.detail.title,
       classify: classify || detailStore.detail.classify,
       tag: tag || detailStore.detail.tag,
-      createTime: createTime || detailStore.detail.createTime || new Date().valueOf(),
+      createTime: createTime || detailStore.detail.createTime,
       abstract: abstract || detailStore.detail.abstract,
       authorId: authorId || detailStore.detail.authorId,
       articleId: articleId || detailStore.detail.id,
@@ -195,7 +195,6 @@ watchEffect(() => {
     };
     createArticleForm.value = {
       ...params,
-     
     } as CreateArticleParams;
   }
 });
@@ -260,6 +259,7 @@ const confirmClick = (e: Event) => {
     if (valid) {
       const params = {
         ...createArticleForm.value,
+        createTime: moment(createArticleForm.value.createTime).valueOf(),
         content: mackdownValue.value,
         oldCoverImage: oldCoverImage.value,
       };

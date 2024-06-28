@@ -72,4 +72,8 @@ const onClick = (menu: MenuListParams<typeof Grid>) => {
 
 <style scoped lang="less">
 @import url('./index.less');
+
+.el-menu {
+  overflow: auto;
+}
 </style>

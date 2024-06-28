@@ -137,6 +137,7 @@ const toDetail = () => {
 
         .title {
           font-size: 18px;
+          
         }
 
         .content {
@@ -183,6 +184,7 @@ const toDetail = () => {
         cursor: pointer;
         font-size: 16px;
         font-weight: 700;
+        word-break: break-all;
         .ellipsisMore(2);
       }
     }
