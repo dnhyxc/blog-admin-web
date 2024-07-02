@@ -1,9 +1,9 @@
-import {defineStore} from 'pinia';
-import {ElMessage} from 'element-plus';
+import { defineStore } from 'pinia';
+import { ElMessage } from 'element-plus';
 import * as Service from '@/server';
-import {normalizeResult} from '@/utils';
-import {userStore} from '@/store';
-import {UserInfoParams} from '@/typings/comment';
+import { normalizeResult } from '@/utils';
+import { userStore } from '@/store';
+import { UserInfoParams } from '@/typings/comment';
 
 interface bindUserInfoPrams {
   username: string;
@@ -63,6 +63,7 @@ export const useSettingStore = defineStore('setting', {
       } else {
         ElMessage.error(res.message);
       }
+      return res.success;
     },
 
     // 设置修改的绑定信息

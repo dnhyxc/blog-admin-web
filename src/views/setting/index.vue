@@ -9,7 +9,7 @@
     <div class="header">账号设置</div>
     <el-form ref="formRef" :model="bindedUserForm" label-width="110px" class="form-wrap">
       <el-form-item prop="avatar" label="用户头像" class="form-item form-item-avatar">
-        <Upload v-model:file-path="avatarUrl" :fixed-number="[130, 130]">
+        <Upload v-model:file-path="avatarUrl" :fixed-number="[130, 130]" :get-upload-url="getUploadUrl">
           <template #preview>
             <Image :url="avatarUrl || IMAGES.sea" :transition-img="IMAGES.sea" class="avatar-uploader avatar" />
           </template>
@@ -60,11 +60,12 @@
 
 <script setup lang="ts">
 import { reactive, ref, onMounted, watchEffect } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 import type { FormInstance } from 'element-plus';
 import Modal from '@/components/Modal/index.vue';
 import Upload from '@/components/Upload/index.vue';
 import Image from '@/components/Image/index.vue';
-import { settingStore, userStore } from '@/store';
+import { settingStore, uploadStore, userStore } from '@/store';
 import { IMAGES } from '@/constant';
 import ResetBind from './ResetBind.vue';
 
@@ -85,6 +86,14 @@ const bindedUserForm = reactive<{
   username: '',
 });
 const avatarUrl = ref<string>(userStore.headUrl || '');
+const isUpdate = ref<boolean>(false);
+const uploadAvatarUrl = ref<string>('');
+
+onBeforeRouteLeave(() => {
+  if (!isUpdate.value) {
+    uploadAvatarUrl.value && uploadStore.removeFile(uploadAvatarUrl.value);
+  }
+});
 
 watchEffect(async () => {
   if (!visible.value) {
@@ -100,6 +109,10 @@ onMounted(async () => {
   bindedUserForm.username = userStore?.username!;
 });
 
+const getUploadUrl = (url: string) => {
+  uploadAvatarUrl.value = url;
+};
+
 // 重新设置绑定账号
 const onResetBind = () => {
   visible.value = true;
@@ -110,10 +123,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid) => {
     if (valid) {
-      await settingStore.updateUserInfo({
+      const res = await settingStore.updateUserInfo({
         username: bindedUserForm.username,
         headUrl: avatarUrl.value,
       });
+      if (res) {
+        isUpdate.value = true;
+      }
     } else {
       return false;
     }

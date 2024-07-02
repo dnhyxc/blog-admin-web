@@ -207,7 +207,7 @@ export const useUserStore = defineStore('user', {
       this.username = username;
       this.headUrl = headUrl!;
       username && ssnSetItem('username', username);
-      headUrl && ssnSetItem('headUrl', headUrl);
+      ssnSetItem('headUrl', headUrl || '');
     },
   },
 });
