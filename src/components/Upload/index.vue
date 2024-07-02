@@ -30,7 +30,7 @@
       </div>
       <slot name="preview" :data="{ onRestoreShot, onPreview, onDelImage }" />
     </div>
-    <el-dialog v-model="shotVisible" title="图片剪裁" class="crop-dialog" width="600px">
+    <el-dialog v-model="shotVisible" title="图片剪裁" class="crop-dialog" width="60vw" align-center>
       <div ref="cropperContent" class="cropper-content">
         <div v-if="shotVisible" class="cropper">
           <VueCropper
@@ -289,6 +289,7 @@ const onDelImage = () => {
 
   .cropper {
     height: v-bind(cropperHeight);
+    max-height: 70vh;
   }
 
   .footer {

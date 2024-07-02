@@ -9,7 +9,7 @@
     <div class="header">账号设置</div>
     <el-form ref="formRef" :model="bindedUserForm" label-width="110px" class="form-wrap">
       <el-form-item prop="avatar" label="用户头像" class="form-item form-item-avatar">
-        <Upload v-model:file-path="avatarUrl" :fixed-number="[130, 130]" delete :get-upload-url="getUploadUrl">
+        <Upload v-model:file-path="avatarUrl" :fixed-number="[130, 130]">
           <template #preview>
             <Image :url="avatarUrl || IMAGES.sea" :transition-img="IMAGES.sea" class="avatar-uploader avatar" />
           </template>
@@ -99,15 +99,6 @@ onMounted(async () => {
   await settingStore.getBindUserInfo();
   bindedUserForm.username = userStore?.username!;
 });
-
-const getUploadUrl = async (url: string) => {
-  await settingStore.updateUserInfo(
-    {
-      headUrl: url,
-    },
-    false,
-  );
-};
 
 // 重新设置绑定账号
 const onResetBind = () => {
