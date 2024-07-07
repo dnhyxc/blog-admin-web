@@ -2851,10 +2851,10 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-dnhyxc-ci@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/dnhyxc-ci/-/dnhyxc-ci-0.0.3.tgz#d088b99ab6aa44a255f5951e66566bf6b8034d39"
-  integrity sha512-xA9i7pztnjq/iWILRqUm6lRkZUF69oB0Hz2/n+ZDCv7dQ1OYWHshxu1/MHCxbLDexmQoY7JjhCzWnhwYTy2VWA==
+dnhyxc-ci@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/dnhyxc-ci/-/dnhyxc-ci-0.0.8.tgz#35ce8f3221173f28e4fc6027fe7182db7b4ea9fc"
+  integrity sha512-GtcNOxFok5aomytxLWiWpErz/x8q7n2C9NYesQ49bNCnVgmpul9s08xUGGF8DguidBi+m4wKoBh9WSRaT9roFw==
   dependencies:
     archiver "^7.0.1"
     axios "^1.6.8"
