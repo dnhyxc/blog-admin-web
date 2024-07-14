@@ -12,6 +12,7 @@
     "prepare": "husky install",
     "publish": "dnhyxc-ci publish blogAdminWeb",
     "civ": "dnhyxc-ci -v",
+    "help": "dnhyxc-ci publish --help",
     "test": "npx eslint ./src  --ext ts,vue,js --fix"
   },
   "dependencies": {
