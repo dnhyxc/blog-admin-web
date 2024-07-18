@@ -8,6 +8,13 @@ module.exports = {
     // 端口号
     port: 22,
   },
+  nginxInfo: {
+    remoteFilePath: '/usr/local/nginx/conf/nginx.conf',
+    restartPath: '/usr/local/nginx/sbin'
+  },
+  serviceInfo: {
+    restartPath: '/usr/local/server'
+  },
   porjectInfo: {
     blogAdminWeb: {
       name: 'admin_html',
