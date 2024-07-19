@@ -36,7 +36,10 @@ import Header from '@/components/Header/index.vue';
   .content {
     box-sizing: border-box;
     flex: 1;
-    height: 100%;
+  }
+
+  .footer {
+    height: 50px;
   }
 }
 </style>

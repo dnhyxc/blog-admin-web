@@ -70,6 +70,9 @@
         <TagList class="list-content" />
         <Blogger class="list-content" />
       </div>
+      <div class="footer">
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer"> 浙ICP备：2024111222号-1 </a>
+      </div>
     </div>
   </Loading>
 </template>
@@ -161,6 +164,12 @@ onUnmounted(() => {
         margin-right: 0;
       }
     }
+  }
+
+  .footer {
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: center;
   }
 
   .hot-article-list {

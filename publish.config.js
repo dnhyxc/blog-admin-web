@@ -15,7 +15,7 @@ module.exports = {
   serviceInfo: {
     restartPath: '/usr/local/server'
   },
-  porjectInfo: {
+  projectInfo: {
     blogAdminWeb: {
       name: 'admin_html',
       // dist 文件路径
