@@ -12,7 +12,7 @@ module.exports = {
     remoteFilePath: '/usr/local/nginx/conf/nginx.conf',
     restartPath: '/usr/local/nginx/sbin'
   },
-  serviceInfo1: {
+  serviceInfo: {
     restartPath: '/usr/local/server'
   },
   blogAdminWeb: {
