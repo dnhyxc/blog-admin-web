@@ -12,17 +12,15 @@ module.exports = {
     remoteFilePath: '/usr/local/nginx/conf/nginx.conf',
     restartPath: '/usr/local/nginx/sbin'
   },
-  serviceInfo: {
+  serviceInfo1: {
     restartPath: '/usr/local/server'
   },
-  projectInfo: {
-    blogAdminWeb: {
-      name: 'admin_html',
-      // dist 文件路径
-      localFilePath: '/Users/dnhyxc/Documents/code/blog-admin-web',
-      // 目标服务器项目文件路径
-      remoteFilePath: '/usr/local/nginx/html_admin',
-      isServer: false
-    }
+  blogAdminWeb: {
+    name: 'admin_html',
+    // dist 文件路径
+    localFilePath: '/Users/dnhyxc/Documents/code/blog-admin-web',
+    // 目标服务器项目文件路径
+    remoteFilePath: '/usr/local/nginx/html_admin',
+    isServer: false
   }
 }
