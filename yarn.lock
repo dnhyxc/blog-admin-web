@@ -3193,16 +3193,16 @@
   dependencies:
     "path-type" "^4.0.0"
 
-"dnhyxc-ci@^0.0.15":
-  "integrity" "sha512-bZ2aECjqn6sv9cSwdqUpzESTkpEPl8KfITCs/BBd1dkL00v1O5S+yWKNSv2YjuA9Yx8Y/TWUfO0p0RNya3ZahQ=="
-  "resolved" "https://registry.npmmirror.com/dnhyxc-ci/-/dnhyxc-ci-0.0.15.tgz"
-  "version" "0.0.15"
+"dnhyxc-ci@^0.0.17":
+  "integrity" "sha512-6h7k6PGxxa2qMtzA22dBc6BXs1WvE+7E1zVsVw+3VBzXcvwF7zTrTcmi24cyt9a9NbycSnJilXqmJWLEoBaLbA=="
+  "resolved" "https://registry.npmmirror.com/dnhyxc-ci/-/dnhyxc-ci-0.0.17.tgz"
+  "version" "0.0.17"
   dependencies:
     "archiver" "^7.0.1"
     "chalk" "^4.1.2"
     "cli-progress" "^3.12.0"
     "commander" "^12.0.0"
-    "dnhyxc-ci" "^0.0.15"
+    "dnhyxc-ci" "^0.0.17"
     "figlet" "^1.7.0"
     "fs-extra" "^11.2.0"
     "i" "^0.3.7"
