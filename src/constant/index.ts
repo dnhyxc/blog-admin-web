@@ -175,7 +175,7 @@ export const WEB_DOMAIN_URL = 'http://101.43.50.15';
 
 // 表情资源路径域名
 export const EMOJI_HOST = `http://${
-  ['dnhyxc.cn', DOMAIN_URL].includes(location.hostname) ? DOMAIN_URL : '127.0.0.1:9112'
+  ['dnhyxc.cn', 'www.dnhyxc.cn', DOMAIN_URL].includes(location.hostname) ? DOMAIN_URL : '127.0.0.1:9112'
 }/image/`;
 
 export const EMOJI_MAP = {
