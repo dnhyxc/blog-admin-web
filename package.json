@@ -11,7 +11,7 @@
     "commit": "git-cz",
     "prepare": "husky install",
     "deploy": "rimraf dist dist.zip && vite build && dnhyxc-ci publish blogAdminWeb",
-    "publish": "dnhyxc-ci publish blogAdminWeb",
+    "publish": "dnhyxc-ci publish blogAdminWeb -h 101.43.50.15 -n root -p 22 -l /Users/dnhyxc/Documents/code/blog-admin-web -r /usr/local/nginx/html_admin -p dnh@06130614",
     "pull": "dnhyxc-ci pull",
     "push": "dnhyxc-ci push",
     "restart:nginx": "dnhyxc-ci restart nginx",
