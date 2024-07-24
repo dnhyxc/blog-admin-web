@@ -3193,10 +3193,10 @@
   dependencies:
     "path-type" "^4.0.0"
 
-"dnhyxc-ci@^0.0.18":
-  "integrity" "sha512-LYjEM8p57SQ4N0K9CYk0jRCcDSgPzk2yFlKGm6KOvClXiRzW4Rs2TaTSdS2lPLiDsxipR8Bjck6M8VMgDAFB0w=="
-  "resolved" "https://registry.npmmirror.com/dnhyxc-ci/-/dnhyxc-ci-0.0.18.tgz"
-  "version" "0.0.18"
+"dnhyxc-ci@^0.0.20":
+  "integrity" "sha512-r19lK9ZEgZv/errz94VY4rjdMEHVb6bn/GdE4U/5Hhom+NZ7PDZV5mELrGoctnORM+3RvoVM7dIqBoqQifjT2Q=="
+  "resolved" "https://registry.npmjs.org/dnhyxc-ci/-/dnhyxc-ci-0.0.20.tgz"
+  "version" "0.0.20"
   dependencies:
     "archiver" "^7.0.1"
     "chalk" "^4.1.2"
