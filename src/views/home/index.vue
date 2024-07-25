@@ -71,7 +71,7 @@
         <Blogger class="list-content" />
       </div>
       <div class="footer">
-        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer"> 浙ICP备：2024111222号-1 </a>
+        <a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备2024111222号-1</a>
       </div>
     </div>
   </Loading>
@@ -170,6 +170,11 @@ onUnmounted(() => {
     margin-top: 10px;
     font-size: 12px;
     text-align: center;
+
+    a {
+      color: #666;
+      font-size: 12px;
+    }
   }
 
   .hot-article-list {
