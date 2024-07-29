@@ -473,6 +473,7 @@ export const FILE_UPLOAD_MSG = '请上传 png、jpg、jpeg、gif、webp、svg �
 // 前台菜单权限列表
 export const MENU_LIST_CONFIG = [
   { key: 'tools', name: '实用工具' },
+  { key: 'deploy', name: '发布系统' },
   { key: 'picture', name: '图片集' },
 ];
 
