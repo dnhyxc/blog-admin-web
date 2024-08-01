@@ -174,9 +174,8 @@ export const WEB_MAIN_URL = 'http://101.43.50.15:9216';
 export const WEB_DOMAIN_URL = 'http://101.43.50.15';
 
 // 表情资源路径域名
-export const EMOJI_HOST = `http://${
-  ['dnhyxc.cn', 'www.dnhyxc.cn', DOMAIN_URL].includes(location.hostname) ? DOMAIN_URL : '127.0.0.1:9112'
-}/image/`;
+export const EMOJI_HOST = `http://${['dnhyxc.cn', 'www.dnhyxc.cn', DOMAIN_URL].includes(location.hostname) ? DOMAIN_URL : '127.0.0.1:9112'
+  }/image/`;
 
 export const EMOJI_MAP = {
   '[NO]': 'emoji_0@2x.png',
@@ -471,6 +470,7 @@ export const FILE_UPLOAD_MSG = '请上传 png、jpg、jpeg、gif、webp、svg �
 // 前台菜单权限列表
 export const MENU_LIST_CONFIG = [
   { key: 'tools', name: '实用工具' },
+  { key: 'deploy', name: '发布系统' },
   { key: 'picture', name: '图片集' },
 ];
 
