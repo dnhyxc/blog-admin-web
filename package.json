@@ -18,7 +18,8 @@
     "restart:node": "dnhyxc-ci restart node",
     "civ": "dnhyxc-ci -v",
     "help": "dnhyxc-ci publish --help",
-    "test": "npx eslint ./src  --ext ts,vue,js --fix"
+    "test": "npx eslint ./src  --ext ts,vue,js --fix",
+    "compress": "node compress.cjs"
   },
   "dependencies": {
     "@kangc/v-md-editor": "^2.3.15",
