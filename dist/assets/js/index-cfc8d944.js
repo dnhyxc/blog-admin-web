@@ -1,1 +1,0 @@
-import{aJ as n,aK as t,aW as a}from"./index-c3904695.js";const v=c=>{const o=n(),r=n(0);t(()=>{var e,s;(s=(e=o.value)==null?void 0:e.wrapRef)==null||s.addEventListener("scroll",l)}),a(()=>{var e;(e=o.value)==null||e.wrapRef.removeEventListener("scroll",l)});const l=e=>{r.value=e.target.scrollTop};return{scrollRef:o,scrollTop:r}};export{v as u};
