@@ -477,6 +477,12 @@ export const MENU_LIST_CONFIG = [
   { key: 'picture', name: '图片集' },
 ];
 
+export const MENU_AUTH_ENUM = {
+  tools: '实用工具',
+  deploy: '发布系统',
+  picture: '图片集',
+};
+
 // 生成的验证码长度
 export const CODE_LENGTH = 4;
 // 随机生成的字符集

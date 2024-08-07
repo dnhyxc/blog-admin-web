@@ -31,7 +31,7 @@ export default defineConfig({
     extensions: ['.js', '.ts', '.json', '.vue'],
   },
   server: {
-    port: 8088, // 启动端口
+    port: 8090, // 启动端口
     hmr: {
       host: 'localhost',
     },

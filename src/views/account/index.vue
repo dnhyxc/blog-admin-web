@@ -30,6 +30,20 @@
             </div>
           </template>
         </el-table-column>
+        <el-table-column property="isDelete" label="菜单权限" width="220">
+          <template #default="scope">
+            <span
+              v-for="(menu, index) in scope.row.menus"
+              v-show="scope.row?.menus?.length"
+              :key="menu.key"
+              class="status"
+              :title="menu.name"
+            >
+              {{ index > 0 ? '、' : '' }}{{ MENU_AUTH_ENUM[menu as 'tools' | 'deploy' | 'picture'] }}
+            </span>
+            <span v-show="!scope.row?.menus?.length" class="status">-</span>
+          </template>
+        </el-table-column>
         <el-table-column property="registerTime" label="注册时间" width="180">
           <template #default="scope">
             <div class="registerTime" :title="formatDate(scope.row.registerTime)">
@@ -122,7 +136,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { ElTable } from 'element-plus';
-import { PAGESIZE, AUTH_CONFIG, MENU_LIST_CONFIG } from '@/constant';
+import { PAGESIZE, AUTH_CONFIG, MENU_LIST_CONFIG, MENU_AUTH_ENUM } from '@/constant';
 import { accountStore, userStore } from '@/store';
 import { formatDate } from '@/utils';
 import Modal from '@/components/Modal/index.vue';
