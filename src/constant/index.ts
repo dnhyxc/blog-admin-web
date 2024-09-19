@@ -480,6 +480,7 @@ export const MENU_LIST_CONFIG = [
 
 export const MENU_AUTH_ENUM = {
   tools: '实用工具',
+  resume: '简历制作',
   deploy: '发布系统',
   picture: '图片集',
 };

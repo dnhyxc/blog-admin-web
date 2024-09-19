@@ -41,6 +41,8 @@ const toDetail = (id: string) => {
 @import '@/styles/index.less';
 
 .hot-article-wrap {
+  flex: 1;
+  max-width: 50%;
   padding: 10px 0 0;
   border-radius: 5px;
   background-color: @fff;
@@ -54,6 +56,7 @@ const toDetail = (id: string) => {
   .card-list {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
 
     .card {
       flex: 1;
@@ -65,7 +68,6 @@ const toDetail = (id: string) => {
 
       .img {
         width: 100%;
-        height: 260px;
 
         .el-image {
           width: 100%;

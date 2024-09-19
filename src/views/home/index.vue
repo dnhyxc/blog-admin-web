@@ -57,12 +57,20 @@
           </template>
         </Card>
       </div>
-      <div v-if="homeStore.articleStatisticData && homeStore.classifyList?.length > 0" class="echarts-list">
+      <div
+        v-if="
+          homeStore.articleStatisticData &&
+          homeStore.classifyList?.length > 0 &&
+          homeStore.registerStatistic?.length > 0
+        "
+        class="echarts-list"
+      >
         <ClassifyChart class="left" />
         <ArticleChart class="center" />
-        <RegisterChart v-if="homeStore.registerStatistic?.length > 0" class="right" />
+        <RegisterChart class="right" />
       </div>
       <div class="hot-article-list">
+        <ApiCalls />
         <HotArticle />
       </div>
       <div class="list-container">
@@ -88,6 +96,7 @@ import AuthorList from './AuthorList/index.vue';
 import TagList from './TagList/index.vue';
 import Blogger from './Blogger/index.vue';
 import HotArticle from './HotArticle/index.vue';
+import ApiCalls from './ApiCalls/index.vue';
 
 onMounted(() => {
   homeStore.getHomeData();
@@ -178,6 +187,8 @@ onUnmounted(() => {
   }
 
   .hot-article-list {
+    display: flex;
+    justify-content: space-between;
     margin-top: 10px;
   }
 }

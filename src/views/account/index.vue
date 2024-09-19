@@ -30,7 +30,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column property="isDelete" label="菜单权限" width="220">
+        <el-table-column property="isDelete" label="菜单权限" width="300">
           <template #default="scope">
             <span
               v-for="(menu, index) in scope.row.menus"
@@ -39,7 +39,7 @@
               class="status"
               :title="menu.name"
             >
-              {{ index > 0 ? '、' : '' }}{{ MENU_AUTH_ENUM[menu as 'tools' | 'deploy' | 'picture'] }}
+              {{ index > 0 ? '、' : '' }}{{ MENU_AUTH_ENUM[menu as 'tools' | 'resume' | 'deploy' | 'picture'] }}
             </span>
             <span v-show="!scope.row?.menus?.length" class="status">-</span>
           </template>

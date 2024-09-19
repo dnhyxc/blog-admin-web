@@ -331,3 +331,12 @@ export interface AtlasItemParams {
   userId?: string;
   isDelete?: boolean;
 }
+
+export interface ApiCalledListRes {
+  id: string;
+  api: string;
+  count: number;
+  createTime: number;
+  updateTime: number;
+  userIds: string[];
+}
