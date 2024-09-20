@@ -37,7 +37,7 @@ const onClick = () => {
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
-  height: 138px;
+  height: 110px;
   padding: 10px;
   margin-right: 10px;
   border-radius: 5px;

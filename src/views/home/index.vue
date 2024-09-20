@@ -136,6 +136,9 @@ onUnmounted(() => {
     }
 
     .footer {
+      margin-top: 0;
+      font-size: 14px;
+      text-align: right;
       .ellipsisMore(2);
     }
   }
