@@ -78,6 +78,7 @@ const getTagChart = () => {
     yAxis: [
       {
         type: 'value',
+        minInterval: 1, // 设置Y轴最小间隔为1
       },
     ],
     series: [
