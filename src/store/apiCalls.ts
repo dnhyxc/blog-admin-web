@@ -3,20 +3,33 @@ import * as Service from '@/server';
 import { ApiCalledListRes } from '@/typings/comment';
 import { normalizeResult } from '@/utils';
 
+interface IParams {
+  loading: boolean;
+  total: 0;
+  apiCalledList: ApiCalledListRes[];
+  dayTotal: 0;
+}
+
 export const useApiCallsStore = defineStore('apiCalls', {
-  state: () => ({
+  state: (): IParams => ({
+    loading: false,
     total: 0,
     apiCalledList: [],
+    dayTotal: 0,
   }),
   actions: {
     async getApiCallsTotal() {
       const res = normalizeResult<{ total: number; id: string }>(await Service.getApiCallsTotal());
-      console.log(res, res.data);
       this.total = res.data.total;
     },
+
+    async getApiCallsTotalByDay() {
+      const res = normalizeResult<{ total: number; id: string }>(await Service.getApiCallsTotalByDay());
+      this.dayTotal = res.data.total;
+    },
+
     async getApiCalledList() {
       const res = normalizeResult<ApiCalledListRes[]>(await Service.getApiCalledList());
-      console.log(res, res.data, 'apiCalledList');
       this.apiCalledList = res.data;
     },
   },

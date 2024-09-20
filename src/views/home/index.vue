@@ -70,8 +70,8 @@
         <RegisterChart class="right" />
       </div>
       <div class="hot-article-list">
-        <ApiCalls />
-        <HotArticle />
+        <ApiCalls class="api-calls" />
+        <HotArticle class="hot-article" />
       </div>
       <div class="list-container">
         <AuthorList class="list-content" />
@@ -187,9 +187,12 @@ onUnmounted(() => {
   }
 
   .hot-article-list {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    // grid-template-columns: 2fr 1fr;
+    grid-template-columns: calc(66.67% + 5px) calc(33.33% - 5px);
+    gap: 10px;
     margin-top: 10px;
+    max-height: 405px;
   }
 }
 </style>

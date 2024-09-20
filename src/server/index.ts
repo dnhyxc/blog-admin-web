@@ -379,3 +379,9 @@ export const getApiCalledList = async () => {
   const res = await post(API.GET_API_CALLED_LIST, copeParams({}));
   return res;
 };
+
+// 获取api每日调用次数
+export const getApiCallsTotalByDay = async () => {
+  const res = await post(API.GET_API_CALLS_TOTAL_BY_DAY, copeParams({}));
+  return res;
+};

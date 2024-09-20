@@ -41,11 +41,12 @@ const toDetail = (id: string) => {
 @import '@/styles/index.less';
 
 .hot-article-wrap {
-  flex: 1;
-  max-width: 50%;
+  display: flex;
+  flex-direction: column;
   padding: 10px 0 0;
   border-radius: 5px;
   background-color: @fff;
+  max-height: 405px;
 
   .header {
     text-align: center;
@@ -54,6 +55,7 @@ const toDetail = (id: string) => {
   }
 
   .card-list {
+    flex: 1;
     display: flex;
     justify-content: space-between;
     flex-direction: column;

@@ -91,7 +91,7 @@ export const MENULIST: MenuListParams<typeof Grid>[] = [
 ];
 
 // 只有超级管理员具备访问权限的页面
-export const SUPER_ADMIN_POWER_PAGES = ['users', 'account', 'tools', 'interact', 'pageSet'];
+export const SUPER_ADMIN_POWER_PAGES = ['home', 'users', 'account', 'tools', 'interact', 'pageSet'];
 
 export const GATEWAY_HOST = '';
 
