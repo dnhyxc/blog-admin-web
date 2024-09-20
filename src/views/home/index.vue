@@ -71,12 +71,12 @@
       </div>
       <div class="hot-article-list">
         <ApiCalls class="api-calls" />
-        <HotArticle class="hot-article" />
+        <Blogger class="hot-article" />
       </div>
       <div class="list-container">
         <AuthorList class="list-content" />
         <TagList class="list-content" />
-        <Blogger class="list-content" />
+        <HotArticle class="list-content" />
       </div>
       <div class="footer">
         <a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备2024111222号-1</a>

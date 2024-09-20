@@ -46,7 +46,6 @@ const toDetail = (id: string) => {
   padding: 10px 0 0;
   border-radius: 5px;
   background-color: @fff;
-  max-height: 405px;
 
   .header {
     text-align: center;
