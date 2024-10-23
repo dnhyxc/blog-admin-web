@@ -77,6 +77,7 @@ const onClickImg = () => {
 @import '@/styles/index.less';
 
 .image-wrap-style {
+  position: relative;
   box-sizing: border-box;
   width: 100%;
   height: auto;
@@ -86,6 +87,18 @@ const onClickImg = () => {
     height: 100%;
     width: 100%;
     .imgStyle();
+  }
+
+  .loading-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .loading {
+      background-color: @success-light-9;
+      color: @success;
+    }
   }
 }
 </style>
