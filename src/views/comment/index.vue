@@ -173,6 +173,7 @@ const onScrollTo = () => {
         .title {
           font-size: 18px;
           padding-left: 10px;
+          .ellipsis();
         }
 
         .commentWrap {
@@ -276,6 +277,20 @@ const onScrollTo = () => {
 
         .collapse-item {
           margin-right: 10px;
+
+          :deep {
+            button {
+              border-radius: 0;
+
+              &:hover {
+                border-bottom: 1px solid @primary;
+              }
+
+              &:focus {
+                outline: none;
+              }
+            }
+          }
         }
       }
     }

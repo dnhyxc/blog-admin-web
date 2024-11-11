@@ -57,18 +57,26 @@
           </template>
         </Card>
       </div>
-      <div v-if="homeStore.articleStatisticData && homeStore.classifyList?.length > 0" class="echarts-list">
+      <div
+        v-if="
+          homeStore.articleStatisticData &&
+          homeStore.classifyList?.length > 0 &&
+          homeStore.registerStatistic?.length > 0
+        "
+        class="echarts-list"
+      >
         <ClassifyChart class="left" />
         <ArticleChart class="center" />
-        <RegisterChart v-if="homeStore.registerStatistic?.length > 0" class="right" />
+        <RegisterChart class="right" />
       </div>
       <div class="hot-article-list">
-        <HotArticle />
+        <ApiCalls class="api-calls" />
+        <Blogger class="hot-article" />
       </div>
       <div class="list-container">
         <AuthorList class="list-content" />
         <TagList class="list-content" />
-        <Blogger class="list-content" />
+        <HotArticle class="list-content" />
       </div>
       <div class="footer">
         <a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备2024111222号-1</a>
@@ -88,6 +96,7 @@ import AuthorList from './AuthorList/index.vue';
 import TagList from './TagList/index.vue';
 import Blogger from './Blogger/index.vue';
 import HotArticle from './HotArticle/index.vue';
+import ApiCalls from './ApiCalls/index.vue';
 
 onMounted(() => {
   homeStore.getHomeData();
@@ -127,6 +136,9 @@ onUnmounted(() => {
     }
 
     .footer {
+      margin-top: 0;
+      font-size: 14px;
+      text-align: right;
       .ellipsisMore(2);
     }
   }
@@ -178,7 +190,12 @@ onUnmounted(() => {
   }
 
   .hot-article-list {
+    display: grid;
+    // grid-template-columns: 2fr 1fr;
+    grid-template-columns: calc(66.67% + 5px) calc(33.33% - 5px);
+    gap: 10px;
     margin-top: 10px;
+    max-height: 405px;
   }
 }
 </style>

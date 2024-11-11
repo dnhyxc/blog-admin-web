@@ -367,3 +367,21 @@ export const getUserMenuRoles = async (userId: string) => {
   const res = await post(API.GET_USER_MENU_ROLES, copeParams({ userId }));
   return res;
 };
+
+// 获取api调用次数
+export const getApiCallsTotal = async () => {
+  const res = await post(API.GET_API_CALLS_TOTAL, copeParams({}));
+  return res;
+};
+
+// 获取api调用列表
+export const getApiCalledList = async () => {
+  const res = await post(API.GET_API_CALLED_LIST, copeParams({}));
+  return res;
+};
+
+// 获取api每日调用次数
+export const getApiCallsTotalByDay = async () => {
+  const res = await post(API.GET_API_CALLS_TOTAL_BY_DAY, copeParams({}));
+  return res;
+};

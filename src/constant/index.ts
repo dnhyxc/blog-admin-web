@@ -91,7 +91,7 @@ export const MENULIST: MenuListParams<typeof Grid>[] = [
 ];
 
 // 只有超级管理员具备访问权限的页面
-export const SUPER_ADMIN_POWER_PAGES = ['users', 'account', 'tools', 'interact', 'pageSet'];
+export const SUPER_ADMIN_POWER_PAGES = ['home', 'users', 'account', 'tools', 'interact', 'pageSet'];
 
 export const GATEWAY_HOST = '';
 
@@ -473,9 +473,17 @@ export const FILE_UPLOAD_MSG = '请上传 png、jpg、jpeg、gif、webp、svg �
 // 前台菜单权限列表
 export const MENU_LIST_CONFIG = [
   { key: 'tools', name: '实用工具' },
+  { key: 'resume', name: '简历制作' },
   { key: 'deploy', name: '发布系统' },
   { key: 'picture', name: '图片集' },
 ];
+
+export const MENU_AUTH_ENUM = {
+  tools: '实用工具',
+  resume: '简历制作',
+  deploy: '发布系统',
+  picture: '图片集',
+};
 
 // 生成的验证码长度
 export const CODE_LENGTH = 4;

@@ -163,3 +163,12 @@ export const THEMES = '/admin/themes';
 
 // 获取用户菜单权限
 export const GET_USER_MENU_ROLES = '/admin/getUserMenuRoles';
+
+// 获取api调用次数
+export const GET_API_CALLS_TOTAL = '/admin/getApiCallsTotal';
+
+// 获取api每日调用次数
+export const GET_API_CALLS_TOTAL_BY_DAY = '/admin/getApiCallsTotalByDay';
+
+// 获取api调用列表
+export const GET_API_CALLED_LIST = '/admin/getApiCalledList';

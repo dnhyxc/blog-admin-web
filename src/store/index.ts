@@ -15,6 +15,7 @@ import { useClassifyStore } from './classify';
 import { useUploadStore } from './upload';
 import { useToolsStore } from './tools';
 import { useHomeStore } from './home';
+import { useApiCallsStore } from './apiCalls';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -33,6 +34,7 @@ const classifyStore = useClassifyStore();
 const uploadStore = useUploadStore();
 const toolsStore = useToolsStore();
 const homeStore = useHomeStore();
+const apiCallsStore = useApiCallsStore();
 
 export {
   userStore,
@@ -52,4 +54,5 @@ export {
   uploadStore,
   toolsStore,
   homeStore,
+  apiCallsStore,
 };
