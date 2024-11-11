@@ -20,3 +20,9 @@ declare module '@kangc/v-md-editor';
 declare module 'classname';
 
 declare module 'spark-md5';
+
+declare module 'html2pdf.js';
+
+declare module 'html2canvas';
+
+declare module 'vuedraggable';

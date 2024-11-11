@@ -30,6 +30,9 @@ export default defineConfig({
     // 忽略后缀名的配置选项, 添加 .vue 选项时要记得原本默认忽略的选项也要手动写入
     extensions: ['.js', '.ts', '.json', '.vue'],
   },
+  optimizeDeps: {
+    exclude: ['jspdf']
+  },
   server: {
     port: 8090, // 启动端口
     hmr: {

@@ -172,3 +172,18 @@ export const GET_API_CALLS_TOTAL_BY_DAY = '/admin/getApiCallsTotalByDay';
 
 // 获取api调用列表
 export const GET_API_CALLED_LIST = '/admin/getApiCalledList';
+
+// 保存简历配置
+export const SAVE_RESUME_INFO = '/api/saveResumeInfo';
+
+// 更新简历配置
+export const UPDATE_RESUME_INFO = '/api/updateResumeInfo';
+
+// 删除简历配置
+export const DELETE_RESUME_INFO = '/api/deleteResumeInfo';
+
+// 获取简历配置
+export const GET_RESUME_INFO = '/api/getResumeInfo';
+
+// 获取简历配置列表
+export const GET_RESUME_INFO_LIST = '/api/getResumeInfoList';

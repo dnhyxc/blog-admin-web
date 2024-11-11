@@ -16,6 +16,7 @@ import { useUploadStore } from './upload';
 import { useToolsStore } from './tools';
 import { useHomeStore } from './home';
 import { useApiCallsStore } from './apiCalls';
+import { useResumeStore } from './resume'
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -35,6 +36,7 @@ const uploadStore = useUploadStore();
 const toolsStore = useToolsStore();
 const homeStore = useHomeStore();
 const apiCallsStore = useApiCallsStore();
+const resumeStore = useResumeStore();
 
 export {
   userStore,
@@ -55,4 +57,5 @@ export {
   toolsStore,
   homeStore,
   apiCallsStore,
+  resumeStore
 };

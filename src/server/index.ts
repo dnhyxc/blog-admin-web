@@ -8,6 +8,7 @@ import {
   ManageCommentParams,
   ToolsParams,
   ThemesParams,
+  ResumeParams
 } from '@/typings/comment';
 import * as API from './api';
 
@@ -384,4 +385,29 @@ export const getApiCalledList = async () => {
 export const getApiCallsTotalByDay = async () => {
   const res = await post(API.GET_API_CALLS_TOTAL_BY_DAY, copeParams({}));
   return res;
+};
+
+// 保存简历配置
+export const saveResumeInfo = async (params: ResumeParams) => {
+  return await post(API.SAVE_RESUME_INFO, copeParams(params));
+};
+
+// 更新简历配置
+export const updateResumeInfo = async (params: ResumeParams) => {
+  return await post(API.UPDATE_RESUME_INFO, copeParams(params));
+};
+
+// 删除简历配置
+export const deleteResumeInfo = async (params: { id: string }) => {
+  return await post(API.DELETE_RESUME_INFO, copeParams(params));
+};
+
+// 获取简历配置
+export const getResumeInfo = async (params: { id: string }) => {
+  return await post(API.GET_RESUME_INFO, copeParams(params));
+};
+
+// 获取简历配置列表
+export const getResumeInfoList = async (params: { pageNo: number; pageSize: number }) => {
+  return await post(API.GET_RESUME_INFO_LIST, copeParams(params));
 };

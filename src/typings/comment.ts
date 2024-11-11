@@ -340,3 +340,105 @@ export interface ApiCalledListRes {
   updateTime: number;
   userIds: string[];
 }
+
+export interface BaseInfo {
+  label: string;
+  key: string;
+  value: string;
+  icon: string;
+  title?: string;
+  other?: boolean;
+  sort?: number;
+}
+
+export interface SkillInfo {
+  key: number;
+  description: string;
+  title?: string;
+}
+
+export type SummaryInfo = SkillInfo;
+
+export interface JobInfo {
+  key: number;
+  name: string;
+  time: {
+    start: number | string;
+    end: number | string;
+  };
+  position: string;
+  description: string;
+}
+
+export interface ProjectInfo {
+  key: number;
+  name: string;
+  time: {
+    start: number | string;
+    end: number | string;
+  };
+  position: string;
+  description: string;
+}
+
+export interface EducationInfo {
+  key: number;
+  school: string;
+  time: {
+    start: number | string;
+    end: number | string;
+  };
+  major: string;
+  education: string;
+  educationType: string;
+  city: string;
+  experience: string;
+}
+
+export interface HonorInfo {
+  key: number;
+  name: string;
+  time: number;
+}
+
+export interface ResearchInfo {
+  key: number;
+  name: string;
+  time: {
+    start: number | string;
+    end: number | string;
+  };
+  city: string;
+  role: string;
+  dept: string;
+  description: string;
+}
+
+export type OtherExperiencesInfo = ResearchInfo;
+
+export type ResumeInfo = SkillInfo & JobInfo & ProjectInfo & EducationInfo;
+
+export interface ResumeElements {
+  key: string;
+  title: string;
+  element: any;
+  formItem: any;
+  sort: number;
+}
+
+export interface ResumeParams {
+  id?: string;
+  createTime?: number;
+  userId?: string;
+  elements: {
+    key: string;
+    title: string;
+    sort: number;
+  }[];
+  resumeInfo: ResumeInfo;
+  customStyles: { [key: string]: string | number };
+  customModuleCount: number;
+  coverUrl?: string;
+}
+
+export type RESUME_TYPE = 'doubleColumn' | 'speciality' | 'default';

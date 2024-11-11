@@ -17,8 +17,17 @@ import PUSH_ICON from '@/assets/svg/push.svg';
 import { MenuListParams } from '@/typings/comment';
 import TOOL_SVG from '@/assets/svg/tool.svg';
 import SEA_SVG from '@/assets/svg/sea.svg';
+import AVATAR from '@/assets/img/avatar.jpeg';
+import RESUME_DEFAULT from '@/assets/img/resume_default.jpeg';
+import RESUME_SPECIALITY from '@/assets/img/resume_speciality.jpeg';
+import RESUME_DOUBLE from '@/assets/img/resume_double.jpeg';
 
-export { SEA, SSM, TOOL_SVG, SEA_SVG };
+export { SEA, SSM, TOOL_SVG, SEA_SVG, AVATAR, RESUME_DEFAULT, RESUME_SPECIALITY, RESUME_DOUBLE };
+
+export const RESUME_COVERS = {
+  doubleColumn: RESUME_DOUBLE,
+  speciality: RESUME_SPECIALITY,
+};
 
 // 左侧菜单配置
 export const MENULIST: MenuListParams<typeof Grid>[] = [
@@ -176,9 +185,8 @@ export const WEB_DOMAIN_URL = 'https://dnhyxc.cn';
 // export const WEB_DOMAIN_URL = 'http://101.43.50.15';
 
 // 表情资源路径域名
-export const EMOJI_HOST = `https://${
-  ['dnhyxc.cn', 'www.dnhyxc.cn', DOMAIN_URL].includes(location.hostname) ? DOMAIN_URL : '127.0.0.1:9112'
-}/image/`;
+export const EMOJI_HOST = `https://${['dnhyxc.cn', 'www.dnhyxc.cn', DOMAIN_URL].includes(location.hostname) ? DOMAIN_URL : '127.0.0.1:9112'
+  }/image/`;
 
 export const EMOJI_MAP = {
   '[NO]': 'emoji_0@2x.png',
@@ -615,3 +623,218 @@ export const ARTICLE_TAG = [
     key: '26',
   },
 ];
+
+const step = 1;
+
+// 字体大小列表
+const minFontSize = 12;
+const maxFontSize = 25;
+export const FONTSIZES = Array.from({ length: (maxFontSize - minFontSize) / step + 1 }, (_, i) => {
+  const value = minFontSize + i * step;
+  return {
+    label: value.toString(),
+    value,
+  };
+});
+
+// 行高列表
+const minLineHeight = 15;
+const maxLineHeight = 50;
+export const LINEHEIGHTS = Array.from({ length: (maxLineHeight - minLineHeight) / step + 1 }, (_, i) => {
+  const value = minLineHeight + i * step;
+  return {
+    label: value.toString(),
+    value,
+  };
+});
+
+export const PREDEFINE_COLORS = [
+  '#089220',
+  '#1e90ff',
+  '#ff8c00',
+  '#ffd700',
+  'hsl(181, 100%, 37%)',
+  'hsv(51, 100, 98)',
+  '#90ee90',
+  '#00ced1',
+  '#d8e0e6',
+  '#ceeaba',
+  'rgba(255, 69, 0, 0.68)',
+  'rgba(255, 165, 0, 0.65)',
+  'hsva(120, 40, 94, 0.5)',
+  'hsla(209, 100%, 56%, 0.73)',
+  'rgba(106, 90, 205, 0.7)',
+  'hsla(28, 100%, 86%, 0.9)',
+  'hsla(16, 100%, 65%, 0.6)',
+  '#c7158577',
+  'rgba(176, 224, 230, 0.8)',
+  'hsla(60, 100%, 90%, 0.7)',
+];
+
+export const TITLE_FONT_COLORS = [
+  '#fff',
+  '#f0f0f0',
+  '#d9d9d9',
+  '#c0c0c0',
+  '#a0a0a0',
+  '#808080',
+  '#1e2a36',
+  '#3b4a5a',
+  '#4b5b6b',
+  '#6b7a8a',
+  '#9b9b9b',
+  '#c0c0c0',
+  '#089220',
+  '#1e90ff',
+  '#ff8c00',
+  '#ffd700',
+  'hsl(181, 100%, 37%)',
+  'hsv(51, 100, 98)',
+  '#90ee90',
+  '#00ced1',
+];
+
+// 简历模块
+export const RESUME_MODULES = [
+  {
+    key: 'skillInfo',
+    title: '专业技能',
+    desc: '列出你的专业技能，展现你的技能强项',
+    icon: 'icon-skill',
+    sort: 2,
+  },
+  {
+    key: 'jobInfo',
+    title: '工作经历',
+    desc: '展示申请岗位相关的经验和能力',
+    icon: 'icon-gongzuojingli',
+    sort: 3,
+  },
+  {
+    key: 'projectInfo',
+    title: '项目及作品',
+    desc: '介绍专业领域的项目经验与能力',
+    icon: 'icon-xiangmu',
+    sort: 4,
+  },
+  {
+    key: 'educationInfo',
+    title: '教育经历',
+    desc: '介绍学历背景及专业素养',
+    icon: 'icon-jiaoyu',
+    sort: 5,
+  },
+  {
+    key: 'summaryInfo',
+    title: '个人总结',
+    desc: '介绍个人的兴趣爱好、职业规划、个人价值观等',
+    icon: 'icon-gerenjieshao',
+    sort: 6,
+  },
+  {
+    key: 'honorInfo',
+    title: '荣誉奖项',
+    desc: '含金量高的奖项是很好的加分项',
+    icon: 'icon-honor',
+    sort: 7,
+  },
+  {
+    key: 'researchInfo',
+    title: '研究经历',
+    desc: '展现经历与能力',
+    icon: 'icon-jiaoyuyanjiu',
+    sort: 8,
+  },
+  {
+    key: 'otherExperiencesInfo',
+    title: '其他经历',
+    desc: '展现人际交往和团队协作能力',
+    icon: 'icon-qita',
+    sort: 9,
+  },
+  {
+    key: 'custom',
+    title: '自定义模块',
+    desc: '添加一个自定义的模块',
+    icon: 'icon-zidingyi1',
+    sort: 10,
+  },
+];
+
+export const RESUME_OTHER_BASE = [
+  {
+    label: 'wechat',
+    title: '微信号',
+    other: true,
+    sort: 1,
+    icon: 'icon-weixin2',
+  },
+  {
+    label: 'city',
+    title: '现居城市',
+    other: true,
+    sort: 2,
+    icon: 'icon-juzhudi',
+  },
+  {
+    label: 'age',
+    title: '年龄',
+    other: true,
+    sort: 3,
+    icon: 'icon-nianling',
+  },
+  {
+    label: 'workYear',
+    title: '工作年限',
+    other: true,
+    sort: 4,
+    icon: 'icon-gongzuonianxian',
+  },
+  {
+    label: 'gender',
+    title: '性别',
+    other: true,
+    sort: 5,
+    icon: 'icon-gender',
+  },
+  {
+    label: 'height',
+    title: '身高',
+    other: true,
+    sort: 6,
+    icon: 'icon-height-scale',
+  },
+  {
+    label: 'weight',
+    title: '体重',
+    other: true,
+    sort: 7,
+    icon: 'icon-touqiantizhong-',
+  },
+  {
+    label: 'religion',
+    title: '政治面貌',
+    other: true,
+    sort: 7,
+    icon: 'icon-zhengzhimianmao',
+  },
+  {
+    label: 'maritalStatus',
+    title: '婚姻状况',
+    other: true,
+    sort: 8,
+    icon: 'icon-hunyinzhuangkuang',
+  },
+];
+
+export const MODULE_ICONS = {
+  skillInfo: 'icon-skill',
+  jobInfo: 'icon-gongzuojingli',
+  projectInfo: 'icon-xiangmu',
+  educationInfo: 'icon-jiaoyu',
+  summaryInfo: 'icon-gerenjieshao',
+  honorInfo: 'icon-honor',
+  researchInfo: 'icon-jiaoyuyanjiu',
+  otherExperiencesInfo: 'icon-qita',
+  customModule: 'icon-zidingyi1',
+};

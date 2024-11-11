@@ -113,6 +113,23 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/create/index.vue'),
       },
       {
+        path: '/resume',
+        name: 'resume',
+        meta: {
+          title: '我的简历',
+          auth: true,
+        },
+        component: () => import('@/views/resume/index.vue'),
+      },
+      {
+        path: '/resume/make',
+        name: 'make',
+        meta: {
+          title: '简历制作',
+        },
+        component: () => import('@/views/resume/make/index.vue'),
+      },
+      {
         path: '/pageSet',
         name: 'pageSet',
         meta: {

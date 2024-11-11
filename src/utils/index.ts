@@ -56,7 +56,7 @@ export const formatGapTime = (date: number) => {
 };
 
 // 滚动到某位置
-export const scrollTo = (ref: any, position: number, time = 20) => {
+export const scrollTo = (ref: any, position: number, time = 20, type = 'top') => {
   // el-scrollbar 容器
   const el = ref.value?.wrapRef as HTMLDivElement;
   // 使用requestAnimationFrame，如果没有则使用setTimeOut
@@ -66,7 +66,7 @@ export const scrollTo = (ref: any, position: number, time = 20) => {
     };
   }
   // 获取当前元素滚动的距离
-  let scrollTopDistance = el.scrollTop;
+  let scrollTopDistance = type === 'top' ? el.scrollTop : el.scrollLeft;
   const smoothScroll = () => {
     // 如果你要滚到顶部，那么position传过来的就是0，下面这个distance肯定就是负值。
     const distance = position - scrollTopDistance;
@@ -74,9 +74,9 @@ export const scrollTo = (ref: any, position: number, time = 20) => {
     scrollTopDistance = scrollTopDistance + distance / 5;
     // 判断条件
     if (Math.abs(distance) < 1) {
-      el.scrollTop = position;
+      type === 'top' ? (el.scrollTop = position) : (el.scrollLeft = position);
     } else {
-      el.scrollTop = scrollTopDistance;
+      type === 'top' ? (el.scrollTop = scrollTopDistance) : (el.scrollLeft = scrollTopDistance);
       requestAnimationFrame(smoothScroll);
     }
   };
@@ -112,7 +112,7 @@ export const replaceEmojis = (content: string) => {
       return `<img style="vertical-align: middle;width: 32px;height: 32px" src="${
         // @ts-ignore
         EMOJI_HOST + EMOJI_MAP[word]
-      }" alt="" title="${word}"/>`;
+        }" alt="" title="${word}"/>`;
     } else {
       return word;
     }
@@ -484,4 +484,71 @@ export const url2Base64 = (src: string, type?: string) => {
       resolve(base64);
     };
   });
+};
+
+
+// 处理颜色值，添加透明度
+export const lightenColor = (color: string, factor: number = 0.65) => {
+  let lightenedColor;
+
+  // 检查颜色格式
+  if (color.startsWith('#')) {
+    // 十六进制颜色
+    const hex = color.slice(1);
+    if (hex.length !== 6) return color;
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    // 使颜色变浅
+    const clamp = (value: number) => Math.min(255, Math.max(0, Math.round(value)));
+    const lightenedR = clamp(r + (255 - r) * factor);
+    const lightenedG = clamp(g + (255 - g) * factor);
+    const lightenedB = clamp(b + (255 - b) * factor);
+    lightenedColor = `#${lightenedR.toString(16).padStart(2, '0').toUpperCase()}${lightenedG
+      .toString(16)
+      .padStart(2, '0')
+      .toUpperCase()}${lightenedB.toString(16).padStart(2, '0').toUpperCase()}`;
+  } else if (color.startsWith('rgb')) {
+    // RGB 或 RGBA 颜色
+    const rgbValues = color.match(/\d+/g);
+    if (rgbValues && rgbValues.length >= 3) {
+      const r = parseInt(rgbValues[0], 10);
+      const g = parseInt(rgbValues[1], 10);
+      const b = parseInt(rgbValues[2], 10);
+      // 使颜色变浅
+      const lightenedR = Math.min(255, r + (255 - r) * factor);
+      const lightenedG = Math.min(255, g + (255 - g) * factor);
+      const lightenedB = Math.min(255, b + (255 - b) * factor);
+      lightenedColor = `rgb(${lightenedR}, ${lightenedG}, ${lightenedB})`;
+    }
+  } else if (color.startsWith('hsl')) {
+    // HSL 或 HSLA 颜色
+    const hslValues = color.match(/[\d.]+/g);
+    if (hslValues && hslValues.length >= 3) {
+      const h = parseFloat(hslValues[0]);
+      const s = parseFloat(hslValues[1]);
+      const l = parseFloat(hslValues[2]);
+      // 使颜色变浅
+      const lightenedL = Math.min(100, l + (100 - l) * factor);
+      lightenedColor = `hsl(${h}, ${s}%, ${lightenedL}%)`;
+    }
+  } else {
+    // 不支持的颜色格式
+    return color;
+  }
+
+  return lightenedColor;
+};
+
+// base64 to blob
+export const base64ToBlob = (base64Url: string) => {
+  const parts = base64Url.split(';base64,');
+  const contentType = parts[0].split(':')[1];
+  const raw = window.atob(parts[1]);
+  const rawLength = raw.length;
+  const uint8Array = new Uint8Array(rawLength);
+  for (let i = 0; i < rawLength; ++i) {
+    uint8Array[i] = raw.charCodeAt(i);
+  }
+  return new Blob([uint8Array], { type: contentType });
 };
