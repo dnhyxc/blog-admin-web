@@ -202,7 +202,7 @@ defineExpose({
   height: calc(100vh - 149px);
   box-sizing: border-box;
   color: var(--font-2);
-  border: 1px solid var(--card-border);
+  border: 1px solid @border;
   border-radius: 5px;
   padding: 10px 0 10px 10px;
   -webkit-user-drag: none;

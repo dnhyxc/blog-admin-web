@@ -81,8 +81,8 @@ const initCustomStyles = {
   baseViewType: '文字',
   titleStyle: 'left_border_underline',
   sidebarBgColor: '#1e90ff', // #235d3a - f5f5dc - rgb(29 116 206) rgb(29 116 206)
-  sidebarTextColor: '#fff',
-  linkColor: '#fff',
+  sidebarTextColor: '#000',
+  linkColor: '#000',
   type: 'default' as RESUME_TYPE, // speciality | doubleColumn | default
 };
 

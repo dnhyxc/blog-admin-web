@@ -98,7 +98,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import { userStore, resumeStore } from '@/store';
+import { resumeStore } from '@/store';
 import { formatDate } from '@/utils';
 import { RESUME_TYPE } from '@/typings/comment';
 import { RESUME_DEFAULT, RESUME_COVERS } from '@/constant';
@@ -174,7 +174,7 @@ const onPreviewTemplate = (type: RESUME_TYPE) => {
 };
 
 const onUseTemplate = (type: string) => {
-  if (resumeStore.resumeCount < 15 || userStore.userInfo.auth === 1) {
+  if (resumeStore.resumeCount < 15) {
     router.push(`/resume/make?type=${type}`);
   } else {
     ElMessage({
@@ -216,7 +216,7 @@ const toMake = (id?: string) => {
       min-height: 40px;
       padding: 0 5px;
       margin-bottom: 5px;
-      background-color: @border;
+      background-color: #ccc;
       margin-top: 5px;
       width: calc(100% - 20px);
       transform: translateX(5px);
@@ -263,7 +263,7 @@ const toMake = (id?: string) => {
       }
 
       .actions {
-        background-image: @primary !important;
+        background-image: @border !important;
       }
     }
 
@@ -310,8 +310,9 @@ const toMake = (id?: string) => {
           box-sizing: border-box;
           width: 100%;
           height: 100%;
-          color: @font-1;
+          color: #fff;
           border-radius: 5px;
+          z-index: 99;
           display: none;
 
           .mark-content {
@@ -322,7 +323,7 @@ const toMake = (id?: string) => {
             width: 100%;
             height: 100%;
             border-radius: 3px;
-            background-color: @primary;
+            background-color: rgba(0, 0, 0, 0.2);
 
             .preview {
               display: flex;
