@@ -39,5 +39,6 @@ module.exports = {
     'vue/no-deprecated-v-on-native-modifier': 0,
     'vue/no-v-html': 0,
     'no-new': 0,
+    'n/no-callback-literal': 0,
   },
 };

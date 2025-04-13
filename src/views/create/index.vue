@@ -141,7 +141,8 @@
         </div>
       </template>
     </el-drawer>
-    <Editor :mackdown="detailStore.detail.content" :article-id="(route.query.id as string)" :on-publish="onPublish" />
+    <!-- <Editor :mackdown="detailStore.detail.content" :article-id="(route.query.id as string)" :on-publish="onPublish" /> -->
+    <MDEditor v-model:markdown="detailStore.detail.content" :article-id="(route.query.id as string)" :on-publish="onPublish" />
   </div>
 </template>
 
@@ -154,7 +155,7 @@ import type { FormInstance } from 'element-plus';
 import { detailStore, settingStore, createStore, articleStore } from '@/store';
 import { CreateArticleParams } from '@/typings/comment';
 import { ARTICLE_CLASSIFY, ARTICLE_TAG } from '@/constant';
-import Editor from '@/components/Editor/index.vue';
+import MDEditor from '@/components/MDEditor/index.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -255,7 +256,7 @@ const onRemoveOldImage = () => {
 // 确定
 const confirmClick = (e: Event) => {
   if (!formRef.value) return;
-  formRef.value.validate(async (valid) => {
+  formRef.value.validate(async (valid): Promise<any> => {
     if (valid) {
       const params = {
         ...createArticleForm.value,

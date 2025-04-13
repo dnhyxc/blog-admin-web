@@ -7,7 +7,7 @@
 <template>
   <div id="__DETAIL__" v-loading="detailStore.loading" class="detail-wrap">
     <TopMenu class="top-menu" />
-    <div ref="detailWrapRef" class="content" @scroll="onScroll">
+    <div id="detail_scroll" ref="detailWrapRef" class="content" @scroll="onScroll">
       <div class="prewiew">
         <div class="header">{{ detailStore.detail?.title }}</div>
         <div class="info">
@@ -22,11 +22,12 @@
             </div>
           </div>
         </div>
-        <div class="coverImg">
+        <div v-if="detailStore.detail?.coverImage" class="coverImg">
           <el-image class="el-image" :src="detailStore.detail?.coverImage" fit="cover" />
         </div>
         <div class="abstract">{{ detailStore.detail?.abstract }}</div>
-        <Preview v-if="mackdown" :mackdown="mackdown" class="preview-content" :on-preview-image="onPreviewImage" />
+        <!-- <Preview v-if="mackdown" :mackdown="mackdown" class="preview-content" :on-preview-image="onPreviewImage" /> -->
+        <MDPreview v-if="markdown" :markdown="markdown" class="preview-content" :on-preview-image="onPreviewImage" />
         <div class="classify-tags">
           <div class="tags">
             分类:
@@ -45,8 +46,8 @@
           :on-preview-image="onPreviewImage"
         />
       </div>
-      <div v-if="detailStore.tocTitles.length" target="#__DETAIL__" :offset="60" class="toc-affix">
-        <Toc />
+      <div v-if="markdown" target="#__DETAIL__" :offset="60" class="toc-affix">
+        <MDToc :editor-id="MD_EDITER_ID" :scroll-ref="detailWrapRef" :offset-top="10" />
       </div>
     </div>
     <ToTopIcon v-if="scrollTop >= 500" :on-scroll-to="onScrollToTop" />
@@ -59,15 +60,15 @@ import { onMounted, ref, onUnmounted, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { detailStore, commentStore } from '@/store';
 import { formatDate, checkHref } from '@/utils';
-import { IMAGES } from '@/constant';
-import Preview from '@/components/Preview/index.vue';
+import { IMAGES, MD_EDITER_ID } from '@/constant';
+import MDPreview from '@/components/MDPreview/index.vue';
 import TopMenu from '@/components/TopMenu/index.vue';
 import Comment from '@/components/Comment/index.vue';
-import Toc from '@/components/Toc/index.vue';
+import MDToc from '@/components/MDToc/index.vue';
 
 const route = useRoute();
 
-const mackdown = ref<string | undefined>('');
+const markdown = ref<string | undefined>('');
 const detailWrapRef = ref<HTMLDivElement | null>(null);
 const scrollTop = ref<number>(0);
 // 图片预览状态
@@ -76,15 +77,12 @@ const previewVisible = ref<boolean>(false);
 const filePath = ref<string>('');
 
 onMounted(async () => {
-  nextTick(() => {
-    detailStore.setPreviewRef(detailWrapRef.value);
-  });
   const { id } = route.params;
   if (id) {
     // 获取文章详情
     const res = await detailStore.getArticleDetail(id as string);
     // 使用 ref 存储文章正文内容，已到达实时更新文章目录的效果
-    mackdown.value = res?.content;
+    markdown.value = res?.content;
     // 获取文章评论
     commentStore.getCommentList(id as string);
   }

@@ -185,8 +185,9 @@ export const WEB_DOMAIN_URL = 'https://dnhyxc.cn';
 // export const WEB_DOMAIN_URL = 'http://101.43.50.15';
 
 // 表情资源路径域名
-export const EMOJI_HOST = `https://${['dnhyxc.cn', 'www.dnhyxc.cn', DOMAIN_URL].includes(location.hostname) ? DOMAIN_URL : '127.0.0.1:9112'
-  }/image/`;
+export const EMOJI_HOST = `https://${
+  ['dnhyxc.cn', 'www.dnhyxc.cn', DOMAIN_URL].includes(location.hostname) ? DOMAIN_URL : '127.0.0.1:9112'
+}/image/`;
 
 export const EMOJI_MAP = {
   '[NO]': 'emoji_0@2x.png',
@@ -838,3 +839,5 @@ export const MODULE_ICONS = {
   otherExperiencesInfo: 'icon-qita',
   customModule: 'icon-zidingyi1',
 };
+
+export const MD_EDITER_ID = 'MD_EDITER_ID';
