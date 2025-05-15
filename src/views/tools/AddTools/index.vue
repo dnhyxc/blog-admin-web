@@ -95,6 +95,7 @@ watch(
       addToolsForm.toolHref = '';
       addToolsForm.toolUrl = '';
       addToolsForm.powerUsers = [];
+      toolsStore.pageLoading = false;
       clearToolUrl();
     }
   },
