@@ -101,7 +101,7 @@ watch(
 );
 
 const search = debounce(async () => {
-  if (addToolsForm.toolHref) {
+  if (addToolsForm.toolHref && !toolUrl.value) {
     const { title, iconUrl } = await toolsStore.getPageInfo(addToolsForm.toolHref);
     addToolsForm.toolName = title;
     addToolsForm.toolUrl = iconUrl;
