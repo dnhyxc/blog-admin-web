@@ -15,10 +15,12 @@
             </template>
           </Upload>
         </Loading>
-        <el-button link class="reload" :disabled="toolsStore.pageLoading" @click="search">重新获取图标</el-button>
+        <el-button type="primary" link class="reload" :disabled="toolsStore.pageLoading" @click="onSearch">
+          {{ addToolsForm.toolHref && toolUrl ? '重新获取链接信息' : '获取链接信息' }}
+        </el-button>
       </el-form-item>
       <el-form-item prop="toolHref" label="工具链接" class="form-item">
-        <el-input v-model="addToolsForm.toolHref" placeholder="请输入工具链接" @input="onSearch" />
+        <el-input v-model="addToolsForm.toolHref" placeholder="请输入工具链接" />
       </el-form-item>
       <el-form-item
         prop="toolName"
@@ -40,7 +42,6 @@
 <script setup lang="ts">
 import { reactive, ref, watchEffect, watch } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
-import { debounce } from 'lodash';
 import { toolsStore } from '@/store';
 import { checkHref } from '@/utils';
 import { ToolsParams } from '@/typings/comment';
@@ -101,18 +102,12 @@ watch(
   },
 );
 
-const search = debounce(async () => {
-  if (addToolsForm.toolHref && !toolUrl.value) {
-    const { title, iconUrl } = await toolsStore.getPageInfo(addToolsForm.toolHref);
-    addToolsForm.toolName = title;
-    addToolsForm.toolUrl = iconUrl;
-    toolUrl.value = iconUrl;
-  }
-}, 500);
-
-const onSearch = (value: string) => {
-  addToolsForm.toolHref = value;
-  search();
+const onSearch = async () => {
+  if (!addToolsForm.toolHref) return;
+  const { title, iconUrl } = await toolsStore.getPageInfo(addToolsForm.toolHref);
+  addToolsForm.toolName = title;
+  addToolsForm.toolUrl = iconUrl;
+  toolUrl.value = iconUrl;
 };
 
 // 清除数据
@@ -137,7 +132,7 @@ defineExpose({
 
     .reload {
       position: absolute;
-      top: 0;
+      bottom: 0;
       left: 142px;
     }
   }
