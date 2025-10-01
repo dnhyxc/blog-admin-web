@@ -61,6 +61,8 @@ const toDetail = (id: string) => {
 
     .card {
       flex: 1;
+      display: flex;
+      flex-direction: column;
       height: auto;
       background-image: none;
       box-shadow: none;
@@ -84,19 +86,20 @@ const toDetail = (id: string) => {
       }
 
       .title {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 700;
-        padding: 5px 10px 10px 10px;
+        padding: 12px 10px 13px;
         background-color: @info-light-9;
       }
 
       .content {
         flex: 1;
-        padding: 5px 10px 10px 10px;
-        font-size: 13px;
+        padding: 0 10px 0;
+        font-size: 14px;
         background-color: @info-light-9;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
+        .ellipsisMore(3);
       }
     }
   }
