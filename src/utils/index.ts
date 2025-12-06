@@ -188,11 +188,24 @@ export const checkUrl = (url: string) => {
 };
 
 // 校验是否是正常的链接
-export const checkHref = (url: string) => {
+export const isValidDomain = (url: string) => {
+  // /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}$/i
   const Expression =
     /^(https?:\/\/)?(([0-9a-z-]+\.[a-z-]+)|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]+)?(\/[0-9a-z%/.\-_]*)?(\?[0-9a-z=&%_-]*)?(#[0-9a-z=&%_-]*)?$/i;
   const objExp = new RegExp(Expression);
   return objExp.test(url);
+};
+
+export const checkHref = (domain: string) => {
+  if (!domain || typeof domain !== 'string') {
+    return false;
+  }
+  // 域名总长度不能超过253个字符
+  if (domain.length > 253) {
+    return false;
+  }
+  const domainRegex = /^(https?:\/\/)?(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}$/i;
+  return domainRegex.test(domain);
 };
 
 // 处理文章统计数据
