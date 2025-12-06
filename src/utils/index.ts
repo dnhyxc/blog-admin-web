@@ -112,7 +112,7 @@ export const replaceEmojis = (content: string) => {
       return `<img style="vertical-align: middle;width: 32px;height: 32px" src="${
         // @ts-ignore
         EMOJI_HOST + EMOJI_MAP[word]
-        }" alt="" title="${word}"/>`;
+      }" alt="" title="${word}"/>`;
     } else {
       return word;
     }
@@ -190,7 +190,7 @@ export const checkUrl = (url: string) => {
 // 校验是否是正常的链接
 export const checkHref = (url: string) => {
   const Expression =
-    /^(https?:\/\/)?(([0-9a-z.]+\.[a-z]+)|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]+)?(\/[0-9a-z%/.\-_]*)?(\?[0-9a-z=&%_-]*)?(#[0-9a-z=&%_-]*)?/gi;
+    /^(https?:\/\/)?(([0-9a-z-]+\.[a-z-]+)|(([0-9]{1,3}\.){3}[0-9]{1,3}))(:[0-9]+)?(\/[0-9a-z%/.\-_]*)?(\?[0-9a-z=&%_-]*)?(#[0-9a-z=&%_-]*)?$/i;
   const objExp = new RegExp(Expression);
   return objExp.test(url);
 };
@@ -485,7 +485,6 @@ export const url2Base64 = (src: string, type?: string) => {
     };
   });
 };
-
 
 // 处理颜色值，添加透明度
 export const lightenColor = (color: string, factor: number = 0.65) => {
