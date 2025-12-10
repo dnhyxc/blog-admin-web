@@ -11,21 +11,14 @@
       <el-button type="danger" :disabled="!multipleSelection.length" @click="onDeleteAll">批量删除</el-button>
     </div>
     <el-scrollbar class="content">
-      <el-table
-        ref="multipleTableRef"
-        :data="toolsStore.list"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-      >
+      <el-table ref="multipleTableRef" :data="toolsStore.list" style="width: 100%"
+        @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column label="工具名称" show-overflow-tooltip width="220">
           <template #default="scope">
             <div class="user-info">
-              <el-image
-                style="width: 50px; height: 50px; min-width: 50px; border-radius: 5px"
-                :src="scope.row.toolUrl || TOOL_SVG"
-                fit="cover"
-              />
+              <el-image style="width: 50px; height: 50px; min-width: 50px; border-radius: 5px"
+                :src="scope.row.toolUrl || TOOL_SVG" fit="cover" />
               <span class="username">{{ scope.row.toolName }}</span>
             </div>
           </template>
@@ -59,38 +52,20 @@
         </el-table-column>
       </el-table>
       <div class="footer">
-        <el-pagination
-          v-model:current-page="toolsStore.pageNo"
-          :page-size="PAGESIZE"
-          background
-          :disabled="disabled"
-          layout="total, prev, pager, next"
-          :total="toolsStore.total"
-          :hide-on-single-page="toolsStore.list.length <= PAGESIZE"
-          @current-change="onPageChange"
-        />
+        <el-pagination v-model:current-page="toolsStore.pageNo" :page-size="PAGESIZE" background :disabled="disabled"
+          layout="total, prev, pager, next" :total="toolsStore.total"
+          :hide-on-single-page="toolsStore.list.length <= PAGESIZE" @current-change="onPageChange" />
       </div>
     </el-scrollbar>
   </Loading>
-  <Message
-    v-model:visible="messageVisible"
-    title="删除工具"
-    content="确定删除工具吗？"
-    info="删除后，该工具将无法恢复！"
-    :on-submit="onSubmitDelete"
-  />
+  <Message v-model:visible="messageVisible" title="删除工具" content="确定删除工具吗？" info="删除后，该工具将无法恢复！"
+    :on-submit="onSubmitDelete" />
   <Modal v-model:visible="visible" title="选择用户" :width="550" content-padding="0" :on-submit="onSelectedUsers">
     <div class="select-user-modal-content">
       <SelectUser ref="selectUserRef" :selected-users="selectedUsers" :visible="visible" />
     </div>
   </Modal>
-  <Modal
-    v-model:visible="addVisible"
-    title="添加工具"
-    :width="550"
-    content-padding="20px 20px 0"
-    :on-submit="onAddedTools"
-  >
+  <Modal v-model:visible="addVisible" title="添加工具" :width="550" content-padding="20px 20px 0" :on-submit="onAddedTools">
     <div class="add-tools-modal-content">
       <AddTools ref="addToolsRef" :add-visible="addVisible" :selected-item="selectedItem" />
     </div>
@@ -219,6 +194,7 @@ const onSelectedUsers = () => {
 // 添加工具
 const onAddTool = () => {
   addVisible.value = true;
+  selectedItem.value = {};
 };
 
 // 添加工具
@@ -320,6 +296,7 @@ const onPageChange = (value: number) => {
     }
 
     .status {
+
       .status-use,
       .status-del {
         display: inline-block;

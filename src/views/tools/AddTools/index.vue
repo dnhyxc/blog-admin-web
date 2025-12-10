@@ -22,17 +22,12 @@
       <el-form-item prop="toolHref" label="工具链接" class="form-item">
         <el-input v-model="addToolsForm.toolHref" placeholder="请输入工具链接" />
       </el-form-item>
-      <el-form-item
-        prop="toolName"
-        label="工具名称"
-        :rules="[
-          {
-            required: true,
-            message: '请输入工具名称',
-          },
-        ]"
-        class="form-item"
-      >
+      <el-form-item prop="toolName" label="工具名称" :rules="[
+        {
+          required: true,
+          message: '请输入工具名称',
+        },
+      ]" class="form-item">
         <el-input v-model="addToolsForm.toolName" placeholder="请输入工具名称" />
       </el-form-item>
     </el-form>
@@ -40,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watchEffect, watch } from 'vue';
+import { reactive, ref, watch, onMounted } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { toolsStore } from '@/store';
 import { checkHref } from '@/utils';
@@ -77,7 +72,7 @@ const rules = reactive<FormRules>({
   toolHref: [{ validator: validateHref, trigger: 'blur', required: true }],
 });
 
-watchEffect(() => {
+onMounted(() => {
   const { selectedItem } = props;
   if (selectedItem?.toolName) {
     addToolsForm.toolName = selectedItem?.toolName;
@@ -91,6 +86,14 @@ watchEffect(() => {
 watch(
   () => props.addVisible,
   (newVal) => {
+    const { selectedItem } = props;
+    if (selectedItem?.toolName) {
+      addToolsForm.toolName = selectedItem?.toolName;
+      addToolsForm.toolHref = selectedItem?.toolHref;
+      addToolsForm.toolUrl = selectedItem?.toolUrl;
+      addToolsForm.powerUsers = selectedItem?.powerUsers;
+      toolUrl.value = selectedItem?.toolUrl || '';
+    }
     if (!newVal) {
       addToolsForm.toolName = '';
       addToolsForm.toolHref = '';

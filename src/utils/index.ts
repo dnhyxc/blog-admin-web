@@ -204,7 +204,8 @@ export const checkHref = (domain: string) => {
   if (domain.length > 253) {
     return false;
   }
-  const domainRegex = /^(https?:\/\/)?(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}$/i;
+  const domainRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,63}(:\d+)?(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/i;
+  // const domainRegex = /^(https?:\/\/)?(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}$/i;
   return domainRegex.test(domain);
 };
 
